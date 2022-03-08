@@ -1,0 +1,33 @@
+<template>
+  <div class="tempalte-container">
+    <p>-----template----</p>
+  </div>
+</template>
+
+
+<script>
+// 导入 wepy 框架
+import wepy from '@wepy/core'
+wepy.page({
+  data: {
+
+  },
+  methods: {
+
+  }
+
+})
+</script>
+
+<style lang="less">
+
+</style>
+
+<config>
+{
+    navigationBarTitleText: '这是一个模版',
+    usingComponents: {
+
+    }
+}
+</config>

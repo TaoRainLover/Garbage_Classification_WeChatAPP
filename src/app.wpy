@@ -1,0 +1,117 @@
+<style lang="less">
+  div{
+  // height: 100%;
+  // display: flex;
+  // flex-direction: column;
+  // align-items: center;
+  // justify-content: space-between;
+  box-sizing: border-box;
+}
+</style>
+
+<script>
+import wepy from '@wepy/core';
+import eventHub from './common/eventHub';
+import vuex from '@wepy/x';
+
+wepy.use(vuex);
+
+
+wepy.app({
+  // 暂未明白 hooks 的原理和作用
+  hooks: {
+    // App 级别 hook，对整个 App 生效
+    // 同时存在 Page hook 和 App hook 时，优先执行 Page hook，返回值再交由 App hook 处
+    // 'before-setData': function (dirty) {
+    //   console.log('setData dirty: ', dirty);
+    //   return dirty;
+    // }
+  },
+  // 全局访问数据
+  globalData: {
+    windowHeight: 0
+  },
+
+  async onLaunch() {
+    // 访问全局属性 - globalData
+    // globalData = this.$options.globalData
+
+    // 获取手机设备信息
+    const res = await wx.getSystemInfoSync({})
+    this.$options.globalData.windowHeight = res.windowHeight
+    // console.log(this.$options.globalData.windowHeight)
+  },
+
+  methods: {
+
+    // sleep (s) {
+    //   return new Promise((resolve, reject) => {
+    //     setTimeout(() => {
+    //       resolve('promise resolved')
+    //     }, s * 1000)
+    //   })
+    // },
+
+    // async testAsync () {
+    //   let d = await this.sleep(3);
+    //   console.log(d);
+    // }
+  }
+});
+</script>
+<config>
+{
+    pages: [
+      'pages/index',
+      'pages/user',
+      'pages/gift',
+      'pages/test',
+      'pages/find',
+      'pages/page1'
+    ],
+    window: {
+      // 下拉 loading 的样式，仅支持 dark / light
+      backgroundTextStyle: 'light',
+      navigationBarBackgroundColor: '#4bae32',
+      navigationBarTitleText: 'WeChat',
+      navigationBarTextStyle: 'white'
+    },
+    tabBar: {
+    // 默认颜色
+    color: "#8a8a8a",
+    // 选中颜色
+    selectedColor: "#4bae32",
+    borderStyle: "black",
+    // 背景颜色
+    backgroundColor: "white",
+    list: [{
+      pagePath: "pages/index",
+      "iconPath": "static/image/icon/home0.png",
+      "selectedIconPath": "static/image/icon/home1.png",
+      text: "首页"
+    },{
+      pagePath: "pages/find",
+      text: "发现",
+      "iconPath": "static/image/icon/find0.png",
+      "selectedIconPath": "static/image/icon/find1.png",
+    },
+    {
+      pagePath: "pages/test",
+      text: "答题",
+      "iconPath": "static/image/icon/test0.png",
+      "selectedIconPath": "static/image/icon/test1.png",
+    },{
+      pagePath: "pages/gift",
+      "iconPath": "static/image/icon/gift0.png",
+      "selectedIconPath": "static/image/icon/gift1.png",
+      text: "兑换"
+    },{
+      pagePath: "pages/user",
+      text: "我的",
+      "iconPath": "static/image/icon/user0.png",
+      "selectedIconPath": "static/image/icon/user1.png",
+    },
+    ]
+  }
+}
+</config>

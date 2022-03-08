@@ -1,0 +1,28 @@
+<style lang="less">
+  
+</style>
+<template>
+  <div class="container">
+    <p>这是一个组件的模版</p>
+  </div>
+</template>
+<script>
+  import wepy from '@wepy/core'
+
+  wepy.component({
+    data: {
+      
+    },
+
+    events: {
+      
+    },
+
+    methods: {
+      
+    },
+
+    onLoad () {
+    }
+  });
+</script>

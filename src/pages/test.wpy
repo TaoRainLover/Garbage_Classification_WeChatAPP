@@ -1,0 +1,190 @@
+t<template>
+  <div class="container">
+    <!-- 试题页面 -->
+    <div class="test-container" v-if="showQues">
+      <p class="progress"><span class="num">01</span>/10</p>
+      <p class="question">锡纸</p>
+      <div class="select-box">
+        <div class="select A">可回收物</div>
+        <div class="select B">其他垃圾</div>
+        <div class="select C">厨余垃圾</div>
+        <div class="select D">有害垃圾</div>
+      </div>
+    </div>
+    <!-- 结果分数统计页面 -->
+    <div class="statistic-container" v-else>
+      <div class="statistic-box">
+        <p class="title">垃圾分类知识测试成绩</p>
+        <p class="score"><span>80</span>分</p>
+        <div class="info-list">
+          <div class="header li">
+            <div class="qes">题目</div>
+            <div class="my">我的答案</div>
+            <div class="cor">正确答案</div>
+          </div>
+          <div class="li" v-for="(item, id) in statisticList" :key="id">
+            <div class="qes">
+              <div class="num">{{id+1}}</div>
+              <div class="name">创可贴</div>
+            </div>
+            <div class="my">
+              有害垃圾
+            </div>
+            <div class="cor">
+              其他垃圾
+            </div>
+          </div>
+        
+        </div>
+      </div>
+      <img src="/static/image/icon/refresh.png" class="icon"/>
+      <p class="play-again">再来一次</p>
+    </div>
+  </div>
+</template>
+
+
+<script>
+// 导入 wepy 框架
+import wepy from '@wepy/core'
+wepy.page({
+  data: {
+    showQues: false,
+    statisticList: [{},{},{},{},{},{},{},{},{},{},],
+  },
+  methods: {
+
+  }
+
+})
+</script>
+
+<style lang="less" scoped>
+.container {
+  // 试题页面布局
+  .test-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .progress {
+      font-size: 14px;
+      margin: 77px 0 24px 320px
+    }
+    .question {
+      font-size: 36px;
+      font-weight: bold;
+      margin-bottom: 27px;
+    }
+    .select-box {
+      .select {
+        width: 242px;
+        height: 48px;
+        font-size: 18px;
+        background: #FFFFFF;
+        box-shadow: 0px 0px 11px rgba(64, 85, 58, 0.5);
+        border-radius: 43px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 22px;
+      }
+    }
+  }
+
+  // 结果分数统计页面布局
+  .statistic-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .statistic-box {
+      height: 440px;
+      width: 320px;
+      box-shadow: 0px 0px 10px rgba(144, 157, 140, 0.6);
+      border-radius: 22px;
+      margin: 72px 0 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      .title {
+        font-size: 20px;
+        font-weight: 600;
+        margin: 17px 0 4px;
+      }
+      .score {
+        font-weight: 600;
+        font-size: 32px;
+        line-height: 45px;
+        color: #B52632;
+        margin-bottom: 14px;
+      }
+      .info-list {
+        width: 100%;
+        height: 302px;
+        font-size: 12px;
+        .header {
+          font-weight: bold;
+           background: rgba(234, 234, 234, 0.8);
+        }
+        .li {
+          height: 28px;
+          widows: 100%;
+          display: flex;
+          align-items: center;
+          .qes {
+            width: 143px;
+            box-sizing: border-box;
+            padding-left: 22px;
+            display: flex;
+            align-items: center;
+            .num {
+              height: 15px; 
+              width: 15px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              color: #F8240F;
+              background: #FEEAEA;
+              border-radius: 2px;
+              margin-right: 8px;
+            }
+          }
+          .my {
+            width: 85px;
+            height: 28px;
+            line-height: 28px;
+            border-left: 1px solid rgba(227, 227, 227, 0.8);
+            border-right: 1px solid rgba(227, 227, 227, 0.8);
+            box-sizing: border-box;
+            padding-left: 17px;
+          }
+          .cor {
+            width: 92px;
+            box-sizing: border-box;
+            padding-left: 14px;
+          }
+        }
+        .li:nth-child(odd) {
+          background: rgba(234, 234, 234, 0.4);
+        }
+      }
+    }
+    .icon {
+      height: 51px;
+      width: 51px;
+      margin-bottom: 4px;
+    }
+    .play-again {
+      font-size: 18px;
+    }
+  }
+}
+</style>
+
+<config>
+{
+    navigationBarTitleText: '答题',
+    usingComponents: {
+
+    }
+}
+</config>
