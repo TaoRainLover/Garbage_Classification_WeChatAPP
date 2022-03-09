@@ -3,7 +3,7 @@
     <!-- banner区域 -->
     <div class="banner">
       <swiper 	indicator-dots 	indicator-active-color="#335cad" 	autoplay 	circular>
-        <block wx:for="{{imgList}}" wx:key="*this">
+        <block wx:for="{{bannerImgList}}" wx:key="*this">
           <swiper-item>
             <image class="swiper-item" src="{{item}}" mode="scaleToFill" />
           </swiper-item>
@@ -15,21 +15,9 @@
     <div class="popularization">
       <p class="title">垃圾分类知识科普</p>
       <div class="content">
-        <div class="item">
-          <img class="trashImg" src="/static/image/trash/1.png" alt=""/>
-          <p class="name">可回收物</p>
-        </div>
-        <div class="item">
-          <img class="trashImg" src="/static/image/trash/2.png" alt=""/>
-          <p class="name">可回收物</p>
-        </div>
-        <div class="item">
-          <img class="trashImg" src="/static/image/trash/3.png" alt=""/>
-          <p class="name">可回收物</p>
-        </div>
-        <div class="item">
-          <img class="trashImg" src="/static/image/trash/4.png" alt=""/>
-          <p class="name">可回收物</p>
+        <div class="item" wx:for="{{trashImgPathList}}" wx:key="*this">
+          <img class="trashImg"   @click="navToDetal" src="{{ item.path }}" alt=""/>
+          <p class="name">{{item.type}}</p>
         </div>
       </div>
     </div>
@@ -84,10 +72,18 @@
 
     data: {
       windowHeight: 0,
-      imgList: ['https://i-1.lanrentuku.com/2020/12/22/471bd0dd-9a7e-4f10-a51e-11a2e41a2a9b.jpg?imageView2/2/w/500/',
+      bannerImgList: ['https://i-1.lanrentuku.com/2020/12/22/471bd0dd-9a7e-4f10-a51e-11a2e41a2a9b.jpg?imageView2/2/w/500/',
                 'https://i-1.lanrentuku.com/2020/12/22/ecf9f96b-b899-46ae-ac34-a7fc16f5af82.jpg?imageView2/2/w/500/',
                 'https://i-1.lanrentuku.com/2020/12/22/dfdff2b9-2f8c-498e-ba4e-b095579add7f.jpg?imageView2/2/w/500/',
-                'https://i-1.lanrentuku.com/2020/12/22/55317ffa-a4e1-45be-bd1c-ccad3b2bec86.jpg?imageView2/2/w/500/',]
+                'https://i-1.lanrentuku.com/2020/12/22/55317ffa-a4e1-45be-bd1c-ccad3b2bec86.jpg?imageView2/2/w/500/',],
+      trashImgPathList: [
+        {type: '可回收物', path: '/static/image/trash/1.png'},
+        {type: '其他垃圾', path: '/static/image/trash/2.png'},
+        {type: '厨余垃圾', path: '/static/image/trash/3.png'},
+        {type: '有害垃圾', path: '/static/image/trash/4.png'},
+        
+      ]
+    
     },
 
     computed: {
@@ -95,7 +91,11 @@
     },
 
     methods: {
-      
+      navToDetal() {
+        wx.navigateTo({
+        url: '/packageBuild/pages/popularization'
+      })
+      },
     },
 
     // 生命周期函数 created

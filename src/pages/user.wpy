@@ -74,7 +74,7 @@
         <div class="comment list">
           <div class="title-box">
             <img class="icon1" src="/static/image/icon/comment.png"/>
-            <p class="title">意见反馈(<span></span>50<span>)</span></p>
+            <p class="title">意见反馈</p>
           </div>
           <img src="/static/image/icon/forward.png" class="icon2"/>
         </div>

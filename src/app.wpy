@@ -61,6 +61,7 @@ wepy.app({
 </script>
 <config>
 {
+  // 主包
     pages: [
       'pages/index',
       'pages/user',
@@ -68,6 +69,15 @@ wepy.app({
       'pages/test',
       'pages/find',
       'pages/page1'
+    ],
+    // 子包
+    subPackages: [
+      {
+        'root': 'packageBuild',
+        'pages': [
+          'pages/popularization'
+        ]
+      }
     ],
     window: {
       // 下拉 loading 的样式，仅支持 dark / light
@@ -77,12 +87,9 @@ wepy.app({
       navigationBarTextStyle: 'white'
     },
     tabBar: {
-    // 默认颜色
     color: "#8a8a8a",
-    // 选中颜色
     selectedColor: "#4bae32",
     borderStyle: "black",
-    // 背景颜色
     backgroundColor: "white",
     list: [{
       pagePath: "pages/index",

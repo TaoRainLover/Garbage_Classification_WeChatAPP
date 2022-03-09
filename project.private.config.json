@@ -29,6 +29,12 @@
           "pathName": "pages/test",
           "query": "",
           "scene": null
+        },
+        {
+          "name": "垃圾分类知识科普",
+          "pathName": "packageBuild/pages/popularization",
+          "query": "",
+          "scene": null
         }
       ]
     }

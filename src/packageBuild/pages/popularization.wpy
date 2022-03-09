@@ -1,0 +1,173 @@
+<template>
+  <div class="container">
+    <!-- 顶部导航区域 -->
+    <div class="nav-box">
+      <div class="type recyclable" style="background-color: #0099FF; color:white;">可回收物</div>
+      <div class="type other">其他垃圾</div>
+      <div class="type kitchen">厨余垃圾</div>
+      <div class="type harmful">有害垃圾</div>
+    </div>
+    
+    <!-- 中间的介绍区域 -->
+    <div class="intro-box">
+      <div class="icon-box">
+        <img src="/static/image/icon/recyclable.png" class="icon"/>
+      </div>
+      <div class="intro-info">
+        <p class="brief">
+          <span style="font-weight: bold;"> {{selectItem}} </span>是指适宜回收和可循环再利用的废弃 物。主要包括废玻璃、废金属、废塑料、废纸张、废织 物等。
+        </p>
+        <p class="throw-intro" style="font-weight: bold;">投放要求</p>
+        <ul class="throw-demand-li">
+          <li class="li" v-for="(item,id) in curItemDemand" :key="id">{{item}}</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 下层的常见种类 -->
+    <div class="common-item-box">
+      <p class="title">常见种类</p>
+      <p class="item" v-for="(item, id) in  commonList" :key="id">{{item}}</p>
+    </div>
+  </div>
+</template>
+
+
+<script>
+// 导入 wepy 框架
+import wepy from '@wepy/core'
+wepy.page({
+  data: {
+    throwDemandList: {
+      recyclable: {
+        type: '可回收物',
+        demand: [
+          '轻投轻放',
+          '清洁千燥，避免污染',
+          '废纸尽量平整',
+          '立体包装请清空内容物，清洁后压扁投放',
+          '有尖税边角的，应包裹后投放',
+        ]
+      }
+    },
+    curItemDemand: [
+      '• 轻投轻放',
+      '• 清洁千燥，避免污染',
+      '• 废纸尽量平整',
+      '• 立体包装请清空内容物，清洁后压扁投放',
+      '• 有尖税边角的，应包裹后投放',
+    ],
+    commonList: [
+      'A4纸', 'AD钙奶瓶', '矿泉水瓶', 'PS4', 'iphone13',
+      'A4纸', 'AD钙奶瓶', '矿泉水瓶', 'PS4', 'iphone13',
+      'A4纸', 'AD钙奶瓶', '矿泉水瓶', 'PS4', 'iphone13',
+      'A4纸', 'AD钙奶瓶', '矿泉水瓶', 'PS4', 'iphone13',
+    ]
+  },
+  computed: {
+    selectItem() {
+      return '可回收物'
+    }
+  },
+  methods: {
+
+  },
+
+
+})
+</script>
+
+<style lang="less" scoped>
+.container {
+  // 顶部导航区域
+  .nav-box{
+    display: flex;
+    align-items: center;
+    margin-bottom: 28px;
+    .type {
+      height: 47px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex: 1;
+      font-size: 16px;
+      font-weight: bold;
+      color: #757575;
+      border-bottom: 4px solid #4CAE32;
+    }
+    .recyclable {
+      border-bottom: 4px solid #0099FF;
+
+    }
+    .other {
+      border-bottom: 4px solid #FF9934;
+      
+    }
+    .harmful {
+      border-bottom: 4px solid #E4311F;
+      
+    }
+  }
+
+  // 中间的介绍区域
+  .intro-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 14px;
+    line-height: 20px;
+    margin-bottom: 32px;
+    .icon-box {
+      width: 94px;
+      height: 64px;
+      background: #0099FF;
+      border-radius: 14px;
+      margin-bottom: 14px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .icon {
+        height: 45px;
+        width: 45px;
+      }
+    }
+    .intro-info {
+      width: 314px;
+      .li {
+        list-style-type: disc;
+      }
+    }
+  }
+
+  // 下层的常见种类
+  .common-item-box {
+    width: 100%;
+    .title {
+      font-weight: bold;
+      font-size:16px;
+      padding-left: 16px;
+
+    }
+    .item {
+      height: 30px;
+      width: 100%;
+      box-sizing: border-box;
+      padding-left: 16px;
+      line-height: 30px;
+      font-size: 14px;
+    }
+    .item:nth-child(even) {
+      background: rgba(233, 233, 233, 0.6);
+    }
+  }
+}
+</style>
+
+<config>
+{
+    navigationBarTitleText: '垃圾知识科普',
+    usingComponents: {
+
+    }
+}
+</config>
