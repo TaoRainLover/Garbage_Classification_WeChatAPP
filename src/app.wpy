@@ -82,6 +82,7 @@ wepy.app({
     window: {
       // 下拉 loading 的样式，仅支持 dark / light
       backgroundTextStyle: 'light',
+      "backgroundColor": "#fff",
       navigationBarBackgroundColor: '#4bae32',
       navigationBarTitleText: 'WeChat',
       navigationBarTextStyle: 'white'
@@ -90,7 +91,7 @@ wepy.app({
     color: "#8a8a8a",
     selectedColor: "#4bae32",
     borderStyle: "black",
-    backgroundColor: "white",
+    backgroundColor: "#fff",
     list: [{
       pagePath: "pages/index",
       "iconPath": "static/image/icon/home0.png",
