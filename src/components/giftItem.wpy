@@ -1,0 +1,86 @@
+<style lang="less" scoped>
+  .container {
+    width: 144px;
+    height: 197px;
+    background-color: white;
+    box-shadow: 0px 2px 10px rgba(188, 188, 188, 0.25);
+    border-radius: 6px;
+    font-size: 12px;
+    margin-bottom: 25px;
+    .cover {
+      height: 144px;
+      width: 144px;
+      background: #C4C4C4;
+      border-radius: 6px 6px 0px 0px;
+    }
+    .name {
+      margin: 5px 8px;
+    }
+    .exchange-box {
+      display: flex;
+      padding: 0 8px;
+      justify-content: space-between;
+      .des {
+        color: #E4311F;
+      }
+      .btn {
+        width: 32px;
+        height: 18px;
+        border: 1px solid #E4311F;
+        box-sizing: border-box;
+        border-radius: 2px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+  }
+</style>
+<template>
+  <div class="container">
+    <img src="{{ coverPath }}" alt="" class="cover"/>
+    <p class="name">{{name}}</p>
+    <div class="exchange-box">
+      <p class="des">所需环保币:<span class="corn">{{ corn }}</span></p>
+      <div class="btn" @click="exchange">兑换</div>
+    </div>
+  </div>
+</template>
+<script>
+  import wepy from '@wepy/core'
+
+  wepy.component({
+    props: {
+      coverPath: {
+        type: String,
+        default: '/static/image/trash/1.png'
+      },
+      name: {
+        type: String,
+        default: '手帕纸',
+      },
+      corn: {
+        type: Number,
+        default: 'xxx',
+      }
+
+    },
+
+    data: {
+      
+    },
+    // 自定义事件
+    events: {
+      
+    },
+
+    methods: {
+      exchange(curItem) {
+        this.$emit('exchange', curItem)
+      }
+    },
+
+    onLoad () {
+    }
+  });
+</script>

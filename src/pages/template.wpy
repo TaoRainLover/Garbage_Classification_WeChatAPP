@@ -14,6 +14,12 @@ wepy.page({
   },
   methods: {
 
+  },
+
+  // 生命周期函数 created
+  created () {
+    this.windowHeight = this.$app.$options.globalData.windowHeight+'px'
+    console.log(this.windowHeight)
   }
 
 })

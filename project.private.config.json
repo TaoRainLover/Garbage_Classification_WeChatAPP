@@ -35,6 +35,12 @@
           "pathName": "packageBuild/pages/popularization",
           "query": "",
           "scene": null
+        },
+        {
+          "name": "兑换",
+          "pathName": "pages/gift",
+          "query": "",
+          "scene": null
         }
       ]
     }
