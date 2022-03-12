@@ -75,7 +75,8 @@ wepy.app({
       {
         'root': 'packageBuild',
         'pages': [
-          'pages/popularization'
+          'pages/popularization',
+          'pages/search',
         ]
       }
     ],

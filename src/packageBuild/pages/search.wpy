@@ -1,0 +1,121 @@
+<template>
+  <div class="container" style="height: {{ windowHeight }}">
+    <!-- 顶部搜索框区域 -->
+    <div class="search-input-box">
+      <div class="input-box">
+        <img src="/static/image/icon/search.png" class="icon"/>
+        <input type="text" class="input-area" placeholder="搜索垃圾查看对应类别"/>
+      </div>
+      <p class="cancel-text">取消</p>
+    </div>
+
+    <!-- 搜索结果列表区域 -->
+    <div class="res-list-box">
+      <div class="li" v-for="(item, id) in resList" :key="id">
+        <img src="{{item.iconPath}}" class="class-icon"/>
+        <p class="name">{{item.name}}</p>
+        <p> 「<span class="cls">{{item.class}}</span>」</p>
+      </div>
+    </div>
+    <div class="ending">没有更多了...</div>
+  </div>
+</template>
+
+
+<script>
+// 导入 wepy 框架
+import wepy from '@wepy/core'
+wepy.page({
+  data: {
+    windowHeight: '',
+    resList: [{name: '湿卫生纸',class: '其他垃圾', iconPath: '/static/image/icon/recyclable1.png',},
+              {name: '卫生纸',class: '其他垃圾', iconPath: '/static/image/icon/other1.png',},
+              {name: '卫生纸芯',class: '可回收垃圾', iconPath: '/static/image/icon/harmful1.png',},
+              {name: '用过的卫生纸',class: '其他垃圾',  iconPath: '/static/image/icon/kitchen1.png',},]
+
+  },
+  methods: {
+
+  },
+
+  // 生命周期函数 created
+  created () {
+    this.windowHeight = this.$app.$options.globalData.windowHeight+'px'
+    console.log(this.windowHeight)
+  }
+
+})
+</script>
+
+<style lang="less" scoped>
+.container {
+  background-color: #F8F8F8;
+  // 顶部搜索框区域
+  .search-input-box {
+    height: 60px;
+    box-shadow: 0px 2px 12px rgba(190, 187, 187, 0.25);
+    display: flex;
+    box-sizing: border-box;
+    padding: 0 20px 0 12px;
+    justify-content: space-between;
+    align-items: center;
+    .input-box {
+      height: 36px;
+      width: 313px;
+      background: #F0F0F0;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      .icon {
+        height: 22px;
+        width: 22px;
+        margin:0 12px;
+      }
+      .input-area {
+        width: 250px;
+      }
+    }
+    .cancel-text {
+      font-size: 16px;
+    }
+  }
+
+  // 搜索结果列表区域
+  .res-list-box {
+    .li {
+      font-size: 16px;
+      color: #555;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      .class-icon {
+        width: 28px;
+        height: 28px;
+        margin: 0 11px 0 16px;
+      }
+    }
+    .li:nth-child(even){
+      background: #F1F1F1;
+      color: black;
+    }
+  }
+
+  // 尾部结束标语
+  .ending {
+    font-size: 12px;
+    color: #555;
+    margin: 18px 0;
+    text-align: center;
+
+  }
+}
+</style>
+
+<config>
+{
+    navigationBarTitleText: '搜索',
+    usingComponents: {
+
+    }
+}
+</config>
