@@ -1,0 +1,188 @@
+<template>
+  <div class="container" style="height: {{remainHeight}}">
+    <!-- 顶部反馈问题类型 -->
+    <div class="fee-cate-box">
+      <div class="comment cate">意见反馈</div>
+      <div class="system cate">系统问题</div>
+      <div class="account cate">账号问题</div>
+      <div class="other cate">其他</div>
+    </div>
+
+    <!-- 提交内容区域 -->
+    <div class="title-content-img-box">
+      <div class="title-box">
+        <input class="input-area" placeholder="添加标题" type="text"/>
+        <p>12</p>
+      </div>
+      <div class="content-box">
+        <textarea class="content-area" placeholder="填写相关描述信息" ></textarea>
+        <p class="num-text"><span class="input-">0</span>/100</p>
+      </div>
+      <div class="img-box">
+        <p class="des"><span>提交问题的截图或图片(选填)</span><span>0/3</span></p>
+        <div class="add-img-btn">
+          <img src="/static/image/icon/add.png" class="icon"/>
+        </div>
+      </div>
+    </div>
+
+    <!-- 提交按钮 -->
+    <div class="btn">提交</div>
+  </div>
+</template>
+
+
+<script>
+// 导入 wepy 框架
+import wepy from '@wepy/core'
+wepy.page({
+  data: {
+    windowHeight: '',
+    remainHeight: '',
+  },
+  methods: {
+
+  },
+
+  // 生命周期函数 created
+  created () {
+    this.remainHeight = this.$app.$options.globalData.remainHeight+'px'
+    console.log(this.windowHeight)
+  }
+
+})
+</script>
+
+<style lang="less" scoped>
+.container{
+  background: #F8F8F8;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  // 顶部反馈问题类型
+  .fee-cate-box {
+    width: 700rpx;
+    display: flex;
+    justify-content: space-between;
+    margin: 34rpx 0;
+    font-size: 28rpx;
+    color: #555;
+    .cate {
+      width: 148rpx;
+      height: 50rpx;
+      line-height: 50rpx;
+      text-align: center;
+      // background: rgba(76, 174, 50, 0.1);
+      border: 2rpx solid #555;
+      border-radius: 28rpx;
+
+    }
+    .comment {
+      background: rgba(76, 174, 50, 0.1);
+      border: 2rpx solid #4CAE32;
+      box-sizing: border-box;
+      border-radius: 28rpx;
+    }
+    
+  }
+
+  // 提交内容区域
+  .title-content-img-box {
+    height: 800rpx;
+    width: 684rpx;
+    background: white;
+    box-shadow: 0px 0px 8rpx rgba(217, 209, 209, 0.25);
+    border-radius: 8rpx;
+    color: #555;
+    font-size: 28rpx;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .title-box {
+      height: 64rpx;
+      width: 640rpx;
+      box-sizing: border-box;
+      padding: 0 8rpx;
+      margin-top: 24rpx;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2rpx solid rgba(85, 85, 85, 0.2);
+      .input-area {
+        width: 560rpx;
+      // background-color: antiquewhite;
+        font-size: 32rpx;
+        font-weight: bold;
+      }
+    }
+
+    .content-box {
+      height: 410rpx;
+      width: 640rpx;
+      box-sizing: border-box;
+      padding: 0 8rpx;
+      margin-top: 30rpx;
+      border-bottom: 2rpx solid rgba(85, 85, 85, 0.2);
+      .content-area {
+        height: 350rpx;
+        width: 100%;
+        // background-color: antiquewhite;
+      }
+      .num-text {
+        width: 100%;
+        text-align: right;
+        margin-top: 8rpx;
+      }
+    }
+
+    .img-box {
+      width: 640rpx;
+      box-sizing: border-box;
+      padding: 0 8rpx;
+      margin-top: 14rpx;
+      .des {
+        display: flex;
+        justify-content: space-between;
+      }
+      .add-img-btn {
+        height: 110rpx;
+        width: 110rpx;
+        background: #F2F2F2;
+        border-radius: 8rpx;
+        margin-top: 40rpx;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .icon {
+          height: 32rpx;
+          width: 32rpx;
+        }
+      }
+    }
+  }
+
+  // 提交按钮
+  .btn {
+    height: 64rpx;
+    width: 188rpx;
+    color: white;
+    font-size: 32rpx;
+    font-weight: bold;
+    line-height: 64rpx;
+    text-align: center;
+    background: #4CAE32;
+    border-radius: 32rpx;
+    margin-top: 76rpx;
+  }
+}
+</style>
+
+<config>
+{
+    navigationBarTitleText: '意见反馈',
+    usingComponents: {
+
+    }
+}
+</config>

@@ -14,8 +14,8 @@
     }
     .date {
       position: absolute;
-      top: 14px;
-      left: 4px;
+      top: 28rpx;
+      left: 8rpx;
       font-weight: bold;
     }
   }

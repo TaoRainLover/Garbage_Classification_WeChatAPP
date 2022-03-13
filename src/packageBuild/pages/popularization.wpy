@@ -83,28 +83,28 @@ wepy.page({
   .nav-box{
     display: flex;
     align-items: center;
-    margin-bottom: 28px;
+    margin-bottom: 56rpx;
     .type {
-      height: 47px;
+      height: 94rpx;
       display: flex;
       justify-content: center;
       align-items: center;
       flex: 1;
-      font-size: 16px;
+      font-size: 32rpx;
       font-weight: bold;
       color: #757575;
-      border-bottom: 4px solid #4CAE32;
+      border-bottom: 8rpx solid #4CAE32;
     }
     .recyclable {
-      border-bottom: 4px solid #0099FF;
+      border-bottom: 8rpx solid #0099FF;
 
     }
     .other {
-      border-bottom: 4px solid #FF9934;
+      border-bottom: 8rpx solid #FF9934;
       
     }
     .harmful {
-      border-bottom: 4px solid #E4311F;
+      border-bottom: 8rpx solid #E4311F;
       
     }
   }
@@ -114,25 +114,25 @@ wepy.page({
     display: flex;
     flex-direction: column;
     align-items: center;
-    font-size: 14px;
-    line-height: 20px;
-    margin-bottom: 32px;
+    font-size: 28rpx;
+    line-height: 40rpx;
+    margin-bottom: 64rpx;
     .icon-box {
-      width: 94px;
-      height: 64px;
+      width: 188rpx;
+      height: 128rpx;
       background: #0099FF;
-      border-radius: 14px;
-      margin-bottom: 14px;
+      border-radius: 28rpx;
+      margin-bottom: 28rpx;
       display: flex;
       justify-content: center;
       align-items: center;
       .icon {
-        height: 45px;
-        width: 45px;
+        height: 90rpx;
+        width: 90rpx;
       }
     }
     .intro-info {
-      width: 314px;
+      width: 628rpx;
       .li {
         list-style-type: disc;
       }
@@ -142,20 +142,20 @@ wepy.page({
   // 下层的常见种类
   .common-item-box {
     width: 100%;
-    padding-bottom: 40px;
+    padding-bottom: 80rpx;
     .title {
       font-weight: bold;
-      font-size:16px;
-      padding-left: 16px;
+      font-size:32rpx;
+      padding-left: 32rpx;
 
     }
     .item {
-      height: 30px;
+      height: 60rpx;
       width: 100%;
       box-sizing: border-box;
-      padding-left: 16px;
-      line-height: 30px;
-      font-size: 14px;
+      padding-left: 32rpx;
+      line-height: 60rpx;
+      font-size: 28rpx;
     }
     .item:nth-child(even) {
       background: rgba(233, 233, 233, 0.6);

@@ -47,6 +47,18 @@
           "pathName": "packageBuild/pages/search",
           "query": "",
           "scene": null
+        },
+        {
+          "name": "反馈",
+          "pathName": "packageBuild/pages/feeback",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "搜索历史",
+          "pathName": "packageBuild/pages/searchHistory",
+          "query": "",
+          "scene": null
         }
       ]
     }

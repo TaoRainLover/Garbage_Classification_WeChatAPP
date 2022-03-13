@@ -1,0 +1,82 @@
+
+<template>
+  <div class="container" style="height: {{ remainHeight }}">
+    <div class="list-box">
+      <div class="li" v-for="(item, id) in searchHistoryList" :key="id">
+        <span class="name"><span>{{id+1}}</span><span>{{item.name}}</span></span>
+        <span class="resCount">{{item.resCount}} 结果</span>
+        <span class="date">{{item.date}}</span>
+      </div>
+    </div>
+    <div class="ending">没有更多了...</div>
+  </div>
+</template>
+
+
+<script>
+// 导入 wepy 框架
+import wepy from '@wepy/core'
+wepy.page({
+  data: {
+    remainHeight: '',
+    searchHistoryList: [{name: '抽纸', resCount: 3, date: '2022/2/25',},
+                        {name: '抽纸', resCount: 3, date: '2022/2/25',},
+                        {name: '抽纸', resCount: 3, date: '2022/2/25',},
+                        {name: '抽纸', resCount: 3, date: '2022/2/25',},
+                        {name: '抽纸', resCount: 3, date: '2022/2/25',},
+                        {name: '抽纸', resCount: 3, date: '2022/2/25',},
+                        {name: '抽纸', resCount: 3, date: '2022/2/25',}
+    ],
+  },
+  methods: {
+
+  },
+
+  // 生命周期函数 created
+  created () {
+    this.remainHeight = this.$app.$options.globalData.remainHeight*2 +'rpx'
+  }
+
+})
+</script>
+
+<style lang="less" scoped>
+.container {
+  background: #F8F8F8;
+  .list-box {
+    margin-top: 44rpx;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .li {
+      height: 72rpx;
+      width: 688rpx;
+      border-radius: 12rpx;
+      padding: 0 12px;
+      box-sizing: border-box;
+      font-size: 32rpx;
+      background: white;
+      margin-bottom: 36rpx;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+  .ending {
+
+    color: #555;
+    font-size: 12px;
+    margin: 0 auto;
+    text-align: center;
+  }
+}
+</style>
+
+<config>
+{
+    navigationBarTitleText: '搜索历史',
+    usingComponents: {
+
+    }
+}
+</config>

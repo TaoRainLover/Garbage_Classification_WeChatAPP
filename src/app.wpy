@@ -29,7 +29,10 @@ wepy.app({
   },
   // 全局访问数据
   globalData: {
-    windowHeight: 0
+    // 屏幕可用高度含有tabbar
+    windowHeight: 0,
+    // 屏幕可用高度不含tabbar
+    remainHeight: 0
   },
 
   async onLaunch() {
@@ -38,7 +41,10 @@ wepy.app({
 
     // 获取手机设备信息
     const res = await wx.getSystemInfoSync({})
+    // console.log(res)
     this.$options.globalData.windowHeight = res.windowHeight
+    this.$options.globalData.remainHeight = res.screenHeight - res.statusBarHeight - 44
+    // console.log(this.$options.globalData.remainHeight)
     // console.log(this.$options.globalData.windowHeight)
   },
 
@@ -77,6 +83,8 @@ wepy.app({
         'pages': [
           'pages/popularization',
           'pages/search',
+          'pages/feeback',
+          'pages/searchHistory'
         ]
       }
     ],

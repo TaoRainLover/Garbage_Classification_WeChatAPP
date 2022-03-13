@@ -114,20 +114,20 @@ wepy.page({
 <style lang="less" scoped>
 .container {
   .corn-info {
-    font-size: 16px;
+    font-size: 32rpx;
     font-weight: bold;
-    padding: 15px 0 18px 15px;
+    padding: 30rpx 0 36rpx 30rpx;
     .corn {
       color: #4CAE32;
     }
   }
   .title {
-    font-size: 16px;
+    font-size: 32rpx;
     font-weight: bold;
-    padding-left: 15px;
+    padding-left: 30rpx;
   }
   .icon-box {
-    width: 150px;
+    width: 300rpx;
     display: flex;
     justify-content: space-between;
     margin: 0 auto;
@@ -135,10 +135,10 @@ wepy.page({
       display: flex;
       flex-direction: column;
       align-items: center;
-      font-size: 12px;
+      font-size: 24rpx;
       .icon {
-        height: 45px;
-        width: 45px;
+        height: 90rpx;
+        width: 90rpx;
       }
     }
     
@@ -146,12 +146,12 @@ wepy.page({
   
   // 底部礼品信息
   .item-box {
-    height: 525px;
+    height: 75%;
     overflow: auto;
     width: 100%;
     background: rgba(247, 247, 247, 0.8);
-    box-shadow: 0px -2px 10px rgba(169, 185, 166, 0.25);
-    border-radius: 20px 20px 0px 0px;
+    box-shadow: 0 -4rpx 20rpx rgba(169, 185, 166, 0.25);
+    border-radius: 40rpx 40rpx 0 0;
     position: absolute;
     bottom: 0;
 
@@ -163,9 +163,9 @@ wepy.page({
       align-items: center;
 
       .title-name {
-        font-size: 16px;
+        font-size: 32rpx;
         font-weight: bold;
-        margin-top: 16px;
+        margin-top: 32rpx;
       }
       .item-list-box{
         display: flex;
@@ -173,8 +173,8 @@ wepy.page({
         justify-content: space-between;
       }
       .ending {
-        margin: 12px auto;
-        font-size: 12px;
+        margin: 24rpx auto;
+        font-size: 24rpx;
         color: #555;
       }
     }
@@ -183,8 +183,8 @@ wepy.page({
     .gift-item-box{
       color: black;
       .item-list-box {
-        width: 342px;
-        margin-top: 15px;
+        width: 684rpx;
+        margin-top: 30rpx;
       }
     }
     
@@ -192,34 +192,34 @@ wepy.page({
     .metal-item-box{
       
       .type {
-        font-size: 16px;
+        font-size: 32rpx;
         font-weight: bold;
-        margin-bottom: 6px;
+        margin-bottom: 12rpx;
       }
       .list-box {
-        width: 332px;
+        width: 664rpx;
         .li {
           width: 100%;
-          height: 32px;
-          font-size: 16px;
+          height: 64rpx;
+          font-size: 32rpx;
           color: white;
           background-color: #4CAE32;
-          box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
-          border-radius: 4px;
-          margin-bottom: 16px;
-          padding: 0 16px;
+          box-shadow: 0rpx 0rpx 8rpx rgba(0, 0, 0, 0.25);
+          border-radius: 8rpx;
+          margin-bottom: 32rpx;
+          padding: 0 32rpx;
           box-sizing: border-box;
           display: flex;
           justify-content: space-between;
           align-items: center;
           .des-box{
-            width: 94px;
+            width: 188rpx;
             display: flex;
             align-items: center;
             justify-content: space-between;
             .icon {
-              width: 22px;
-              height: 22px;
+              width: 44rpx;
+              height: 44rpx;
             }
             .metal-name {
               font-weight: bold;
@@ -232,14 +232,14 @@ wepy.page({
         .li {
           color: #4CAE32;
           background-color: white;
-          box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.1);
+          box-shadow: 0rpx 0rpx 8rpx rgba(0, 0, 0, 0.1);
           .btn {
-            width: 50px;
-            height: 22px;
+            width: 100rpx;
+            height: 44rpx;
             color: white;
-            font-size: 16px;
+            font-size: 32rpx;
             background: #4CAE32;
-            border-radius: 4px;
+            border-radius: 8rpx;
             display: flex;
             align-items: center;
             justify-content: center;

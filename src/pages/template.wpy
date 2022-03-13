@@ -11,6 +11,7 @@ import wepy from '@wepy/core'
 wepy.page({
   data: {
     windowHeight: '',
+    remainHeight: '',
   },
   methods: {
 
@@ -18,15 +19,18 @@ wepy.page({
 
   // 生命周期函数 created
   created () {
-    this.windowHeight = this.$app.$options.globalData.windowHeight+'px'
-    console.log(this.windowHeight)
+    this.windowHeight = this.$app.$options.globalData.windowHeight*2 + 'rpx'
+    this.remainHeight = this.$app.$options.globalData.remainHeight*2 + 'rpx'
+    // console.log(this.windowHeight)
   }
 
 })
 </script>
 
 <style lang="less" scoped>
+.container {
 
+}
 </style>
 
 <config>
