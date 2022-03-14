@@ -26,14 +26,14 @@
     <div class="function-box">
 
       <div class="main-box">
-        <div class="serach-history history">
+        <div class="serach-history history" @click="navigateToSearchHistory">
           <div class="info-box">
             <p class="title">搜索历史</p>
             <p class="info"><span class="num">3</span> 条</p>
           </div>
           <img class="icon" src="/static/image/icon/history-query.png"/>
         </div>
-        <div class="test-history history">
+        <div class="test-history history" @click="navigateToTestHistory">
           <div class="info-box">
             <p class="title">答题历史</p>
             <p class="info"><span class="num" style="color: #4bae32">3</span> 条</p>
@@ -103,6 +103,20 @@ wepy.page({
     ]
   },
   methods: {
+    // 跳转到搜索历史页面
+    navigateToSearchHistory() {
+      wx.navigateTo({
+        url: '/packageBuild/pages/searchHistory',
+      })
+    },
+
+    // 跳转到答题历史页面
+    navigateToTestHistory() {
+      wx.navigateTo({
+        url: '/packageBuild/pages/testRecord',
+      })
+    },
+
     // 跳转到兑换页面
     navigateToGift(){
       wx.switchTab({
@@ -116,6 +130,8 @@ wepy.page({
         url: '/packageBuild/pages/feeback',
       })
     }
+
+    // 跳
   },
 
   // 生命周期函数 created

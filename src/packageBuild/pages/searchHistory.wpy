@@ -3,7 +3,7 @@
   <div class="container" style="height: {{ remainHeight }}">
     <div class="list-box">
       <div class="li" v-for="(item, id) in searchHistoryList" :key="id">
-        <span class="name"><span>{{id+1}}</span><span>{{item.name}}</span></span>
+        <span class="name"><span>{{id+1}}.</span><span>{{item.name}}</span></span>
         <span class="resCount">{{item.resCount}} 结果</span>
         <span class="date">{{item.date}}</span>
       </div>

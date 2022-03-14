@@ -59,6 +59,12 @@
           "pathName": "packageBuild/pages/searchHistory",
           "query": "",
           "scene": null
+        },
+        {
+          "name": "答题记录",
+          "pathName": "packageBuild/pages/testRecord",
+          "query": "",
+          "scene": null
         }
       ]
     }

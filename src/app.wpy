@@ -84,7 +84,8 @@ wepy.app({
           'pages/popularization',
           'pages/search',
           'pages/feeback',
-          'pages/searchHistory'
+          'pages/searchHistory',
+          'pages/testRecord',
         ]
       }
     ],
