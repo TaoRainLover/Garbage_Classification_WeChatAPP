@@ -57,10 +57,10 @@
           </div>
           <img src="/static/image/icon/forward.png" class="icon2"/>
         </div>
-        <div class="reglog list">
+        <div class="integral list">
           <div class="title-box">
             <img class="icon1" src="/static/image/icon/history.png"/>
-            <p class="title">签到记录</p>
+            <p class="title">积分记录</p>
           </div>
           <img src="/static/image/icon/forward.png" class="icon2"/>
         </div>

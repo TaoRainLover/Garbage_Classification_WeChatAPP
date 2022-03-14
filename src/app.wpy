@@ -86,6 +86,7 @@ wepy.app({
           'pages/feeback',
           'pages/searchHistory',
           'pages/testRecord',
+          'pages/integral',
         ]
       }
     ],

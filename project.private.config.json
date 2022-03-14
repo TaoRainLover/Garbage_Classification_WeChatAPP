@@ -65,6 +65,18 @@
           "pathName": "packageBuild/pages/testRecord",
           "query": "",
           "scene": null
+        },
+        {
+          "name": "发现",
+          "pathName": "pages/find",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "积分记录",
+          "pathName": "packageBuild/pages/integral",
+          "query": "",
+          "scene": null
         }
       ]
     }

@@ -1,6 +1,6 @@
 <template>
-  <div class="tempalte-container">
-    <p>-----template----</p>
+  <div class="container">
+    
   </div>
 </template>
 
@@ -19,8 +19,10 @@ wepy.page({
 })
 </script>
 
-<style lang="less">
-
+<style lang="less" scoped>
+.container {
+  
+}
 </style>
 
 <config>
