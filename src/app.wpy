@@ -74,7 +74,8 @@ wepy.app({
       'pages/gift',
       'pages/test',
       'pages/find',
-      'pages/page1'
+      'pages/page1',
+      'pages/testpage',
     ],
     // 子包
     subPackages: [
@@ -87,6 +88,7 @@ wepy.app({
           'pages/searchHistory',
           'pages/testRecord',
           'pages/integral',
+          'pages/testRanking'
         ]
       }
     ],

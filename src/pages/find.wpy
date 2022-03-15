@@ -1,6 +1,15 @@
 <template>
   <div class="container">
-    
+    <div class="newsItemList-box">
+      <newsItem v-for="(item,id ) in newsItemList" 
+      :key="id" class="newsItem" 
+      title="{{item.title}}" 
+      date="{{item.date}}" 
+      browseCount="{{item.browseCount}}" 
+      coverSrc="{{item.coverSrc}}">
+      </newsItem>
+    </div>
+    <p class="ending">已加载全部数据...</p>
   </div>
 </template>
 
@@ -10,7 +19,11 @@
 import wepy from '@wepy/core'
 wepy.page({
   data: {
-
+    newsItemList: [{title: '南京鼓楼区垃圾分类收集点实现全天候应急抢修', date: '22/02/21', browseCount: 6, coverSrc: 'https://imgs.699pic.com/01/401/504/722/401504722.jpg!list2x.v1'}, 
+    {title: '南京鼓楼区垃圾分类收集点实现全天候应急抢修', date: '22/02/21', browseCount: 22, coverSrc: 'https://imgs.699pic.com/01/401/560/230/401560230.jpg!list2x.v1'}, 
+    {title: '南京鼓楼区垃圾分类收集点实现全天候应急抢修', date: '22/02/21', browseCount: 16, coverSrc: 'https://imgs.699pic.com/01/501/348/375/501348375.jpg!list2x.v1'},
+    {title: '南京鼓楼区垃圾分类收集点实现全天候应急抢修', date: '22/02/21', browseCount: 26, coverSrc: 'https://imgs.699pic.com/01/501/357/037/501357037.jpg!list2x.v1'},
+    {title: '南京鼓楼区垃圾分类收集点实现全天候应急抢修', date: '22/02/21', browseCount: 123, coverSrc: 'https://imgs.699pic.com/01/501/524/687/501524687.jpg!list2x.v1'}, ]
   },
   methods: {
 
@@ -21,15 +34,32 @@ wepy.page({
 
 <style lang="less" scoped>
 .container {
-  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .newsItemList-box {
+    width: 94%;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-top: 40rpx;
+    .newsItem {
+      margin-bottom: 24rpx;
+    }
+  }
+  .ending {
+    color: #555;
+    font-size: 24rpx;
+    text-align: center;
+  }
 }
 </style>
 
 <config>
 {
-    navigationBarTitleText: '这是一个模版',
+    navigationBarTitleText: '发现',
     usingComponents: {
-
+      newsItem: '../components/newsItem',
     }
 }
 </config>

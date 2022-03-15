@@ -77,6 +77,18 @@
           "pathName": "packageBuild/pages/integral",
           "query": "",
           "scene": null
+        },
+        {
+          "name": "测试页面",
+          "pathName": "pages/testpage",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "发现",
+          "pathName": "pages/find",
+          "query": "",
+          "scene": null
         }
       ]
     }

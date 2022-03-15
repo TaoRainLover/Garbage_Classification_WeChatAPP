@@ -1,0 +1,89 @@
+<style lang="less" scoped>
+  .container {
+    width: 328rpx;
+    background: rgba(247, 247, 247, 0.6);
+    box-shadow: 0px 0px 12rpx rgba(165, 164, 164, 0.25);
+    border-radius: 2rpx;
+    box-sizing: border-box;
+    padding: 18rpx 22rpx;
+    .cover{
+      width: 284rpx;
+      height: 128rpx;
+      border-radius: 6rpx;
+    }
+    .title {
+      font-size: 28rpx;
+    }
+    .info-box {
+      display: flex;
+      justify-content: space-between;
+      color: #555;
+      margin-top: 10rpx;
+      font-size: 25rpx;
+      .info {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .icon {
+        width: 28rpx;
+        height: 28rpx;
+        margin-right: 4rpx;
+      }
+    }
+  }
+</style>
+<template>
+  <div class="container">
+    <image class="cover" src="{{coverSrc}}" mode="widthFix"/>
+    <p class="title">{{title}}</p>
+    <div class="info-box">
+      <div class="browse-info info">
+        <img src="/static/image/icon/browse.png" class="icon"/>
+        <span class="browseCount"> {{browseCount}}</span>
+      </div>
+      <div class="date-info info">
+        <img src="/static/image/icon/date.png" class="icon"/>
+        <span class="date"> {{date}}</span>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+  import wepy from '@wepy/core'
+
+  wepy.component({
+    props: {
+      coverSrc: {
+        type: String,
+        default: 'https://imgs.699pic.com/01/401/504/722/401504722.jpg!list2x.v1',
+      },
+      title: {
+        type: String,
+        default: '南京鼓楼区垃圾分类收集点实现全天候应急抢修'
+      },
+      browseCount: {
+        type: Number,
+        default: 0,
+      },
+      date: {
+        type: String,
+        default: '2/21'
+      }
+    },
+    data: {
+      
+    },
+
+    events: {
+      
+    },
+
+    methods: {
+      
+    },
+
+    onLoad () {
+    }
+  });
+</script>

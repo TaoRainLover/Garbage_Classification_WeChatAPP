@@ -3,12 +3,12 @@
     <p class="corn-info">您的环保币：<span class="corn">50</span></p>
     <p class="title">兑换种类:</p>
     <div class="icon-box">
-      <div class="gift-box box">
-        <img src="/static/image/icon/gift-0.png" class="icon"/>
+      <div class="gift-box box" @click="showGift">
+        <img src="{{giftIconPath}}" class="icon"/>
         <p class="des">礼品</p>
       </div>
-      <div class="metal-box box">
-        <img src="/static/image/icon/metal1.png" class="icon"/>
+      <div class="metal-box box" @click="showMetal">
+        <img src="{{metalIconPath}}" class="icon"/>
         <p class="des">勋章</p>
       </div>
     </div>
@@ -72,6 +72,8 @@ import wepy from '@wepy/core'
 wepy.page({
   data: {
     showGiftView: true,
+    giftIconPath: '/static/image/icon/gift-2.png',
+    metalIconPath: '/static/image/icon/metal0.png',
     windowHeight: '',
     ownedList: ['萌新报道', '环保卫士'],
     unowendList: ['萌新报道', '环保卫士', '萌新报道', '环保卫士',],
@@ -101,6 +103,20 @@ wepy.page({
     // 点击兑换按钮实现方法
     exchange(id) {
       console.log('兑换！', id)
+    },
+
+    // 点击礼物按钮切换事件
+    showGift() {
+      this.showGiftView = true
+      this.giftIconPath = '/static/image/icon/gift-2.png'
+      this.metalIconPath = '/static/image/icon/metal0.png'
+    },
+
+    // 点击勋章按钮切换事件
+    showMetal() {
+      this.showGiftView = false
+      this.giftIconPath = '/static/image/icon/gift-0.png'
+      this.metalIconPath = '/static/image/icon/metal1.png'
     }
   },
   // 生命周期函数 created
