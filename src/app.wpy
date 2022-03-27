@@ -88,7 +88,8 @@ wepy.app({
           'pages/searchHistory',
           'pages/testRecord',
           'pages/integral',
-          'pages/testRanking'
+          'pages/testRanking',
+          'pages/camera',
         ]
       }
     ],

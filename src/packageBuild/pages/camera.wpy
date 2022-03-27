@@ -1,0 +1,96 @@
+<template>
+  <div class="container" style="height: {{ remainHeight }}">
+    <div class="camera-box">
+      <camera class="camera" v-if="showCamera"></camera>
+      <img src="{{photoRes.tempImagePath}}" class="cameraRes"/>
+
+    </div>
+    <div class="footer-box">
+      <div class="btn" @click="takePhoto">识别</div>
+    </div>
+  </div>
+</template>
+
+
+<script>
+// 导入 wepy 框架
+import wepy from '@wepy/core'
+wepy.page({
+  data: {
+    windowHeight: '',
+    remainHeight: '',
+    showCamera: true,
+    photoRes: '',
+  },
+  methods: {
+    takePhoto() {
+      const ctx = wx.createCameraContext()
+      ctx.takePhoto({
+        quality: 'high',
+        success: (res) => {
+          this.photoRes = res
+          console.log(this.photoRes)
+          this.showCamera = false
+        }
+      })
+    },
+  },
+
+  // 生命周期函数 created
+  created () {
+    // this.windowHeight = this.$app.$options.globalData.windowHeight + 'px'
+    this.remainHeight = this.$app.$options.globalData.remainHeight + 'px'
+    // console.log(this.windowHeight)
+  }
+
+})
+</script>
+
+<style lang="less" scoped>
+.container {
+// 上下左右居中对齐
+.my-flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.camera-box {
+  background: rgba(0, 0, 0, 0.3);
+  height: 90%;
+  .camera {
+    // width: ;
+    height: 100%;
+  }
+  .cameraRes {
+    height: 100%;
+    width: 100%;
+  }
+}
+.footer-box {
+  background: white;
+  height: 12%;
+  width: 100%;
+  .my-flex();
+  position: absolute;
+  bottom: 0;
+  .btn {
+    width: 108rpx;
+    height: 108rpx;
+    font-size: 32rpx;
+    background: #4CAE32;
+    color: white;
+    border-radius: 50%;
+    .my-flex();
+  }
+}
+}
+</style>
+
+<config>
+{
+    navigationBarTitleText: '搜索',
+    usingComponents: {
+
+    }
+}
+</config>

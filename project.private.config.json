@@ -89,6 +89,12 @@
           "pathName": "pages/find",
           "query": "",
           "scene": null
+        },
+        {
+          "name": "相机",
+          "pathName": "packageBuild/pages/camera",
+          "query": "",
+          "scene": null
         }
       ]
     }

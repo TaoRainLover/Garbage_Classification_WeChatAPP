@@ -30,7 +30,7 @@
           <img class="icon" src="/static/image/icon/keyboard.png"/>
           <p class="des">文字输入</p>
         </div>
-        <div class="photo item">
+        <div class="photo item" @click="navigateToCamera">
           <img class="icon" src="/static/image/icon/camera.png"/>
           <p class="des">拍照识别</p>
         </div>
@@ -95,6 +95,11 @@
         wx.navigateTo({
         url: '/packageBuild/pages/popularization'
       })
+      },
+      navigateToCamera() {
+        wx.navigateTo({
+          url: '/packageBuild/pages/camera',
+        })
       },
     },
 
