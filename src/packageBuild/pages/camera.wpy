@@ -6,7 +6,10 @@
 
     </div>
     <div class="footer-box">
-      <div class="btn" @click="takePhoto">识别</div>
+      <div class="btn" @click="takePhoto">
+        <img src="/static/image/icon/camera1.png" class="icon"/>
+        <p class="des">识别</p>
+      </div>
     </div>
   </div>
 </template>
@@ -74,13 +77,18 @@ wepy.page({
   position: absolute;
   bottom: 0;
   .btn {
-    width: 108rpx;
-    height: 108rpx;
-    font-size: 32rpx;
+    width: 114rpx;
+    height: 114rpx;
+    font-size: 24rpx;
     background: #4CAE32;
     color: white;
     border-radius: 50%;
     .my-flex();
+    flex-direction: column;
+    .icon {
+      width: 56rpx;
+      height: 56rpx;
+    }
   }
 }
 }

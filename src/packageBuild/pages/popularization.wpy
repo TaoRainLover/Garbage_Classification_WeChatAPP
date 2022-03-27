@@ -2,10 +2,10 @@
   <div class="container">
     <!-- 顶部导航区域 -->
     <div class="nav-box">
-      <div class="type recyclable" style="background-color: #0099FF; color:white;">可回收物</div>
-      <div class="type other">其他垃圾</div>
-      <div class="type kitchen">厨余垃圾</div>
-      <div class="type harmful">有害垃圾</div>
+      <div id="1" class="type recyclable" style="{{style1}}" @click="swithThis">可回收物</div>
+      <div id="2" class="type other" style="{{style2}}" @click="swithThis">其他垃圾</div>
+      <div id="3" class="type kitchen" style="{{style3}}" @click="swithThis">厨余垃圾</div>
+      <div id="4" class="type harmful" style="{{style4}}" @click="swithThis">有害垃圾</div>
     </div>
     
     <!-- 中间的介绍区域 -->
@@ -38,6 +38,11 @@
 import wepy from '@wepy/core'
 wepy.page({
   data: {
+    // 导航列表的背景颜色
+    style1: 'background-color: #0099FF; color:white;',
+    style2: '',
+    style3: '',
+    style4: '',
     throwDemandList: {
       recyclable: {
         type: '可回收物',
@@ -70,7 +75,44 @@ wepy.page({
     }
   },
   methods: {
-
+    swithThis(e) {
+      const id = e.target.id
+      console.log(id)
+      switch (id) {
+        case '1': {
+          console.log('可回收垃圾')
+          this.style1 = 'background-color: #0099FF; color:white;'
+          this.style2 = ''
+          this.style3 = ''
+          this.style4 = ''
+          break
+        }
+        case '2': {
+          console.log('其他垃圾')
+          this.style1 = ''
+          this.style2 = 'background-color: #FF9934; color:white;'
+          this.style3 = ''
+          this.style4 = ''
+          break
+        }
+        case '3': {
+          console.log('厨余垃圾')
+          this.style1 = ''
+          this.style2 = ''
+          this.style3 = 'background-color: #4CAE32; color:white;'
+          this.style4 = ''
+          break
+        }
+        case '4': {
+          console.log('有害垃圾')
+          this.style1 = ''
+          this.style2 = ''
+          this.style3 = ''
+          this.style4 = 'background-color: #E4311F; color:white;'
+          break
+        }
+      }
+    }
   },
 
 
