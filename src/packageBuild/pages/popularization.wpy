@@ -10,12 +10,13 @@
     
     <!-- 中间的介绍区域 -->
     <div class="intro-box">
-      <div class="icon-box">
-        <img src="/static/image/icon/recyclable.png" class="icon"/>
+      <div class="icon-box" style="{{imgCoverStyle}}">
+        <img src="{{imgCoverPath}}" class="icon"/>
       </div>
       <div class="intro-info">
         <p class="brief">
-          <span style="font-weight: bold;"> {{selectItem}} </span>是指适宜回收和可循环再利用的废弃 物。主要包括废玻璃、废金属、废塑料、废纸张、废织 物等。
+          <span style="font-weight: bold;"> {{curItemName}} </span>
+          <span>{{briefContent}}</span>
         </p>
         <p class="throw-intro" style="font-weight: bold;">投放要求</p>
         <ul class="throw-demand-li">
@@ -43,18 +44,13 @@ wepy.page({
     style2: '',
     style3: '',
     style4: '',
-    throwDemandList: {
-      recyclable: {
-        type: '可回收物',
-        demand: [
-          '轻投轻放',
-          '清洁千燥，避免污染',
-          '废纸尽量平整',
-          '立体包装请清空内容物，清洁后压扁投放',
-          '有尖税边角的，应包裹后投放',
-        ]
-      }
-    },
+    // 当前选中的垃圾分类的名称
+    curItemName: '可回收垃圾',
+    // 简介
+    briefContent: '是指适宜回收和可循环再利用的废弃物。主要包括废玻璃、废金属、废塑料、废纸张、废织 物等。',
+    // 中间区域的封面
+    imgCoverStyle: 'background: #0099FF;',
+    imgCoverPath: '/static/image/icon/recyclable.png',
     curItemDemand: [
       '• 轻投轻放',
       '• 清洁千燥，避免污染',
@@ -70,51 +66,92 @@ wepy.page({
     ]
   },
   computed: {
-    selectItem() {
-      return '可回收物'
-    }
+    
   },
   methods: {
-    swithThis(e) {
-      const id = e.target.id
-      console.log(id)
+    changeStyle(id) {
       switch (id) {
         case '1': {
           console.log('可回收垃圾')
+          this.curItemName = '可回收物'
+          this.briefContent = '指适宜回收和可循环再利用的废弃物。主要包括废玻璃、废金属、废塑料、废纸张、废织 物等。'
+          this.curItemDemand = [
+            '• 轻投轻放',
+            '• 清洁千燥，避免污染',
+            '• 废纸尽量平整',
+            '• 立体包装请清空内容物，清洁后压扁投放',
+            '• 有尖税边角的，应包裹后投放',
+          ],
           this.style1 = 'background-color: #0099FF; color:white;'
           this.style2 = ''
           this.style3 = ''
           this.style4 = ''
+          this.imgCoverStyle = 'background: #0099FF;'
+          this.imgCoverPath = '/static/image/icon/recyclable.png'
           break
         }
         case '2': {
           console.log('其他垃圾')
+          this.briefContent = '指危害比较小，没有再次利用的价值的垃圾，如建筑垃圾，生活垃圾等，一般都采取填埋、焚烧、卫生分解等方法处理，部分还可以使用生物分解的方法解决，如放蚯蚓等。其他垃圾是可回收物、厨余垃圾、有害垃圾剩余下来的一种垃圾种类。'
+          this.curItemName = '其他垃圾'
+          this.curItemDemand = [
+            '• 沥干水分后投放',
+            '• 难以识别的生活垃圾请投放到其他垃圾中',
+          ]
           this.style1 = ''
           this.style2 = 'background-color: #FF9934; color:white;'
           this.style3 = ''
           this.style4 = ''
+          this.imgCoverStyle = 'background: #FF9934;'
+          this.imgCoverPath = '/static/image/icon/other.png'
           break
         }
         case '3': {
           console.log('厨余垃圾')
+          this.curItemName = '厨余垃圾'
+          this.briefContent = '指居民日常生活及食品加工、饮食服务、单位供餐等活动中产生的垃圾，包括丢弃不用的菜叶、剩菜、剩饭、果皮、蛋壳、茶渣、骨头等，其主要来源为家庭厨房、餐厅、饭店、食堂、市场及其他与食品加工有关的行业。'
+          this.curItemDemand = [
+            '• 纯流质的食物垃圾，如牛奶等，应直接倒进入下口水',
+            '• 有包装的易腐垃圾应将包装物取出后分类投放，且包装物应投放到对应的分类垃圾箱中'
+          ]
           this.style1 = ''
           this.style2 = ''
           this.style3 = 'background-color: #4CAE32; color:white;'
           this.style4 = ''
+          this.imgCoverStyle = 'background: #4CAE32;'
+          this.imgCoverPath = '/static/image/icon/kitchen.png'
           break
         }
         case '4': {
           console.log('有害垃圾')
+          this.curItemName = '有害垃圾'
+          this.briefContent = '指对人体健康或者自然环境造成直接或者潜在危害的生活废弃物。常见的有害垃圾包括废灯管、废油漆、杀虫剂、废弃化妆品、过期药品、废电池、废灯泡、废水银温度计等，有害垃圾需按照特殊正确的方法安全处理'
+          this.curItemDemand = [
+            '• 应保证器物完整，避免二次污染',
+            '• 如有残余请密闭后投放',
+            '• 投放时注意轻放',
+            '• 易破损的请连带包装或包裹后投放',
+            '• 如易挥发，请密封后投放',
+          ]
           this.style1 = ''
           this.style2 = ''
           this.style3 = ''
           this.style4 = 'background-color: #E4311F; color:white;'
+          this.imgCoverStyle = 'background: #E4311F;'
+          this.imgCoverPath = '/static/image/icon/harmful.png'
           break
         }
       }
+    },
+    swithThis(e) {
+      const id = e.target.id
+      console.log(id)
+      this.changeStyle(id)
     }
   },
-
+  created: {
+    
+  }
 
 })
 </script>
