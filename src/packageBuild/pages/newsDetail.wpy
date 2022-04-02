@@ -26,7 +26,7 @@ wepy.page({
     source: '人民网-湖南频道',
   },
   methods: {
-
+    
   },
 
   // 生命周期函数 created

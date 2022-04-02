@@ -1,11 +1,11 @@
 <template>
   <div class="container" style="height: {{ windowHeight }}">
     <!-- 上层用户信息以及签到部分 -->
-    <div class="user-reg-box">
+    <div class="user-reg-box" v-if="hasUserInfo">
       <!-- 用户信息部分 -->
       <div class="user-box">
         <div class="info-box">
-          <image @click="getUserProfile" class="user-img" src="https://p7.itc.cn/q_70/images03/20220208/debd686da4d84ac38c77744fd6a3975f.jpeg" mode="aspectFill"/>
+          <image  class="user-img" src="https://p7.itc.cn/q_70/images03/20220208/debd686da4d84ac38c77744fd6a3975f.jpeg" mode="aspectFill"/>
           
           <div class="user-info">
             <p class="name">澎湃</p>
@@ -22,7 +22,16 @@
         <regitem v-for="(item, id) in dateList" :key="id" :date="item.date" :status="item.status"></regitem>
       </div>
     </div>
-
+    <div class="getUserInfo-box" v-else>
+      <div class="left">
+        <img class="icon" src="/static/image/icon/people.png"/>
+        <div class="login-tip">
+          <p class="title">请点击登录</p>
+          <p class="des">登录之后开启更多功能</p>
+        </div>
+      </div>
+      <div class="btn" @click="getUserProfile">登录</div>
+    </div>
     <!-- 下层用户功能列表 -->
     <div class="function-box">
 
@@ -101,7 +110,8 @@ wepy.page({
       {date: '周五', status: 1},
       {date: '周六', status: 0},
       {date: '周日', status: 0},
-    ]
+    ],
+    hasUserInfo: false,
   },
   methods: {
     // 签到
@@ -254,6 +264,55 @@ wepy.page({
         padding-top: 18rpx;
         display: flex;
         justify-content: space-between;
+      }
+    }
+
+    // 获取用户信息
+    .getUserInfo-box {
+      margin-top: 90rpx;
+      height: 128rpx;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 58rpx;
+      .left {
+        display: flex;
+        height: 128rpx;
+        align-items: center;
+        .icon {
+          height: 128rpx;
+          width: 128rpx;
+          margin-right: 20rpx;
+          border: 3rpx solid #E7E7E7;
+          border-radius: 50%;
+        }
+        .login-tip {
+          .title {
+            font-size: 48rpx;
+            background: linear-gradient(264.41deg, rgba(247, 219, 147, 0.8) 15.75%, #4CAE32 49.1%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+          }
+          .des {
+            font-size: 28rpx;
+            color: #555;
+            margin-top: 5rpx;
+          }
+        }
+      }
+
+      .btn {
+        width: 138rpx;
+        height: 62rpx;
+        background: linear-gradient(258.18deg, #4CAE32 40.41%, rgba(247, 219, 147, 0.8) 100%);
+        border-radius: 46rpx;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: bold;
+        color: white;
       }
     }
 
