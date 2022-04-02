@@ -125,7 +125,7 @@ wepy.page({
         case '4': {
           console.log('有害垃圾')
           this.curItemName = '有害垃圾'
-          this.briefContent = '指对人体健康或者自然环境造成直接或者潜在危害的生活废弃物。常见的有害垃圾包括废灯管、废油漆、杀虫剂、废弃化妆品、过期药品、废电池、废灯泡、废水银温度计等，有害垃圾需按照特殊正确的方法安全处理'
+          this.briefContent = '指对人体健康或者自然环境造成直接或者潜在危害的生活废弃物。常见的有害垃圾包括废灯管、废油漆、杀虫剂、废弃化妆品、过期药品、废电池、废灯泡、废水银温度计等，有害垃圾需按照特殊正确的方法安全处理。'
           this.curItemDemand = [
             '• 应保证器物完整，避免二次污染',
             '• 如有残余请密闭后投放',
@@ -149,9 +149,11 @@ wepy.page({
       this.changeStyle(id)
     }
   },
-  created: {
-    
-  }
+  // 小程序原生生命周期函数： onLoad，用来获取页面参数传值
+  onLoad(options) {
+    this.changeStyle(options.id)
+  },
+
 
 })
 </script>

@@ -5,18 +5,19 @@
       <!-- 用户信息部分 -->
       <div class="user-box">
         <div class="info-box">
-          <image class="user-img" src="https://p7.itc.cn/q_70/images03/20220208/debd686da4d84ac38c77744fd6a3975f.jpeg" mode="aspectFill"/>
+          <image @click="getUserProfile" class="user-img" src="https://p7.itc.cn/q_70/images03/20220208/debd686da4d84ac38c77744fd6a3975f.jpeg" mode="aspectFill"/>
+          
           <div class="user-info">
             <p class="name">澎湃</p>
             <p class="metal">萌新报道<span><image class="icon" src="/static/image/icon/right.png" /></span></p>
           </div>
         </div>
-        <div class="reg-btn">
+        <div class="reg-btn" @click="register">
           <img class="icon" src="/static/image/icon/reg0.png"/>
           <span>签到</span>
         </div>
       </div>
-      <!-- 签到展示部分 -->
+      <!-- 签到表部分 -->
       <div class="reg-box">
         <regitem v-for="(item, id) in dateList" :key="id" :date="item.date" :status="item.status"></regitem>
       </div>
@@ -103,6 +104,11 @@ wepy.page({
     ]
   },
   methods: {
+    // 签到
+    register() {
+      console.log('签到')
+    }, 
+
     // 跳转到搜索历史页面
     navigateToSearchHistory() {
       wx.navigateTo({
@@ -129,16 +135,53 @@ wepy.page({
       wx.navigateTo({
         url: '/packageBuild/pages/feeback',
       })
-    }
+    },
 
-    // 跳
+    // login
+    login() {
+      wx.login({
+            success (res) {
+              console.log(res)
+              if (res.code) {
+                // 发起网络请求
+                wx.request({
+                  url: 'http://39.103.179.63:8001/api/user/login',
+                  data: {
+                    code: res.code
+                  }
+                })
+              } else {
+                console.log('登录失败！' + res.errMsg)
+              }
+            }
+          })
+    },
+
+    // 获取用户个人信息
+    getUserProfile() {
+      console.log('获取用户个人信息')
+      wx.getUserProfile({
+      desc: '完善用户信息',
+      success: (res)=> {
+        console.log(res.userInfo)
+      },
+      fail: (err) => {
+        console.log(err)
+      }
+      })
+    } 
   },
-
+  
   // 生命周期函数 created
   created () {
     this.windowHeight = this.$app.$options.globalData.windowHeight+'px'
     console.log(this.windowHeight)
-  }
+  },
+
+  // 小程序原生生命周期函数： onLoad，用来获取页面参数传值
+  onLoad(options) {
+    console.log('进入用户个人页面')
+  },
 
 })
 </script>
@@ -221,7 +264,7 @@ wepy.page({
       // width: 780rpx;
       bottom: 0px;
       box-shadow: 0rpx -4rpx 20rpx rgba(169, 185, 166, 0.25);
-      border-radius: 114rpx 114rpx 0px 0px;
+      border-radius: 80rpx 80rpx 0px 0px;
       padding: 66rpx 32rpx;
       box-sizing: border-box;
 

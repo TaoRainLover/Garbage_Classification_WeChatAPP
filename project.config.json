@@ -40,7 +40,7 @@
   },
   "compileType": "miniprogram",
   "appid": "wxe9cd601820bec490",
-  "projectname": "wepy_frame_test",
+  "projectname": "garbage_classification_miniprogram",
   "miniprogramRoot": "weapp/",
   "condition": {}
 }

@@ -41,8 +41,8 @@ wepy.page({
   // 生命周期函数 created
   created () {
     this.windowHeight = this.$app.$options.globalData.windowHeight+'px'
-    console.log(this.windowHeight)
-  }
+
+  },
 
 })
 </script>
@@ -61,7 +61,7 @@ wepy.page({
     align-items: center;
     .input-box {
       height: 72rpx;
-      width: 626rpx;
+      width: 600rpx;
       background: #F0F0F0;
       border-radius: 36rpx;
       display: flex;

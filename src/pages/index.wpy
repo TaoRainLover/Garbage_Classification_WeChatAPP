@@ -16,7 +16,7 @@
       <p class="title">垃圾分类知识科普</p>
       <div class="content">
         <div class="item" wx:for="{{trashImgPathList}}" wx:key="*this">
-          <img class="trashImg"   @click="navToDetal" src="{{ item.path }}" alt=""/>
+          <img class="trashImg"  @click="navToDetal" id="{{item.id}}"  src="{{ item.path }}" alt=""/>
           <p class="name">{{item.type}}</p>
         </div>
       </div>
@@ -26,7 +26,7 @@
     <div class="search-box">
       <p class="title">搜索方式</p>
       <div class="item-box">
-        <div class="text item">
+        <div class="text item" @click="navigateToSearch">
           <img class="icon" src="/static/image/icon/keyboard.png"/>
           <p class="des">文字输入</p>
         </div>
@@ -34,7 +34,7 @@
           <img class="icon" src="/static/image/icon/camera.png"/>
           <p class="des">拍照识别</p>
         </div>
-        <div class="voice item">
+        <div class="voice item" @touchstart="voiceStarting" @touchend="voiceEnd">
           <img class="icon" src="/static/image/icon/voice.png"/>
           <p class="des">语音识别</p>
         </div>
@@ -77,12 +77,15 @@
                 'https://i-1.lanrentuku.com/2020/12/22/dfdff2b9-2f8c-498e-ba4e-b095579add7f.jpg?imageView2/2/w/500/',
                 'https://i-1.lanrentuku.com/2020/12/22/55317ffa-a4e1-45be-bd1c-ccad3b2bec86.jpg?imageView2/2/w/500/',],
       trashImgPathList: [
-        {type: '可回收物', path: '/static/image/trash/1.png'},
-        {type: '其他垃圾', path: '/static/image/trash/2.png'},
-        {type: '厨余垃圾', path: '/static/image/trash/3.png'},
-        {type: '有害垃圾', path: '/static/image/trash/4.png'},
+        {id: 1, type: '可回收物', path: '/static/image/trash/1.png'},
+        {id: 2, type: '其他垃圾', path: '/static/image/trash/2.png'},
+        {id: 3, type: '厨余垃圾', path: '/static/image/trash/3.png'},
+        {id: 4, type: '有害垃圾', path: '/static/image/trash/4.png'},
         
-      ]
+      ],
+
+      // 记录语音录制结果的路径
+      voiceRecordingPath: '',
     
     },
 
@@ -91,14 +94,52 @@
     },
 
     methods: {
-      navToDetal() {
+      // 跳转到垃圾分类科普页面
+      navToDetal(item) {
+        const id = item.target.id
         wx.navigateTo({
-        url: '/packageBuild/pages/popularization'
+        url: '/packageBuild/pages/popularization?id='+id
       })
       },
+      // 跳转到相机页面
       navigateToCamera() {
         wx.navigateTo({
           url: '/packageBuild/pages/camera',
+        })
+      },
+      // 跳转到文字搜索页面
+      navigateToSearch() {
+        wx.navigateTo({
+          url: '/packageBuild/pages/search',
+        })
+      },
+
+      // 长按语音录制
+      voiceStarting() {
+        console.log('录制开始')
+        wx.showToast({
+          title: '录制中...',
+          icon: 'loading',
+          image: '/static/image/icon/voice-on.png',
+          duration: 10000,
+          success: ()=>{
+            wx.startRecord({
+              success: (res) => {
+                console.log(res)
+                // 记录语音录制结果的路径
+                this.voiceRecordingPath = res.tempFilePath
+              },
+            })
+          }
+        })
+      },
+      voiceEnd() {
+        wx.hideToast({
+          success: ()=>{
+            wx.stopRecord({
+              success: (res) => {console.log('录制结束')},
+            })
+          }
         })
       },
     },
@@ -114,7 +155,7 @@
 <style lang="less" scoped>
 
   .container{
-    position: relative;
+    // position: relative;
   }
 
   // banner区域
