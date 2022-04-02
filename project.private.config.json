@@ -95,6 +95,12 @@
           "pathName": "packageBuild/pages/camera",
           "query": "",
           "scene": null
+        },
+        {
+          "name": "文章详情",
+          "pathName": "packageBuild/pages/newsDetail",
+          "query": "",
+          "scene": null
         }
       ]
     }
