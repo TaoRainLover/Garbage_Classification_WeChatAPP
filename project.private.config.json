@@ -101,6 +101,12 @@
           "pathName": "packageBuild/pages/newsDetail",
           "query": "",
           "scene": null
+        },
+        {
+          "name": "更换勋章",
+          "pathName": "packageBuild/pages/changeMedal",
+          "query": "",
+          "scene": null
         }
       ]
     }

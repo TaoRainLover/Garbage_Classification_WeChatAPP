@@ -1,0 +1,148 @@
+<template>
+  <div class="container" style="height: {{ remainHeight }}">
+    <p class="title">选择佩戴(已拥有 <span style="color: #4CAE32">{{medalList.length}}</span> )：</p>
+    <div class="content-container">
+      <div class="medal-container">
+        <div class="medal-box" v-for="(item, id) in medalList" :key="id">
+          <div v-if="item.weared" class="icon-title-box icon-title-box1">
+            <img  src="/static/image/icon/medal2.png" class="icon"/>
+            <p class="title">萌新报道</p>
+          </div>
+          <div v-else class="icon-title-box">
+            <img  src="/static/image/icon/medal2.png" class="icon"/>
+            <p class="title">萌新报道</p>
+          </div>
+          <img v-if="item.weared" src="/static/image/icon/metal3.png" class="icon"/>
+          <img v-else src="/static/image/icon/metal4.png" class="icon"/>
+        </div>
+      </div>
+      <div class="btn">兑换更多</div>
+    </div>
+  </div>
+</template>
+
+
+<script>
+// 导入 wepy 框架
+import wepy from '@wepy/core'
+wepy.page({
+  data: {
+    // windowHeight: '',
+    remainHeight: '',
+    medalList: [{id:1,  title: '萌新报道', weared: false},
+              {id: 2, title: '萌新报道', weared: false},
+              {id: 3, title: '萌新报道', weared: true},
+              {id: 4, title: '萌新报道', weared: false},
+              {id: 5, title: '萌新报道', weared: false},
+              {id: 6, title: '萌新报道', weared: false},]
+  },
+  methods: {
+
+  },
+
+  // 生命周期函数 created
+  created () {
+    // this.windowHeight = this.$app.$options.globalData.windowHeight*2 + 'rpx'
+    this.remainHeight = this.$app.$options.globalData.remainHeight + 'px'
+    // console.log(this.windowHeight)
+  }
+
+})
+</script>
+
+<style lang="less" scoped>
+.container {
+  .my_flex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .my_flex1 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .title {
+    font-size: 32rpx;
+    font-weight: bold;
+    margin-top: 10%;
+    margin-left: 5%;
+  }
+  .content-container {
+    height: 88%;
+    width: 100%;
+    box-shadow: 0px -2px 10px rgba(169, 185, 166, 0.25);
+    border-radius: 40rpx 40rpx 0 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    bottom: 0px;
+    .medal-container {
+      width: 100%;
+      padding: 68rpx 40rpx;
+      box-sizing: border-box;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      .medal-box {
+        margin-bottom: 28rpx;
+        .my_flex1();
+        .icon-title-box {
+          height: 172rpx;
+          width: 172rpx;
+          .my_flex1();
+          background: rgba(245, 245, 245, 0.6);
+          box-shadow: 0px 0px 10rpx rgba(117, 103, 103, 0.25);
+          border-radius: 12rpx;
+          margin-bottom: 20rpx;
+          .icon {
+            height: 88rpx;
+            width: 88rpx;
+            margin-bottom: 0rpx;
+          }
+          .title {
+            font-size: 28rpx;
+          }
+        }
+
+        .icon-title-box1 {
+          border: 4rpx solid #4CAE32;
+          .title {
+            color: #4CAE32;
+          }
+        }
+        .icon {
+          height: 44rpx;
+          width: 44rpx;
+        }
+      }
+    }
+
+    .btn {
+      height: 60rpx;
+      width: 186rpx;
+      font-size: 24rpx;
+      color: white;
+      line-height: 60rpx;
+      text-align: center;
+      background: #4CAE32;
+      box-shadow: 0px -2px 10px rgba(169, 185, 166, 0.25);
+      border-radius: 34px;
+      position: absolute;
+      bottom: 120rpx;
+    }
+  }
+
+}
+</style>
+
+<config>
+{
+    navigationBarTitleText: '更换勋章',
+    usingComponents: {
+
+    }
+}
+</config>

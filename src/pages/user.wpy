@@ -1,6 +1,7 @@
 <template>
   <div class="container" style="height: {{ windowHeight }}">
     <!-- 上层用户信息以及签到部分 -->
+    <!-- 已获取到用户信息 -->
     <div class="user-reg-box" v-if="hasUserInfo">
       <!-- 用户信息部分 -->
       <div class="user-box">
@@ -9,7 +10,7 @@
           
           <div class="user-info">
             <p class="name">澎湃</p>
-            <p class="metal">萌新报道<span><image class="icon" src="/static/image/icon/right.png" /></span></p>
+            <p class="metal">萌新报道<span><image @click="navigateToMedelList" class="icon" src="/static/image/icon/right.png" /></span></p>
           </div>
         </div>
         <div class="reg-btn" @click="register">
@@ -22,6 +23,7 @@
         <regitem v-for="(item, id) in dateList" :key="id" :date="item.date" :status="item.status"></regitem>
       </div>
     </div>
+    <!-- 用户登录部分（获取用户信息）-->
     <div class="getUserInfo-box" v-else>
       <div class="left">
         <img class="icon" src="/static/image/icon/people.png"/>
@@ -31,7 +33,7 @@
         </div>
       </div>
       <div class="btn" @click="getUserProfile">登录</div>
-    </div>
+    </div> 
     <!-- 下层用户功能列表 -->
     <div class="function-box">
 
@@ -60,28 +62,28 @@
           </div>
           <img src="/static/image/icon/forward.png" class="icon2"/>
         </div>
-        <div class="rank list">
+        <div class="rank list" @click="navigateRanking">
           <div class="title-box">
             <img class="icon1" src="/static/image/icon/rank.png"/>
             <p class="title">答题排行榜</p>
           </div>
           <img src="/static/image/icon/forward.png" class="icon2"/>
         </div>
-        <div class="integral list">
+        <div class="integral list" >
           <div class="title-box">
             <img class="icon1" src="/static/image/icon/history.png"/>
             <p class="title">积分记录</p>
           </div>
           <img src="/static/image/icon/forward.png" class="icon2"/>
         </div>
-        <div class="metal list">
+        <div class="metal list" @click="navigateToMedelList">
           <div class="title-box">
             <img class="icon1" src="/static/image/icon/metal.png"/>
             <p class="title">更换勋章</p>
           </div>
           <img src="/static/image/icon/forward.png" class="icon2"/>
         </div>
-        <div class="comment list" @click="navigateToFeeBack">
+        <div class="comment list" @click="navigateToFeedBack">
           <div class="title-box">
             <img class="icon1" src="/static/image/icon/comment.png"/>
             <p class="title">意见反馈</p>
@@ -140,10 +142,24 @@ wepy.page({
       })
     },
 
+    // 跳转到答题排行榜
+    navigateRanking() {
+      wx.switchTab({
+        url: '/packageBuild/pages/testRanking',
+      })
+    },
+
     // 跳转到反馈页面
-    navigateToFeeBack() {
+    navigateToFeedBack() {
       wx.navigateTo({
-        url: '/packageBuild/pages/feeback',
+        url: '/packageBuild/pages/feedback',
+      })
+    },
+
+    // 跳转到更换勋章页面
+    navigateToMedelList() {
+      wx.navigateTo({
+        url: '/packageBuild/pages/changeMedal',
       })
     },
 
@@ -269,12 +285,13 @@ wepy.page({
 
     // 获取用户信息
     .getUserInfo-box {
-      margin-top: 90rpx;
-      height: 128rpx;
+      // padding-top: 90rpx;
+      height: 218rpx;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0 58rpx;
+      padding: 90rpx 58rpx 0 58rpx;
+      box-sizing: border-box;
       .left {
         display: flex;
         height: 128rpx;

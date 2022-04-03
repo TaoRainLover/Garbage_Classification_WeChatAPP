@@ -114,7 +114,8 @@ wepy.app({
           'pages/integral',
           'pages/testRanking',
           'pages/camera',
-          'pages/newsDetail'
+          'pages/newsDetail',
+          'pages/changeMedal',
         ]
       }
     ],

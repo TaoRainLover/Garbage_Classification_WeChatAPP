@@ -7,8 +7,8 @@
         <img src="{{giftIconPath}}" class="icon"/>
         <p class="des">礼品</p>
       </div>
-      <div class="metal-box box" @click="showMetal">
-        <img src="{{metalIconPath}}" class="icon"/>
+      <div class="medal-box box" @click="showMedal">
+        <img src="{{medalIconPath}}" class="icon"/>
         <p class="des">勋章</p>
       </div>
     </div>
@@ -26,7 +26,7 @@
       </div>
 
       <!-- 勋章列表 -->
-      <div class="metal-item-box box" v-else>
+      <div class="medal-item-box box" v-else>
         <p class="title-name">== 勋章 ==</p>
         <!-- 已拥有列表 -->
         <div class="owned-box">
@@ -34,8 +34,8 @@
           <div class="list-box">
             <div class="li" wx:for="{{ownedList}}" wx:key="*this">
               <div class="des-box">
-                <img src="/static/image/icon/metal2.png" class="icon"/>
-                <p class="metal-name">{{item}}</p>
+                <img src="/static/image/icon/medal2.png" class="icon"/>
+                <p class="medal-name">{{item}}</p>
               </div>
               <p>100币</p>
               <p>已拥有</p>
@@ -48,8 +48,8 @@
           <div class="list-box">
             <div class="li" wx:for="{{unowendList}}" wx:key="*this">
               <div class="des-box">
-                <img src="/static/image/icon/metal2.png" class="icon"/>
-                <p class="metal-name">{{item}}</p>
+                <img src="/static/image/icon/medal2.png" class="icon"/>
+                <p class="medal-name">{{item}}</p>
               </div>
               <p>100币</p>
               <div class="btn">兑换</div>
@@ -73,7 +73,7 @@ wepy.page({
   data: {
     showGiftView: true,
     giftIconPath: '/static/image/icon/gift-2.png',
-    metalIconPath: '/static/image/icon/metal0.png',
+    medalIconPath: '/static/image/icon/medal0.png',
     windowHeight: '',
     ownedList: ['萌新报道', '环保卫士'],
     unowendList: ['萌新报道', '环保卫士', '萌新报道', '环保卫士',],
@@ -109,14 +109,14 @@ wepy.page({
     showGift() {
       this.showGiftView = true
       this.giftIconPath = '/static/image/icon/gift-2.png'
-      this.metalIconPath = '/static/image/icon/metal0.png'
+      this.medalIconPath = '/static/image/icon/medal0.png'
     },
 
     // 点击勋章按钮切换事件
-    showMetal() {
+    showMedal() {
       this.showGiftView = false
       this.giftIconPath = '/static/image/icon/gift-0.png'
-      this.metalIconPath = '/static/image/icon/metal1.png'
+      this.medalIconPath = '/static/image/icon/medal1.png'
     }
   },
   // 生命周期函数 created
@@ -205,7 +205,7 @@ wepy.page({
     }
     
     // 勋章列表布局
-    .metal-item-box{
+    .medal-item-box{
       
       .type {
         font-size: 32rpx;
