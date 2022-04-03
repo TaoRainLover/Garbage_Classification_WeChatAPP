@@ -62,14 +62,14 @@
           </div>
           <img src="/static/image/icon/forward.png" class="icon2"/>
         </div>
-        <div class="rank list" @click="navigateRanking">
+        <div class="rank list" @click="navigateToRanking">
           <div class="title-box">
             <img class="icon1" src="/static/image/icon/rank.png"/>
             <p class="title">答题排行榜</p>
           </div>
           <img src="/static/image/icon/forward.png" class="icon2"/>
         </div>
-        <div class="integral list" >
+        <div class="integral list" @click="navigateToIntegral" >
           <div class="title-box">
             <img class="icon1" src="/static/image/icon/history.png"/>
             <p class="title">积分记录</p>
@@ -143,9 +143,16 @@ wepy.page({
     },
 
     // 跳转到答题排行榜
-    navigateRanking() {
-      wx.switchTab({
+    navigateToRanking() {
+      wx.navigateTo({
         url: '/packageBuild/pages/testRanking',
+      })
+    },
+
+    // 跳转到积分记录页面
+    navigateToIntegral() {
+      wx.navigateTo({
+          url: '/packageBuild/pages/creditRecord',
       })
     },
 

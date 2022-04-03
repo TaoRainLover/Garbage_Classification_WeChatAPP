@@ -107,6 +107,12 @@
           "pathName": "packageBuild/pages/changeMedal",
           "query": "",
           "scene": null
+        },
+        {
+          "name": "答题排行榜",
+          "pathName": "packageBuild/pages/testRanking",
+          "query": "",
+          "scene": null
         }
       ]
     }

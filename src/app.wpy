@@ -108,10 +108,10 @@ wepy.app({
         'pages': [
           'pages/popularization',
           'pages/search',
-          'pages/feeback',
+          'pages/feedback',
           'pages/searchHistory',
           'pages/testRecord',
-          'pages/integral',
+          'pages/creditRecord',
           'pages/testRanking',
           'pages/camera',
           'pages/newsDetail',
