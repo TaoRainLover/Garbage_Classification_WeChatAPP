@@ -101,8 +101,8 @@ wepy.page({
   },
   methods: {
     // 点击兑换按钮实现方法
-    exchange(id) {
-      console.log('兑换！', id)
+    exchange(item) {
+      console.log('兑换！', item)
     },
 
     // 点击礼物按钮切换事件

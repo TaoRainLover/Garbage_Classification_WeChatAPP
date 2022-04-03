@@ -34,7 +34,7 @@
   }
 </style>
 <template>
-  <div class="container">
+  <div  :id="item_id" class="container" @click="navigateToItem">
     <image class="cover" src="{{coverSrc}}" mode="widthFix"/>
     <p class="title">{{title}}</p>
     <div class="info-box">
@@ -54,6 +54,10 @@
 
   wepy.component({
     props: {
+      itme_id: {
+        type: Number,
+        default: 0,
+      },
       coverSrc: {
         type: String,
         default: 'https://imgs.699pic.com/01/401/504/722/401504722.jpg!list2x.v1',
@@ -80,7 +84,9 @@
     },
 
     methods: {
-      
+      navigateToItem() {
+        this.$emit('navigateToItem')
+      }
     },
 
     onLoad () {

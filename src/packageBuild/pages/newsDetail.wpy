@@ -34,6 +34,9 @@ wepy.page({
     this.windowHeight = this.$app.$options.globalData.windowHeight*2 + 'px'
     this.remainHeight = this.$app.$options.globalData.remainHeight*2 + 'px'
     // console.log(this.windowHeight)
+  },
+  onLoad(options){
+    console.log(options)
   }
 
 })

@@ -2,11 +2,14 @@
   <div class="container">
     <div class="newsItemList-box">
       <newsItem v-for="(item,id ) in newsItemList" 
-      :key="id" class="newsItem" 
+      :key="id" 
+      class="newsItem"
+      itme_id="{{item.id}}}"
       title="{{item.title}}" 
       date="{{item.date}}" 
       browseCount="{{item.browseCount}}" 
-      coverSrc="{{item.coverSrc}}">
+      coverSrc="{{item.coverSrc}}"
+      v-on:navigateToItem="navigateToItem(item)">
       </newsItem>
     </div>
     <p class="ending">已加载全部数据...</p>
@@ -19,14 +22,21 @@
 import wepy from '@wepy/core'
 wepy.page({
   data: {
-    newsItemList: [{title: '南京鼓楼区垃圾分类收集点实现全天候应急抢修', date: '22/02/21', browseCount: 6, coverSrc: 'https://imgs.699pic.com/01/401/504/722/401504722.jpg!list2x.v1'}, 
-    {title: '南京鼓楼区垃圾分类收集点实现全天候应急抢修', date: '22/02/16', browseCount: 22, coverSrc: 'https://imgs.699pic.com/01/401/560/230/401560230.jpg!list2x.v1'}, 
-    {title: '南京鼓楼区垃圾分类收集点实现全天候应急抢修', date: '22/02/11', browseCount: 16, coverSrc: 'https://imgs.699pic.com/01/501/348/375/501348375.jpg!list2x.v1'},
-    {title: '南京鼓楼区垃圾分类收集点实现全天候应急抢修', date: '22/03/06', browseCount: 26, coverSrc: 'https://imgs.699pic.com/01/501/357/037/501357037.jpg!list2x.v1'},
-    {title: '南京鼓楼区垃圾分类收集点实现全天候应急抢修', date: '22/03/01', browseCount: 123, coverSrc: 'https://imgs.699pic.com/01/501/524/687/501524687.jpg!list2x.v1'}, ]
+    newsItemList: [{id: 1, title: '南京鼓楼区垃圾分类收集点实现全天候应急抢修', date: '22/02/21', browseCount: 6, coverSrc: 'https://imgs.699pic.com/01/401/504/722/401504722.jpg!list2x.v1'}, 
+    {id: 2, title: '南京鼓楼区垃圾分类收集点实现全天候应急抢修', date: '22/02/16', browseCount: 22, coverSrc: 'https://imgs.699pic.com/01/401/560/230/401560230.jpg!list2x.v1'}, 
+    {id: 3, title: '南京鼓楼区垃圾分类收集点实现全天候应急抢修', date: '22/02/11', browseCount: 16, coverSrc: 'https://imgs.699pic.com/01/501/348/375/501348375.jpg!list2x.v1'},
+    {id: 4, title: '南京鼓楼区垃圾分类收集点实现全天候应急抢修', date: '22/03/06', browseCount: 26, coverSrc: 'https://imgs.699pic.com/01/501/357/037/501357037.jpg!list2x.v1'},
+    {id: 5, title: '南京鼓楼区垃圾分类收集点实现全天候应急抢修', date: '22/03/01', browseCount: 123, coverSrc: 'https://imgs.699pic.com/01/501/524/687/501524687.jpg!list2x.v1'}, ]
   },
   methods: {
+    navigateToItem(item) {
+      console.log('跳转到文章详情页')
+      const itemInfo = item.currentTarget.dataset.wpynavigatetoitemA
+      wx.navigateTo({
+        url: '/packageBuild/pages/newsDetail?id='+itemInfo.id,
+      })
 
+    }
   }
 
 })
