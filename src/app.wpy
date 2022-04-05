@@ -32,7 +32,18 @@ wepy.app({
     // 屏幕可用高度含有tabbar
     windowHeight: 0,
     // 屏幕可用高度不含tabbar
-    remainHeight: 0
+    remainHeight: 0,
+    
+    // 用户信息
+    userInfo: {
+      // 用户登录状态(true: 登录， false: 未登录)
+      loginStatus: false,
+      openid: '',
+      nickName: '',
+      avatarUrl: '',
+    },
+    // 
+    openid: ''
   },
 
   async onLaunch() {

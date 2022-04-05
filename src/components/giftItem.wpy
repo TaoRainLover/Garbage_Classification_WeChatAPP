@@ -39,7 +39,7 @@
 <template>
   <div class="container">
     <img src="{{ coverPath }}" alt="" class="cover"/>
-    <p class="name">{{name}}</p>
+    <p class="name">{{name}}  | 库存：<span style="color: #4bae32">{{ num }}</span></p>
     <div class="exchange-box">
       <p class="des">所需环保币:<span class="corn">{{ corn }}</span></p>
       <div class="btn" @click="exchange">兑换</div>
@@ -59,9 +59,15 @@
         type: String,
         default: '手帕纸',
       },
+      // 所需的环保币数量
       corn: {
         type: Number,
         default: 'xxx',
+      },
+      // 库存数量
+      num: {
+        type: Number,
+        default: 0,
       }
 
     },

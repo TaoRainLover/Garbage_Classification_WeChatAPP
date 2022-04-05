@@ -29,6 +29,7 @@ wepy.page({
     {id: 5, title: '南京鼓楼区垃圾分类收集点实现全天候应急抢修', date: '22/03/01', browseCount: 123, coverSrc: 'https://imgs.699pic.com/01/501/524/687/501524687.jpg!list2x.v1'}, ]
   },
   methods: {
+    // 跳转到文章详情页
     navigateToItem(item) {
       console.log('跳转到文章详情页')
       const itemInfo = item.currentTarget.dataset.wpynavigatetoitemA

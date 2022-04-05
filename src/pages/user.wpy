@@ -6,95 +6,120 @@
       <!-- 用户信息部分 -->
       <div class="user-box">
         <div class="info-box">
-          <image  class="user-img" src="https://p7.itc.cn/q_70/images03/20220208/debd686da4d84ac38c77744fd6a3975f.jpeg" mode="aspectFill"/>
-          
+          <image
+            class="user-img"
+            src="{{ userInfo.avatarUrl }}"
+            mode="aspectFill"
+          />
+
           <div class="user-info">
-            <p class="name">澎湃</p>
-            <p class="metal">萌新报道<span><image @click="navigateToMedelList" class="icon" src="/static/image/icon/right.png" /></span></p>
+            <p class="name">{{ userInfo.nickName }}</p>
+            <p class="metal" @click="navigateToMedelList">
+              萌新报道<span
+                ><image class="icon" src="/static/image/icon/right.png"
+              /></span>
+            </p>
           </div>
         </div>
-        <div class="reg-btn" @click="register">
-          <img class="icon" src="/static/image/icon/reg0.png"/>
+        <!-- 签到按钮 -->
+        <div
+          class="reg-btn"
+          style="background: #888"
+          @click="register"
+          v-if="registered"
+        >
+          <img class="icon" src="/static/image/icon/reg0.png" />
+          <span>签到</span>
+        </div>
+        <div class="reg-btn" @click="register" v-else>
+          <img class="icon" src="/static/image/icon/reg0.png" />
           <span>签到</span>
         </div>
       </div>
       <!-- 签到表部分 -->
       <div class="reg-box">
-        <regitem v-for="(item, id) in dateList" :key="id" :date="item.date" :status="item.status"></regitem>
+        <regitem
+          v-for="(item, id) in dateList"
+          :key="id"
+          :date="item.date"
+          :status.sync="item.status"
+        ></regitem>
       </div>
     </div>
     <!-- 用户登录部分（获取用户信息）-->
     <div class="getUserInfo-box" v-else>
       <div class="left">
-        <img class="icon" src="/static/image/icon/people.png"/>
+        <img class="icon" src="/static/image/icon/people.png" />
         <div class="login-tip">
           <p class="title">请点击登录</p>
           <p class="des">登录之后开启更多功能</p>
         </div>
       </div>
-      <div class="btn" @click="getUserProfile">登录</div>
-    </div> 
+      <div class="btn" @click="getUserProfile">登 录</div>
+    </div>
     <!-- 下层用户功能列表 -->
     <div class="function-box">
-
       <div class="main-box">
         <div class="serach-history history" @click="navigateToSearchHistory">
           <div class="info-box">
             <p class="title">搜索历史</p>
             <p class="info"><span class="num">3</span> 条</p>
           </div>
-          <img class="icon" src="/static/image/icon/history-query.png"/>
+          <img class="icon" src="/static/image/icon/history-query.png" />
         </div>
         <div class="test-history history" @click="navigateToTestHistory">
           <div class="info-box">
             <p class="title">答题历史</p>
-            <p class="info"><span class="num" style="color: #4bae32">3</span> 条</p>
+            <p class="info">
+              <span class="num" style="color: #4bae32">3</span> 条
+            </p>
           </div>
-          <img class="icon" src="/static/image/icon/history-test.png"/>
+          <img class="icon" src="/static/image/icon/history-test.png" />
         </div>
       </div>
 
       <div class="function-list-box">
         <div class="corn list" @click="navigateToGift">
           <div class="title-box">
-            <img class="icon1" src="/static/image/icon/corn.png"/>
-            <p class="title">我的环保币(<span class="num">50</span><span>)</span></p>
+            <img class="icon1" src="/static/image/icon/corn.png" />
+            <p class="title">
+              我的环保币(<span class="num">50</span><span>)</span>
+            </p>
           </div>
-          <img src="/static/image/icon/forward.png" class="icon2"/>
+          <img src="/static/image/icon/forward.png" class="icon2" />
         </div>
         <div class="rank list" @click="navigateToRanking">
           <div class="title-box">
-            <img class="icon1" src="/static/image/icon/rank.png"/>
+            <img class="icon1" src="/static/image/icon/rank.png" />
             <p class="title">答题排行榜</p>
           </div>
-          <img src="/static/image/icon/forward.png" class="icon2"/>
+          <img src="/static/image/icon/forward.png" class="icon2" />
         </div>
-        <div class="integral list" @click="navigateToIntegral" >
+        <div class="integral list" @click="navigateToIntegral">
           <div class="title-box">
-            <img class="icon1" src="/static/image/icon/history.png"/>
+            <img class="icon1" src="/static/image/icon/history.png" />
             <p class="title">积分记录</p>
           </div>
-          <img src="/static/image/icon/forward.png" class="icon2"/>
+          <img src="/static/image/icon/forward.png" class="icon2" />
         </div>
         <div class="metal list" @click="navigateToMedelList">
           <div class="title-box">
-            <img class="icon1" src="/static/image/icon/metal.png"/>
+            <img class="icon1" src="/static/image/icon/metal.png" />
             <p class="title">更换勋章</p>
           </div>
-          <img src="/static/image/icon/forward.png" class="icon2"/>
+          <img src="/static/image/icon/forward.png" class="icon2" />
         </div>
         <div class="comment list" @click="navigateToFeedBack">
           <div class="title-box">
-            <img class="icon1" src="/static/image/icon/comment.png"/>
+            <img class="icon1" src="/static/image/icon/comment.png" />
             <p class="title">意见反馈</p>
           </div>
-          <img src="/static/image/icon/forward.png" class="icon2"/>
+          <img src="/static/image/icon/forward.png" class="icon2" />
         </div>
       </div>
     </div>
   </div>
 </template>
-
 
 <script>
 // 导入 wepy 框架
@@ -105,21 +130,46 @@ wepy.page({
     windowHeight: 0,
     userInfo: {},
     dateList: [
-      {date: '周一', status: 0},
-      {date: '周二', status: 1},
-      {date: '周三', status: 0},
-      {date: '周四', status: 0},
-      {date: '周五', status: 1},
-      {date: '周六', status: 0},
-      {date: '周日', status: 0},
+      { id: 1, date: '周一', status: 0 },
+      { id: 2, date: '周二', status: 0 },
+      { id: 3, date: '周三', status: 0 },
+      { id: 4, date: '周四', status: 0 },
+      { id: 5, date: '周五', status: 0 },
+      { id: 6, date: '周六', status: 0 },
+      { id: 7, date: '周日', status: 0 },
     ],
+    // 是否获取用户的身份信息
     hasUserInfo: false,
+    // 用户是否已经签到
+    registered: false,
   },
   methods: {
-    // 签到
+    // TODO：签到
     register() {
-      console.log('签到')
-    }, 
+      if (this.registered) {
+        wx.showToast({
+          title: '今日已完成签到', //提示的内容,
+          icon: 'none', //图标,
+          duration: 2000, //延迟时间,
+          mask: true, //显示透明蒙层，防止触摸穿透,
+          success: (res) => {},
+        })
+      } else {
+        // 更改 dateList 对应日期 status 的属性值
+        const id = new Date().getDay()
+        this.dateList[id - 1].status = 1
+        // TODO：提交用户签到信息
+        wx.showToast({
+          title: '积分：+15', //提示的内容,
+          icon: 'none', //图标,
+          duration: 2000, //延迟时间,
+        })
+
+        // 实现签到按钮变灰，不可点击
+
+        this.registered = true
+      }
+    },
 
     // 跳转到搜索历史页面
     navigateToSearchHistory() {
@@ -136,7 +186,7 @@ wepy.page({
     },
 
     // 跳转到兑换页面
-    navigateToGift(){
+    navigateToGift() {
       wx.switchTab({
         url: '/pages/gift',
       })
@@ -152,7 +202,7 @@ wepy.page({
     // 跳转到积分记录页面
     navigateToIntegral() {
       wx.navigateTo({
-          url: '/packageBuild/pages/creditRecord',
+        url: '/packageBuild/pages/creditRecord',
       })
     },
 
@@ -170,257 +220,284 @@ wepy.page({
       })
     },
 
-    // login
+    // 获取用户信息
+    getUserInfo() {
+      // TODO：请求用户的信息
+      wx.request({
+        url: 'url',
+      })
+    },
+
+    // login --
     login() {
       wx.login({
-            success (res) {
-              console.log(res)
-              if (res.code) {
-                // 发起网络请求
-                wx.request({
-                  url: 'http://39.103.179.63:8001/api/user/login',
-                  data: {
-                    code: res.code
-                  }
-                })
-              } else {
-                console.log('登录失败！' + res.errMsg)
-              }
-            }
-          })
+        success(res) {
+          console.log(res)
+          if (res.code) {
+            // 发起网络请求
+            wx.request({
+              url: 'http://39.103.179.63:8001/api/user/login',
+              data: {
+                code: res.code,
+              },
+            })
+          } else {
+            console.log('登录失败！' + res.errMsg)
+          }
+        },
+      })
     },
 
     // 获取用户个人信息
     getUserProfile() {
       console.log('获取用户个人信息')
       wx.getUserProfile({
-      desc: '完善用户信息',
-      success: (res)=> {
-        console.log(res.userInfo)
-      },
-      fail: (err) => {
-        console.log(err)
-      }
+        desc: '完善用户信息',
+        success: (res) => {
+          console.log(res.userInfo)
+          // TODO: 将结果写入数据库中
+          this.userInfo = res.userInfo
+          this.hasUserInfo = true
+          console.log(this.userInfo)
+        },
+        fail: (err) => {
+          console.log(err)
+        },
       })
-    } 
+    },
   },
-  
+
   // 生命周期函数 created
-  created () {
-    this.windowHeight = this.$app.$options.globalData.windowHeight+'px'
-    console.log(this.windowHeight)
+  created() {
+    this.windowHeight = this.$app.$options.globalData.windowHeight + 'px'
+    this.oepnid = this.$app.$options.globalData.oepnid
+    if (this.openid != '') {
+      // this.hasUserInfo = false
+    } else {
+      // TODO：如果用户的 openid 不为空的话，根据 openid 查询用户的后台数据
+    }
   },
 
   // 小程序原生生命周期函数： onLoad，用来获取页面参数传值
   onLoad(options) {
     console.log('进入用户个人页面')
   },
+  // onPrefetch() {
+  //   console.log('跳转到个人页面')
 
+  // },
 })
 </script>
 
 <style lang="less" scoped>
-  .container{
-    // 上层用户信息以及签到部分部分
-    .user-reg-box {
-      // background-color: skyblue;
-      padding: 48rpx 32rpx 0 48rpx;
-      // 用户信息部分
-      .user-box {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        color: #4bae32;
-        .info-box {
-          display: flex;
-          .user-img{
-            height: 152rpx;
-            width: 152rpx;
-            border-radius: 50%;
-            margin-right: 22rpx;
-            border: 4rpx solid #e5e5e5;
-          }
-          .user-info{
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            .name {
-              font-size: 48rpx;
-              font-weight: bold;
-              margin-bottom: 12rpx;
-            }
-            .metal {
-              font-size: 40rpx;
-              .icon{
-                height: 32rpx;
-                width: 32rpx;
-                position: relative;
-                top: 1rpx;
-                margin-left: 24rpx;
-              }
-            }
-          }
-        }
-        .reg-btn {
-          width: 170rpx;
-          height: 62rpx;
-          background: #4CAE32;
-          border-radius: 34rpx;
-          font-size: 36rpx;
-          color: white;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          .icon {
-            width: 44rpx;
-            height: 44rpx;
-            margin-right: 12rpx;
-          }
-        }
-      }
-      // 签到展示部分
-      .reg-box{
-        box-sizing: border-box;
-        height: 108rpx;
-        border-top: #4bae32 4rpx solid;
-        margin-top: 52rpx;
-        padding-top: 18rpx;
-        display: flex;
-        justify-content: space-between;
-      }
-    }
-
-    // 获取用户信息
-    .getUserInfo-box {
-      // padding-top: 90rpx;
-      height: 218rpx;
+.container {
+  // 上层用户信息以及签到部分部分
+  .user-reg-box {
+    // background-color: skyblue;
+    padding: 48rpx 32rpx 0 48rpx;
+    // 用户信息部分
+    .user-box {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 90rpx 58rpx 0 58rpx;
-      box-sizing: border-box;
-      .left {
+      color: #4bae32;
+      .info-box {
         display: flex;
-        height: 128rpx;
-        align-items: center;
-        .icon {
-          height: 128rpx;
-          width: 128rpx;
-          margin-right: 20rpx;
-          border: 3rpx solid #E7E7E7;
+        .user-img {
+          height: 152rpx;
+          width: 152rpx;
           border-radius: 50%;
+          margin-right: 22rpx;
+          border: 4rpx solid #e5e5e5;
         }
-        .login-tip {
-          .title {
+        .user-info {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          .name {
             font-size: 48rpx;
-            background: linear-gradient(264.41deg, rgba(247, 219, 147, 0.8) 15.75%, #4CAE32 49.1%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-fill-color: transparent;
+            font-weight: bold;
+            margin-bottom: 12rpx;
           }
-          .des {
-            font-size: 28rpx;
-            color: #555;
-            margin-top: 5rpx;
+          .metal {
+            font-size: 40rpx;
+            .icon {
+              height: 32rpx;
+              width: 32rpx;
+              position: relative;
+              top: 1rpx;
+              margin-left: 24rpx;
+            }
           }
         }
       }
-
-      .btn {
-        width: 138rpx;
+      .reg-btn {
+        width: 170rpx;
         height: 62rpx;
-        background: linear-gradient(258.18deg, #4CAE32 40.41%, rgba(247, 219, 147, 0.8) 100%);
-        border-radius: 46rpx;
+        background: #4cae32;
+        border-radius: 34rpx;
+        font-size: 36rpx;
+        color: white;
         display: flex;
         justify-content: center;
         align-items: center;
-        font-weight: bold;
-        color: white;
+        .icon {
+          width: 44rpx;
+          height: 44rpx;
+          margin-right: 12rpx;
+        }
+      }
+    }
+    // 签到展示部分
+    .reg-box {
+      box-sizing: border-box;
+      height: 108rpx;
+      border-top: #4bae32 4rpx solid;
+      margin-top: 52rpx;
+      padding-top: 18rpx;
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+
+  // 获取用户信息部分
+  .getUserInfo-box {
+    // padding-top: 90rpx;
+    height: 218rpx;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 90rpx 58rpx 0 58rpx;
+    box-sizing: border-box;
+    .left {
+      display: flex;
+      height: 128rpx;
+      align-items: center;
+      .icon {
+        height: 128rpx;
+        width: 128rpx;
+        margin-right: 20rpx;
+        border: 3rpx solid #e7e7e7;
+        border-radius: 50%;
+      }
+      .login-tip {
+        .title {
+          font-size: 48rpx;
+          background: linear-gradient(
+            264.41deg,
+            rgba(247, 219, 147, 0.8) 15.75%,
+            #4cae32 49.1%
+          );
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          text-fill-color: transparent;
+        }
+        .des {
+          font-size: 28rpx;
+          color: #555;
+          margin-top: 5rpx;
+        }
       }
     }
 
-    // 下层用户功能列表
-    .function-box{
-      position: absolute;
-      height: 68%;
-      // width: 780rpx;
-      bottom: 0px;
-      box-shadow: 0rpx -4rpx 20rpx rgba(169, 185, 166, 0.25);
-      border-radius: 80rpx 80rpx 0px 0px;
-      padding: 66rpx 32rpx;
-      box-sizing: border-box;
+    .btn {
+      width: 138rpx;
+      height: 62rpx;
+      background: linear-gradient(
+        258.18deg,
+        #4cae32 40.41%,
+        rgba(247, 219, 147, 0.8) 100%
+      );
+      border-radius: 46rpx;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+      color: white;
+    }
+  }
 
-      .main-box{
+  // 下层用户功能列表
+  .function-box {
+    position: absolute;
+    height: 68%;
+    width: 100%;
+    bottom: 0px;
+    box-shadow: 0rpx -4rpx 20rpx rgba(169, 185, 166, 0.25);
+    border-radius: 80rpx 80rpx 0px 0px;
+    padding: 66rpx 32rpx;
+    box-sizing: border-box;
+
+    .main-box {
+      display: flex;
+      justify-content: space-between;
+      .history {
+        width: 322rpx;
+        height: 162rpx;
+        box-shadow: 0px 0px 20rpx rgba(94, 106, 99, 0.4);
+        border-radius: 32rpx;
+        padding: 0 26rpx;
+        box-sizing: border-box;
+        font-size: 40rpx;
+        font-weight: bold;
         display: flex;
         justify-content: space-between;
-        .history{
-          width: 322rpx;
-          height: 162rpx;
-          box-shadow: 0px 0px 20rpx rgba(94, 106, 99, 0.4);
-          border-radius: 32rpx;
-          padding: 0 26rpx;
-          box-sizing: border-box;
-          font-size: 40rpx;
-          font-weight: bold;
+        align-items: center;
+        .info-box {
           display: flex;
-          justify-content: space-between;
+          flex-direction: column;
           align-items: center;
-          .info-box {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            .info {
-              color: #ababab;
-              .num {
-                color: #335cad;
-              }
+          .info {
+            color: #ababab;
+            .num {
+              color: #335cad;
             }
-          }
-          .icon {
-            height:94rpx;
-            width: 84rpx;
           }
         }
-      }
-
-      .function-list-box {
-        .list {
-          height: 80rpx;
-          width: 694rpx;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          font-size: 40rpx;
-          border-bottom: 2rpx solid rgba(196, 196, 196, 0.5);
-          box-sizing: border-box;
-          padding: 6rpx 6rpx 0px 6rpx;
-          margin-top: 40rpx;
-          .title-box {
-            display: flex;
-            align-items: center;
-            .icon1 {
-              height: 60rpx;
-              width: 60rpx;
-            }
-            .title {
-              margin-left: 30rpx;
-            }
-          }
-          .icon2 {
-            height: 28rpx;
-            width: 16rpx;
-          }
-        }
-        .corn {
-          .num {
-            color: #4bae32;
-          }
+        .icon {
+          height: 94rpx;
+          width: 84rpx;
         }
       }
     }
 
+    .function-list-box {
+      .list {
+        height: 80rpx;
+        width: 694rpx;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 40rpx;
+        border-bottom: 2rpx solid rgba(196, 196, 196, 0.5);
+        box-sizing: border-box;
+        padding: 6rpx 6rpx 0px 6rpx;
+        margin-top: 40rpx;
+        .title-box {
+          display: flex;
+          align-items: center;
+          .icon1 {
+            height: 60rpx;
+            width: 60rpx;
+          }
+          .title {
+            margin-left: 30rpx;
+          }
+        }
+        .icon2 {
+          height: 28rpx;
+          width: 16rpx;
+        }
+      }
+      .corn {
+        .num {
+          color: #4bae32;
+        }
+      }
+    }
   }
+}
 </style>
 
 <config>

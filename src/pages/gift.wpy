@@ -46,13 +46,13 @@
         <div class="unowned-box">
           <p class="type">未拥有:</p>
           <div class="list-box">
-            <div class="li" wx:for="{{unowendList}}" wx:key="*this">
+            <div class="li" v-for="(item, id) in unowendList" :key="id" >
               <div class="des-box">
                 <img src="/static/image/icon/medal2.png" class="icon"/>
                 <p class="medal-name">{{item}}</p>
               </div>
               <p>100币</p>
-              <div class="btn">兑换</div>
+              <div class="btn" @click="exchangeMedal(id, item)" :id="id">兑换</div>
             </div>
           </div>
           
@@ -75,8 +75,10 @@ wepy.page({
     giftIconPath: '/static/image/icon/gift-2.png',
     medalIconPath: '/static/image/icon/medal0.png',
     windowHeight: '',
-    ownedList: ['萌新报道', '环保卫士'],
-    unowendList: ['萌新报道', '环保卫士', '萌新报道', '环保卫士',],
+    ownedList: ['神奇萌新', '初入门道',],
+    // ['萌新报道', '环保卫士', '']，
+    unowendList: [ '环保标兵', '绿色达人', '渐入佳境', '环保卫士', '环保特工', '成就达成', '地球卫士'],
+    medalList: ['神奇萌新', '初入门道', '环保标兵', '绿色达人', '渐入佳境', '环保卫士', '环保特工', '成就达成', '地球卫士'],
     giftItemList: [{
       name: '手帕纸',
       coverPath: '//img13.360buyimg.com/n1/jfs/t1/176232/37/6059/194863/60826533E3a7e373b/b7f3ee9cfc15d5a7.jpg',
@@ -100,9 +102,30 @@ wepy.page({
     },]
   },
   methods: {
-    // 点击兑换按钮实现方法
+    // 兑换礼品
     exchange(item) {
-      console.log('兑换！', item)
+      wx.showToast({
+        title: '正联系补货中！',
+        icon: 'error',
+        duration: 1500
+      })
+
+    },
+
+    // 兑换勋章
+    exchangeMedal(id, title) {
+      wx.showModal({
+        title: '提示',
+        content: '是否兑换',
+        success (res) {
+          if (res.confirm) {
+            console.log('用户点击确定')
+            console.log(id, title)
+            // TODO: 进行兑换操作
+          }
+        }
+    })
+
     },
 
     // 点击礼物按钮切换事件

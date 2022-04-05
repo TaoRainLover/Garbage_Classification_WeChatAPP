@@ -1,70 +1,81 @@
 <style lang="less" scoped>
-  .container {
- 
-    position: relative;
-    // background-color: rgb(155, 110, 52);
-    .icon-box{
+.container {
+  position: relative;
+  // background-color: rgb(155, 110, 52);
+  .icon-box {
+    height: 100%;
+    width: 100%;
+    // background: rgb(143, 104, 104);
+    .icon {
       height: 100%;
       width: 100%;
-      // background: rgb(143, 104, 104);
-      .icon {
-      height: 100%;
-      width: 100%;
-    }
-    }
-    .date {
-      position: absolute;
-      top: 28rpx;
-      left: 8rpx;
-      font-weight: bold;
     }
   }
+  .date {
+    position: absolute;
+    top: 28rpx;
+    left: 8rpx;
+    font-weight: bold;
+  }
+}
 </style>
 <template>
   <div class="container" style="{{style}}">
     <p class="date" style="{{style2}}">{{ date }}</p>
     <div class="icon-box">
-      <img class="icon" :src="imgUrl"/>
+      <img class="icon" :src="imgUrl" />
     </div>
   </div>
 </template>
 <script>
-  import wepy from '@wepy/core'
+import wepy from '@wepy/core'
 
-  wepy.component({
-    props: {
-      date:{
-        type: String,
-        default: '周一',
-      },
-      status: {
-        type: Number,
-        default: 0,
+wepy.component({
+  props: {
+    date: {
+      type: String,
+      default: '周一',
+    },
+    status: {
+      type: Number,
+      default: 0,
+    },
+  },
+  computed: {
+    imgUrl() {
+      return '/static/image/icon/regitem' + this.status + '.png'
+    },
+    style() {
+      if (this.status) {
+        return 'height: 45px; width: 41px; color: #4CAE32; font-size: 16px'
+      } else {
+        return 'height: 35px; width: 32px; color: #555; font-size: 12px;'
       }
     },
-    computed: {
-
-    },
-    data: {
-      dataStr: '周一',
-      imgUrl: '/static/image/icon/regitem0.png',
-      style: 'height: 35px; width: 32px; color: #555; font-size: 12px;',
-      style2: 'top: 14px'
-    },
-
-    events: {
-      
-    },
-
-    methods: {
-      
-    },
-    attached () {
-      this.imgUrl = '/static/image/icon/regitem'+this.status+'.png'
-      if(this.status) {
-        this.style = 'height: 45px; width: 41px; color: #4CAE32; font-size: 16px'
-        this.style2 = 'top: 18px; left:5px;'
+    style2() {
+      if (this.status) {
+        return 'top: 18px; left:5px;'
+      } else {
+        return 'top: 14px'
       }
-    }
-  });
+    },
+  },
+  data: {
+    dataStr: '周一',
+    imgUrl: '/static/image/icon/regitem0.png',
+    style: 'height: 35px; width: 32px; color: #555; font-size: 12px;',
+    style2: 'top: 14px',
+  },
+
+  events: {},
+
+  methods: {},
+  attached() {
+    // this.imgUrl = '/static/image/icon/regitem' + this.status + '.png'
+    // if (this.status) {
+    //   this.style = 'height: 45px; width: 41px; color: #4CAE32; font-size: 16px'
+    //   this.style2 = 'top: 18px; left:5px;'
+    // }
+  },
+})
 </script>
