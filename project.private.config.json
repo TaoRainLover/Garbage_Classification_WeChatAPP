@@ -74,7 +74,7 @@
         },
         {
           "name": "积分记录",
-          "pathName": "packageBuild/pages/integral",
+          "pathName": "packageBuild/pages/creditRecord",
           "query": "",
           "scene": null
         },

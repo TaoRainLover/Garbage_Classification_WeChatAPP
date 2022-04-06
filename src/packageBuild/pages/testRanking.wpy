@@ -1,8 +1,10 @@
 <template>
   <div class="container" style="height: {{ remainHeight }}">
     <div class="content-container">
-      <div class="title">排行总榜（<span style="color: #4CAE32;">前50</span>）</div>
-      <div class="list-box" >
+      <div class="title">
+        排行总榜（<span style="color: #4cae32">前50</span>）
+      </div>
+      <div class="list-box">
         <div class="li" v-for="(item, index) in rankingList" :key="item.id">
           <!-- <div class="user-info">
             <div class="num">{{index}}<div>
@@ -14,14 +16,17 @@
             <div class="score">{{item.score}}</div>
           </div> -->
           <div class="user-info">
-            <div class="num">{{index}}</div>
-            <img class="avatar" src="/static/image/icon/my_avatar.png" alt=""/>
-            <span>{{item.uname}}</span>
-
+            <div class="num">{{ index }}</div>
+            <img class="avatar" src="/static/image/icon/my_avatar.png" alt="" />
+            <span>{{ item.uname }}</span>
           </div>
           <div class="score-info">
-            <img class="icon" src="/static/image/icon/statistic-icon.png" alt=""/>
-            <span class="score">{{item.score}}分</span>
+            <img
+              class="icon"
+              src="/static/image/icon/statistic-icon.png"
+              alt=""
+            />
+            <span class="score">{{ item.score }}分</span>
           </div>
         </div>
       </div>
@@ -29,116 +34,112 @@
   </div>
 </template>
 
-
 <script>
 // 导入 wepy 框架
 import wepy from '@wepy/core'
 wepy.page({
   data: {
     remainHeight: '',
-    rankingList: [{id: 1, uname: 'TaoRainLover', avatar: '', score: 1200},
-                  {id: 1, uname: 'TaoRainLover', avatar: '', score: 1200},
-                  {id: 1, uname: 'TaoRainLover', avatar: '', score: 1200},
-                  {id: 1, uname: 'TaoRainLover', avatar: '', score: 1200},
-                  {id: 1, uname: 'TaoRainLover', avatar: '', score: 1200},
-                  {id: 1, uname: 'TaoRainLover', avatar: '', score: 1200},
-                  {id: 1, uname: 'TaoRainLover', avatar: '', score: 1200},
-                  {id: 1, uname: 'TaoRainLover', avatar: '', score: 1200},
-                  {id: 1, uname: 'TaoRainLover', avatar: '', score: 1200},]
+    rankingList: [
+      { id: 1, uname: 'TaoRainLover', avatar: '', score: 1200 },
+      { id: 1, uname: 'TaoRainLover', avatar: '', score: 1200 },
+      { id: 1, uname: 'TaoRainLover', avatar: '', score: 1200 },
+      { id: 1, uname: 'TaoRainLover', avatar: '', score: 1200 },
+      { id: 1, uname: 'TaoRainLover', avatar: '', score: 1200 },
+      { id: 1, uname: 'TaoRainLover', avatar: '', score: 1200 },
+      { id: 1, uname: 'TaoRainLover', avatar: '', score: 1200 },
+      { id: 1, uname: 'TaoRainLover', avatar: '', score: 1200 },
+      { id: 1, uname: 'TaoRainLover', avatar: '', score: 1200 },
+    ],
   },
-  methods: {
-
-  },
+  methods: {},
 
   // 生命周期函数 created
-  created () {
+  created() {
     this.remainHeight = this.$app.$options.globalData.remainHeight + 'px'
-  }
-
+  },
 })
 </script>
 
 <style lang="less" scoped>
 .container {
-.my_flex {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-background: #F8F8F8;
-display: flex;
-justify-content: center;
-.content-container {
-  height: 99%;
-  width: 740rpx;
-  background: white;
-  border-radius: 10px 10px 0px 0px;
-  position: absolute;
-  bottom: 0;
-  .my_flex();
-  .title {
-    height: 84rpx;
-    width: 100%;
-    line-height: 84rpx;
-    text-align: center;
-    font-size: 32rpx;
-    font-weight: bold;
-    border-bottom: 2rpx solid #000000;
-
+  .my_flex {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
-  .list-box {
+  background: #f8f8f8;
+  display: flex;
+  justify-content: center;
+  .content-container {
+    height: 99%;
+    width: 740rpx;
+    background: white;
+    border-radius: 10px 10px 0px 0px;
+    position: absolute;
+    bottom: 0;
     .my_flex();
-
-    .li {
-      width: 620rpx;
-      height: 110rpx;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+    .title {
+      height: 84rpx;
+      width: 100%;
+      line-height: 84rpx;
+      text-align: center;
       font-size: 32rpx;
-      border-bottom: 2rpx solid rgba(206, 206, 206, 0.9);
+      font-weight: bold;
+      border-bottom: 2rpx solid #000000;
+    }
+    .list-box {
+      .my_flex();
 
-      .user-info {
+      .li {
+        width: 620rpx;
+        height: 110rpx;
         display: flex;
+        justify-content: space-between;
         align-items: center;
-        .num {
-          height: 56rpx;
-          width: 56rpx;
-          line-height: 56rpx;
-          text-align: center;
-          color: #2967CE;
-          background: rgba(76, 174, 50, 0.2);
-          border-radius: 8rpx;
-          margin-right: 14rpx;
-          font-weight: 430;
-        }
-        .avatar {
-          height: 70rpx;
-          width: 70rpx;
-          border-radius: 50%;
-          border: 2rpx solid rgba(204, 204, 204, 0.6);
-          margin-right: 14rpx;
+        font-size: 32rpx;
+        border-bottom: 2rpx solid rgba(206, 206, 206, 0.9);
 
+        .user-info {
+          display: flex;
+          align-items: center;
+          .num {
+            height: 56rpx;
+            width: 56rpx;
+            line-height: 56rpx;
+            text-align: center;
+            color: #4bae32;
+            background: rgba(76, 174, 50, 0.2);
+            border-radius: 8rpx;
+            margin-right: 14rpx;
+            font-weight: 430;
+          }
+          .avatar {
+            height: 70rpx;
+            width: 70rpx;
+            border-radius: 50%;
+            border: 2rpx solid rgba(204, 204, 204, 0.6);
+            margin-right: 14rpx;
+          }
+          .uname {
+          }
         }
-        .uname {
-        }
-      }
-      .score-info {
-        display: flex;
-        align-items: center;
-        .icon {
-          width: 40rpx;
-          height: 40rpx;
-          margin-right: 14rpx;
-        }
-        .score {
-          font-weight: bold;
-          color: #4CAE32;
+        .score-info {
+          display: flex;
+          align-items: center;
+          .icon {
+            width: 40rpx;
+            height: 40rpx;
+            margin-right: 14rpx;
+          }
+          .score {
+            font-weight: bold;
+            color: #4cae32;
+          }
         }
       }
     }
   }
-}
 }
 </style>
 

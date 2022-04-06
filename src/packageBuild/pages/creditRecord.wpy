@@ -1,29 +1,37 @@
 <template>
   <div class="container">
     <!-- 顶部按钮导航区域 -->
-     <div class="nav-btn-box">
-      <div class="all btn" style="{{selectedBtnStyle}}">全部</div>
-      <div class="add btn ">增加</div>
-      <div class="decrease btn">减少</div>
-     </div>
+    <div class="nav-btn-box">
+      <div class="all btn" v-if="all" style="{{selectedBtnStyle}}">全部</div>
+      <div class="all btn" v-else @click="changeType('all')">全部</div>
+      <div class="add btn" v-if="add" style="{{selectedBtnStyle}}">增加</div>
+      <div class="add btn" v-else @click="changeType('add')">增加</div>
+      <div class="decrease btn" v-if="decrease" style="{{selectedBtnStyle}}">
+        减少
+      </div>
+      <div class="decrease btn" v-else @click="changeType('decrease')">
+        减少
+      </div>
+    </div>
 
-     <!-- 列表区域  -->
-     <div class="recordList-box">
-       <div class="li" v-for="(item, id ) in showList" :key="id">
+    <!-- 列表区域  -->
+    <div class="recordList-box">
+      <div class="li" v-for="(item, id) in showList" :key="id">
         <div class="left-box">
-          <p class="name">{{item.name}}</p>
-          <p class="date">{{item.date}}</p>
+          <p class="name">{{ item.name }}</p>
+          <p class="date">{{ item.date }}</p>
         </div>
-        <div class="right-box">积分：<span v-if="item.isAdd">+</span> <span v-else>-</span>{{item.num}}
+        <div class="right-box">
+          积分：<span v-if="item.isAdd">+</span> <span v-else>-</span
+          >{{ item.num }}
         </div>
-       </div>
-     </div>
+      </div>
+    </div>
 
-     <!-- 结束提示语 -->
-     <p class="ending">已加载全部数据...</p>
+    <!-- 结束提示语 -->
+    <p class="ending">已加载全部数据...</p>
   </div>
 </template>
-
 
 <script>
 // 导入 wepy 框架
@@ -32,28 +40,60 @@ wepy.page({
   data: {
     windowHeight: '',
     remainHeight: '',
-    selectedBtnStyle: 'color: #4CAE32; border: 1px solid #4CAE32; background:rgba(76, 174, 50, 0.1);',
-    allList: [{name: '签到有礼', date: '2022/2/21', isAdd: true, num: 10},
-              {name: '签到有礼', date: '2022/2/21', isAdd: true, num: 10},
-              {name: '签到有礼', date: '2022/2/21', isAdd: true, num: 10},
-              {name: '签到有礼', date: '2022/2/21', isAdd: true, num: 10},
-              {name: '签到有礼', date: '2022/2/21', isAdd: true, num: 10}],
+    selectedBtnStyle:
+      'color: #4CAE32; border: 1px solid #4CAE32; background:rgba(76, 174, 50, 0.1);',
+    allList: [
+      { name: '签到有礼', date: '2022/2/21', isAdd: true, num: 10 },
+      { name: '签到有礼', date: '2022/2/21', isAdd: true, num: 10 },
+      { name: '签到有礼', date: '2022/2/21', isAdd: true, num: 10 },
+      { name: '签到有礼', date: '2022/2/21', isAdd: true, num: 10 },
+      { name: '签到有礼', date: '2022/2/21', isAdd: true, num: 10 },
+    ],
     addList: [],
     decreaseList: [],
     showList: [],
+    // 选中类型
+    type: 'all',
+    all: true,
+    add: false,
+    decrease: false,
   },
   methods: {
-
+    changeType(type) {
+      this.type = type
+      switch (type) {
+        case 'all': {
+          this.all = true
+          this.add = false
+          this.decrease = false
+          this.showList = this.allList
+          break
+        }
+        case 'add': {
+          this.all = false
+          this.add = true
+          this.decrease = false
+          this.showList = this.addList
+          break
+        }
+        case 'decrease': {
+          this.all = false
+          this.add = false
+          this.decrease = true
+          this.showList = this.decreaseList
+          break
+        }
+      }
+    },
   },
 
   // 生命周期函数 created
-  created () {
-    this.windowHeight = this.$app.$options.globalData.windowHeight*2 + 'rpx'
-    this.remainHeight = this.$app.$options.globalData.remainHeight*2 + 'rpx'
+  created() {
+    this.windowHeight = this.$app.$options.globalData.windowHeight * 2 + 'rpx'
+    this.remainHeight = this.$app.$options.globalData.remainHeight * 2 + 'rpx'
     // console.log(this.windowHeight)
     this.showList = this.allList
-  }
-
+  },
 })
 </script>
 
@@ -63,59 +103,59 @@ wepy.page({
   display: flex;
   flex-direction: column;
   align-items: center;
-.nav-btn-box {
-  width: 100%;
-  height: 112rpx;
-  box-shadow: 0px 2px 4px rgba(169, 185, 166, 0.25);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  .btn {
-    color: #555;
-    width: 114rpx;
-    height: 50rpx;
-    border: 1px solid #555555;
-    border-radius: 14px;
+  .nav-btn-box {
+    width: 100%;
+    height: 112rpx;
+    box-shadow: 0px 2px 4px rgba(169, 185, 166, 0.25);
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-  .add {
-    margin: 0 14rpx;
-  }
-}
-
-// 列表区域
-.recordList-box {
-  width: 676rpx;
-  margin-top: 16rpx;
-  .li {
-    box-sizing: border-box;
-    width: 100%;
-    height: 108rpx;
-    font-size: 32rpx;
-    border-bottom: 2rpx solid rgba(233, 233, 233, 0.6);
-    padding: 0 24rpx;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    .date {
-      font-size: 28rpx;
-      color:#555;
+    .btn {
+      color: #555;
+      width: 114rpx;
+      height: 50rpx;
+      border: 1px solid #555555;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-    .right-box {
-      font-size: 28rpx;
-      color:#555;
+    .add {
+      margin: 0 100rpx;
     }
   }
-}
 
-// 结束提示语 
-.ending {
-   margin-top: 46rpx;
-  font-size: 24rpx;
-  color: #555;
-}
+  // 列表区域
+  .recordList-box {
+    width: 676rpx;
+    margin-top: 16rpx;
+    .li {
+      box-sizing: border-box;
+      width: 100%;
+      height: 108rpx;
+      font-size: 32rpx;
+      border-bottom: 2rpx solid rgba(233, 233, 233, 0.6);
+      padding: 0 24rpx;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .date {
+        font-size: 28rpx;
+        color: #555;
+      }
+      .right-box {
+        font-size: 28rpx;
+        color: #555;
+      }
+    }
+  }
+
+  // 结束提示语
+  .ending {
+    margin-top: 46rpx;
+    font-size: 24rpx;
+    color: #555;
+  }
 }
 </style>
 

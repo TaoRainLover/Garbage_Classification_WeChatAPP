@@ -128,7 +128,6 @@ wepy.page({
 
     // 点击选择
     selectStart(my) {
-      console.log('点击开始', my)
       // 判断正误
       if (this.cur_que.cor == my) {
         console.log('答对了')
@@ -158,9 +157,8 @@ wepy.page({
         this.id++
       }
     },
-
+    // 点击结束--取消样式
     selectEnd(my) {
-      console.log(my, '点击结束！')
       this.stylea = ''
       this.styleb = ''
       this.stylec = ''
@@ -222,6 +220,7 @@ wepy.page({
         background: #ffffff;
         box-shadow: 0 0 22rpx rgba(64, 85, 58, 0.5);
         border-radius: 86rpx;
+        box-sizing: border-box;
         display: flex;
         justify-content: center;
         align-items: center;
