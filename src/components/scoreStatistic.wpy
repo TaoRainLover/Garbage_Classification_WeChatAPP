@@ -1,138 +1,134 @@
 <style lang="less" scoped>
-  .container {
-    .statistic-box {
-      height: 880rpx;
-      width: 640rpx;
-      box-shadow: 0 0 20rpx rgba(144, 157, 140, 0.6);
-      border-radius: 44rpx;
-      // margin: 144rpx 0 48rpx;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      .title {
-        font-size: 40rpx;
-        font-weight: 600;
-        margin: 34rpx 0 8rpx;
+.container {
+  .statistic-box {
+    height: 880rpx;
+    width: 640rpx;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 0 20rpx rgba(144, 157, 140, 0.6);
+    border-radius: 44rpx;
+    // margin: 144rpx 0 48rpx;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .title {
+      font-size: 40rpx;
+      font-weight: 600;
+      margin: 34rpx 0 8rpx;
+    }
+    .score {
+      font-weight: 600;
+      font-size: 64rpx;
+      line-height: 90rpx;
+      color: #b52632;
+      margin-bottom: 28rpx;
+    }
+    .info-list {
+      width: 100%;
+      height: 604rpx;
+      font-size: 24rpx;
+      .header {
+        font-weight: bold;
+        background: rgba(234, 234, 234, 0.8);
       }
-      .score {
-        font-weight: 600;
-        font-size: 64rpx;
-        line-height: 90rpx;
-        color: #B52632;
-        margin-bottom: 28rpx;
-      }
-      .info-list {
-        width: 100%;
-        height: 604rpx;
-        font-size: 24rpx;
-        .header {
-          font-weight: bold;
-           background: rgba(234, 234, 234, 0.8);
-        }
-        .li {
-          height: 56rpx;
-          widows: 100%;
+      .li {
+        height: 56rpx;
+        widows: 100%;
+        display: flex;
+        align-items: center;
+        .qes {
+          width: 286rpx;
+          box-sizing: border-box;
+          padding-left: 44rpx;
           display: flex;
           align-items: center;
-          .qes {
-            width: 286rpx;
-            box-sizing: border-box;
-            padding-left: 44rpx;
+          .num {
+            height: 30rpx;
+            width: 30rpx;
             display: flex;
+            justify-content: center;
             align-items: center;
-            .num {
-              height: 30rpx; 
-              width: 30rpx;
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              color: #F8240F;
-              background: #FEEAEA;
-              border-radius: 4rpx;
-              margin-right: 16rpx;
-            }
-          }
-          .my {
-            width: 170rpx;
-            height: 56rpx;
-            line-height: 56rpx;
-            border-left: 2rpx solid rgba(227, 227, 227, 0.8);
-            border-right: 2rpx solid rgba(227, 227, 227, 0.8);
-            box-sizing: border-box;
-            padding-left: 34rpx;
-          }
-          .cor {
-            width: 184rpx;
-            box-sizing: border-box;
-            padding-left: 28rpx;
+            color: #f8240f;
+            background: #feeaea;
+            border-radius: 4rpx;
+            margin-right: 16rpx;
           }
         }
-        .li:nth-child(odd) {
-          background: rgba(234, 234, 234, 0.4);
+        .my {
+          width: 170rpx;
+          height: 56rpx;
+          line-height: 56rpx;
+          border-left: 2rpx solid rgba(227, 227, 227, 0.8);
+          border-right: 2rpx solid rgba(227, 227, 227, 0.8);
+          box-sizing: border-box;
+          padding-left: 34rpx;
         }
+        .cor {
+          width: 184rpx;
+          box-sizing: border-box;
+          padding-left: 28rpx;
+        }
+      }
+      .li:nth-child(odd) {
+        background: rgba(234, 234, 234, 0.4);
       }
     }
   }
+}
 </style>
 <template>
   <div class="container">
     <div class="statistic-box">
-      <p class="title">{{title}}</p>
-        <p class="score"><span>{{score}}</span>分</p>
-        <div class="info-list">
-          <div class="header li">
-            <div class="qes">题目</div>
-            <div class="my">我的答案</div>
-            <div class="cor">正确答案</div>
+      <p class="title">{{ title }}</p>
+      <p class="score">
+        <span>{{ score }}</span
+        >分
+      </p>
+      <div class="info-list">
+        <div class="header li">
+          <div class="qes">题目</div>
+          <div class="my">我的答案</div>
+          <div class="cor">正确答案</div>
+        </div>
+        <div class="li" v-for="(item, id) in statisticList" :key="id">
+          <div class="qes">
+            <div class="num">{{ id + 1 }}</div>
+            <div class="name">{{ item.name }}</div>
           </div>
-          <div class="li" v-for="(item, id) in statisticList" :key="id">
-            <div class="qes">
-              <div class="num">{{id+1}}</div>
-              <div class="name">{{item.name}}</div>
-            </div>
-            <div class="my">
-              {{item.my}}
-            </div>
-            <div class="cor">
-              {{item.cor}}
-            </div>
+          <div class="my">
+            {{ item.my }}
           </div>
-        
+          <div class="cor">
+            {{ item.cor }}
+          </div>
         </div>
       </div>
+    </div>
   </div>
 </template>
 <script>
-  import wepy from '@wepy/core'
+import wepy from '@wepy/core'
 
-  wepy.component({
-    props: {
-      statisticList: {
-        type: Object,
-        default: {},
-      },
-      title: {
-        type: String,
-        default: '成绩'
-      },
-      score: {
-        type: Number,
-        default: 0,
-      }
+wepy.component({
+  props: {
+    statisticList: {
+      type: Object,
+      default: {},
     },
-    data: {
-      
+    title: {
+      type: String,
+      default: '成绩',
     },
+    score: {
+      type: Number,
+      default: 0,
+    },
+  },
+  data: {},
 
-    events: {
-      
-    },
+  events: {},
 
-    methods: {
-      
-    },
+  methods: {},
 
-    onLoad () {
-    }
-  });
+  onLoad() {},
+})
 </script>

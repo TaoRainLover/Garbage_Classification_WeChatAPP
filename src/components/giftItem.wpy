@@ -1,92 +1,90 @@
 <style lang="less" scoped>
-  .container {
+.container {
+  width: 288rpx;
+  height: 394rpx;
+  background-color: white;
+  box-shadow: 0px 4rpx 20rpx rgba(188, 188, 188, 0.25);
+  border-radius: 12rpx;
+  font-size: 24rpx;
+  margin-bottom: 50rpx;
+  .cover {
+    height: 288rpx;
     width: 288rpx;
-    height: 394rpx;
-    background-color: white;
-    box-shadow: 0px 4rpx 20rpx rgba(188, 188, 188, 0.25);
-    border-radius: 12rpx;
-    font-size: 24rpx;
-    margin-bottom: 50rpx;
-    .cover {
-      height: 288rpx;
-      width: 288rpx;
-      background: #C4C4C4;
-      border-radius: 12rpx 12rpx 0px 0px;
+    background: #c4c4c4;
+    border-radius: 12rpx 12rpx 0px 0px;
+  }
+  .name {
+    margin: 10rpx 16rpx;
+  }
+  .exchange-box {
+    display: flex;
+    padding: 0 16rpx;
+    justify-content: space-between;
+    .des {
+      color: #e4311f;
     }
-    .name {
-      margin: 10rpx 16rpx;
-    }
-    .exchange-box {
+    .btn {
+      width: 64rpx;
+      height: 36rpx;
+      border: 2rpx solid #e4311f;
+      box-sizing: border-box;
+      border-radius: 4rpx;
       display: flex;
-      padding: 0 16rpx;
-      justify-content: space-between;
-      .des {
-        color: #E4311F;
-      }
-      .btn {
-        width: 64rpx;
-        height: 36rpx;
-        border: 2rpx solid #E4311F;
-        box-sizing: border-box;
-        border-radius: 4rpx;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
+      justify-content: center;
+      align-items: center;
     }
   }
+}
 </style>
 <template>
   <div class="container">
-    <img src="{{ coverPath }}" alt="" class="cover"/>
-    <p class="name">{{name}}  | 库存：<span style="color: #4bae32">{{ num }}</span></p>
+    <img src="{{ coverPath }}" alt="" class="cover" />
+    <p class="name">
+      {{ name }} | 库存:<span style="color: #4bae32">{{ num }}</span>
+    </p>
     <div class="exchange-box">
-      <p class="des">所需环保币:<span class="corn">{{ corn }}</span></p>
+      <p class="des">
+        所需环保币:<span class="corn">{{ corn }}</span>
+      </p>
       <div class="btn" @click="exchange">兑换</div>
     </div>
   </div>
 </template>
 <script>
-  import wepy from '@wepy/core'
+import wepy from '@wepy/core'
 
-  wepy.component({
-    props: {
-      coverPath: {
-        type: String,
-        default: '/static/image/trash/1.png'
-      },
-      name: {
-        type: String,
-        default: '手帕纸',
-      },
-      // 所需的环保币数量
-      corn: {
-        type: Number,
-        default: 'xxx',
-      },
-      // 库存数量
-      num: {
-        type: Number,
-        default: 0,
-      }
-
+wepy.component({
+  props: {
+    coverPath: {
+      type: String,
+      default: '/static/image/trash/1.png',
     },
-
-    data: {
-      
+    name: {
+      type: String,
+      default: '手帕纸',
     },
-    // 自定义事件
-    events: {
-      
+    // 所需的环保币数量
+    corn: {
+      type: Number,
+      default: 'xxx',
     },
-
-    methods: {
-      exchange(curItem) {
-        this.$emit('exchange', curItem)
-      }
+    // 库存数量
+    num: {
+      type: Number,
+      default: 0,
     },
+  },
 
-    onLoad () {
-    }
-  });
+  data: {},
+  // 自定义事件
+  events: {},
+
+  methods: {
+    exchange(curItem) {
+      this.$emit('exchange', curItem)
+    },
+  },
+
+  onLoad() {},
+})
 </script>

@@ -1,35 +1,76 @@
 <template>
-  <div class="container" style="height: {{ remainHeight }}">
-    <!-- 顶部导航区域 -->
-    <div class="nav-box">
-      <span class="latest nav" style="{{selectedNavStyle}}">最新考试</span>
-      <span class="highest nav">分数最高</span>
-    </div>
-    <!-- 答题记录列表 -->
-    <div class="testRecordList">
-      <div class="li" v-for="(item, id ) in latestRecordList" :key="id">
-        <p class="dateInfo">答题时间：<span class="date">{{item.date}}</span></p>
-        <div class="recordInfo">
-          <div class="scoreInfo info">
-            <img class="icon" src="/static/image/icon/score.png"/>
-            <span> 分数：<span class="score">{{item.score}}</span></span>
-          </div>
-          <div class="trueInfo info">
-            <img class="icon" src="/static/image/icon/true.png"/>
-            <span> 正确：<span class="score">{{item.trueCount}}</span></span>
-          </div>
-          <div class="falseInfo info">
-            <img class="icon" src="/static/image/icon/false.png"/>
-            <span> 错误：<span class="score">{{item.falseCount}}</span></span>
+  <div style="height: {{ remainHeight }}">
+    <div class="container" style="height: {{ remainHeight }}">
+      <!-- 顶部导航区域 -->
+      <div class="nav-box">
+        <span
+          v-if="showLatest"
+          class="latest nav"
+          style="{{selectedNavStyle}}"
+          @click="changeToNew"
+          >最新考试</span
+        >
+        <span v-else class="latest nav" @click="changeToNew">最新考试</span>
+        <span
+          v-if="!showLatest"
+          class="highest nav"
+          style="{{selectedNavStyle}}"
+          @click="changeToHighest"
+          >分数最高</span
+        >
+        <span v-else class="highest nav" @click="changeToHighest"
+          >分数最高</span
+        >
+      </div>
+      <!-- 答题记录列表 -->
+      <div class="testRecordList">
+        <div
+          class="li"
+          v-for="(item, id) in showList"
+          :key="id"
+          @click="showDetail(item.id)"
+        >
+          <p class="dateInfo">
+            答题时间：<span class="date">{{ item.date }}</span>
+          </p>
+          <div class="recordInfo">
+            <div class="scoreInfo info">
+              <img class="icon" src="/static/image/icon/score.png" />
+              <span>
+                分数：<span class="score">{{ item.score }}</span></span
+              >
+            </div>
+            <div class="trueInfo info">
+              <img class="icon" src="/static/image/icon/true.png" />
+              <span>
+                正确：<span class="score">{{ item.trueCount }}</span></span
+              >
+            </div>
+            <div class="falseInfo info">
+              <img class="icon" src="/static/image/icon/false.png" />
+              <span>
+                错误：<span class="score">{{ item.falseCount }}</span></span
+              >
+            </div>
           </div>
         </div>
       </div>
+      <!-- 结束提示语 -->
+      <p class="ending">已加载全部数据...</p>
     </div>
-    <!-- 结束提示语 -->
-    <p class="ending">已加载全部数据...</p>
+
+    <!-- 结果分数统计页面 -->
+    <div class="statistic-container" v-if="showStatisticPage" @click="cancel">
+      <scoreStatistic
+        class="statistic-box"
+        title="答题详情"
+        statisticList.sync="{{statisticList}}"
+        score="{{score}}"
+        @tap.stop
+      ></scoreStatistic>
+    </div>
   </div>
 </template>
-
 
 <script>
 // 导入 wepy 框架
@@ -37,34 +78,64 @@ import wepy from '@wepy/core'
 wepy.page({
   data: {
     remainHeight: '',
-    latestRecordList: [{date: '2022/2/25', score: 80, trueCount: 8, falseCount: 2},
-                      {date: '2022/2/25', score: 80, trueCount: 8, falseCount: 2},
-                      {date: '2022/2/25', score: 80, trueCount: 8, falseCount: 2},
-                      {date: '2022/2/25', score: 80, trueCount: 8, falseCount: 2},
-                      {date: '2022/2/25', score: 80, trueCount: 8, falseCount: 2},
-                      {date: '2022/2/25', score: 80, trueCount: 8, falseCount: 2},
-                      {date: '2022/2/25', score: 80, trueCount: 8, falseCount: 2}],
+    // 展示列表数据
+    showList: [],
+    latestRecordList: [
+      { id: 1, date: '2022/2/25', score: 80, trueCount: 8, falseCount: 2 },
+      { id: 2, date: '2022/2/25', score: 80, trueCount: 8, falseCount: 2 },
+      { id: 3, date: '2022/2/25', score: 80, trueCount: 8, falseCount: 2 },
+      { id: 4, date: '2022/2/25', score: 80, trueCount: 8, falseCount: 2 },
+      { id: 5, date: '2022/2/25', score: 80, trueCount: 8, falseCount: 2 },
+      { id: 6, date: '2022/2/25', score: 80, trueCount: 8, falseCount: 2 },
+      { id: 7, date: '2022/2/25', score: 80, trueCount: 8, falseCount: 2 },
+    ],
+    highestRecordList: [],
     //自定义导航栏选中样式
-    selectedNavStyle :'font-weight: bold; border-bottom: 4rpx solid #4CAE32; color: #4CAE32;',
-           
+    selectedNavStyle:
+      'font-weight: bold; border-bottom: 4rpx solid #4CAE32; color: #4CAE32;',
+    // 是否显示最新考试记录
+    showLatest: true,
 
-
+    //showStatisticPage
+    showStatisticPage: false,
   },
   methods: {
+    // 点击最新考试
+    changeToNew() {
+      this.showLatest = true
+      // TODO：拉取数据库最新的数据
+      this.showList = this.latestRecordList
+    },
+    // 点击分数最高
+    changeToHighest() {
+      this.showLatest = false
+      // TODO：拉取数据库分数最高的数据
+      this.showList = this.highestRecordList
+    },
 
+    // 展示考试详情
+    showDetail(id) {
+      console.log('详情', id)
+      this.showStatisticPage = true
+      // TODO: 获取对应 id 的详情信息
+    },
+
+    // 取消展示
+    cancel() {
+      this.showStatisticPage = false
+    },
   },
 
   // 生命周期函数 created
-  created () {
+  created() {
     this.remainHeight = this.$app.$options.globalData.remainHeight + 'px'
-  }
-
+  },
 })
 </script>
 
 <style lang="less" scoped>
 .container {
-  background: #F8F8F8;
+  background: #f8f8f8;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -82,7 +153,6 @@ wepy.page({
       // line-height: 72rpx;
       // background: navajowhite;
       padding-bottom: 6rpx;
-
     }
   }
 
@@ -102,7 +172,6 @@ wepy.page({
       flex-direction: column;
       justify-content: space-between;
       .dateInfo {
-
       }
       .recordInfo {
         font-size: 24rpx;
@@ -118,16 +187,27 @@ wepy.page({
             margin-right: 8rpx;
           }
         }
-        
       }
     }
   }
 
   // 结尾提示语
-  .ending{
+  .ending {
     font-size: 12px;
     color: #555;
+    margin-top: 40rpx;
   }
+}
+// 分数统计
+.statistic-container {
+  background: rgba(185, 185, 185, 0.6);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0%;
 }
 </style>
 
@@ -135,7 +215,7 @@ wepy.page({
 {
     navigationBarTitleText: '答题记录',
     usingComponents: {
-
+      scoreStatistic: '../../components/scoreStatistic',
     }
 }
 </config>

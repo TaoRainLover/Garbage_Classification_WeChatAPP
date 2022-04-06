@@ -215,14 +215,21 @@ wepy.page({
 
     // 跳转到更换勋章页面
     navigateToMedelList() {
-      wx.navigateTo({
-        url: '/packageBuild/pages/changeMedal',
-      })
+      if (this.hasUserInfo) {
+        wx.navigateTo({
+          url: '/packageBuild/pages/changeMedal',
+        })
+      } else {
+        wx.showToast({
+          icon: 'none',
+          title: '请先完成登录！',
+          duration: 1500,
+        })
+      }
     },
 
-    // 获取用户信息
+    // TODO:获取用户信息
     getUserInfo() {
-      // TODO：请求用户的信息
       wx.request({
         url: 'url',
       })
@@ -258,7 +265,13 @@ wepy.page({
           // TODO: 将结果写入数据库中
           this.userInfo = res.userInfo
           this.hasUserInfo = true
-          console.log(this.userInfo)
+          // TODO: 将用户的身份信息传给全局变量
+          this.$app.$options.globalData.userInfo.loginStatus = true
+          // this.$app.$options.globalData.userInfo.nickName =
+          //   this.userInfo.nickName
+          // this.$app.$options.globalData.userInfo.avatarUrl =
+          //   this.userInfo.avatarUrl
+          // console.log(this.$app.$options.globalData.userInfo)
         },
         fail: (err) => {
           console.log(err)
@@ -271,21 +284,13 @@ wepy.page({
   created() {
     this.windowHeight = this.$app.$options.globalData.windowHeight + 'px'
     this.oepnid = this.$app.$options.globalData.oepnid
-    if (this.openid != '') {
-      // this.hasUserInfo = false
-    } else {
-      // TODO：如果用户的 openid 不为空的话，根据 openid 查询用户的后台数据
-    }
+    this.hasUserInfo = this.$app.$options.globalData.loginStatus
   },
 
   // 小程序原生生命周期函数： onLoad，用来获取页面参数传值
   onLoad(options) {
-    console.log('进入用户个人页面')
+    // console.log('进入用户个人页面')
   },
-  // onPrefetch() {
-  //   console.log('跳转到个人页面')
-
-  // },
 })
 </script>
 

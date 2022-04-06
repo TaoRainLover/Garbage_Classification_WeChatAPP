@@ -1,4 +1,5 @@
-t<template>
+t
+<template>
   <div class="container">
     <!-- 试题页面 -->
     <div class="test-container" v-if="showQues">
@@ -13,13 +14,21 @@ t<template>
     </div>
     <!-- 结果分数统计页面 -->
     <div class="statistic-container" v-else>
-      <scoreStatistic class="statistic-box" title="垃圾分类知识答题测试" statisticList="{{statisticList}}" score="{{score}}"></scoreStatistic>
-      <img src="/static/image/icon/refresh.png" class="icon" @click="palyAgain"/>
-      <p class="play-again" >再来一次</p>
+      <scoreStatistic
+        class="statistic-box"
+        title="垃圾分类知识答题测试"
+        statisticList="{{statisticList}}"
+        score="{{score}}"
+      ></scoreStatistic>
+      <img
+        src="/static/image/icon/refresh.png"
+        class="icon"
+        @click="palyAgain"
+      />
+      <p class="play-again">再来一次</p>
     </div>
   </div>
 </template>
-
 
 <script>
 // 导入 wepy 框架
@@ -27,26 +36,27 @@ import wepy from '@wepy/core'
 wepy.page({
   data: {
     showQues: false,
-    statisticList: [{name: '创可贴', my: '有害垃圾', cor: '其他垃圾'},
-    {name: '创可贴', my: '有害垃圾', cor: '其他垃圾'},
-    {name: '创可贴', my: '有害垃圾', cor: '其他垃圾'},
-    {name: '创可贴', my: '有害垃圾', cor: '其他垃圾'},
-    {name: '创可贴', my: '有害垃圾', cor: '其他垃圾'},
-    {name: '创可贴', my: '有害垃圾', cor: '其他垃圾'},
-    {name: '创可贴', my: '有害垃圾', cor: '其他垃圾'},
-    {name: '创可贴', my: '有害垃圾', cor: '其他垃圾'},
-    {name: '创可贴', my: '有害垃圾', cor: '其他垃圾'},
-    {name: '创可贴', my: '有害垃圾', cor: '其他垃圾'},
-    {name: '创可贴', my: '有害垃圾', cor: '其他垃圾'},],
+    statisticList: [
+      { name: '创可贴', my: '有害垃圾', cor: '其他垃圾' },
+      { name: '创可贴', my: '有害垃圾', cor: '其他垃圾' },
+      { name: '创可贴', my: '有害垃圾', cor: '其他垃圾' },
+      { name: '创可贴', my: '有害垃圾', cor: '其他垃圾' },
+      { name: '创可贴', my: '有害垃圾', cor: '其他垃圾' },
+      { name: '创可贴', my: '有害垃圾', cor: '其他垃圾' },
+      { name: '创可贴', my: '有害垃圾', cor: '其他垃圾' },
+      { name: '创可贴', my: '有害垃圾', cor: '其他垃圾' },
+      { name: '创可贴', my: '有害垃圾', cor: '其他垃圾' },
+      { name: '创可贴', my: '有害垃圾', cor: '其他垃圾' },
+      { name: '创可贴', my: '有害垃圾', cor: '其他垃圾' },
+    ],
     score: 90,
   },
   methods: {
-    palyAgain(){
+    palyAgain() {
       console.log('play again!')
       this.showQues = true
-    }
-  }
-
+    },
+  },
 })
 </script>
 
@@ -59,7 +69,7 @@ wepy.page({
     align-items: center;
     .progress {
       font-size: 28rpx;
-      margin: 154rpx 0 48rpx 640rpx
+      margin: 154rpx 0 48rpx 640rpx;
     }
     .question {
       font-size: 72rpx;
@@ -71,7 +81,7 @@ wepy.page({
         width: 484rpx;
         height: 96rpx;
         font-size: 36rpx;
-        background: #FFFFFF;
+        background: #ffffff;
         box-shadow: 0 0 22rpx rgba(64, 85, 58, 0.5);
         border-radius: 86rpx;
         display: flex;
