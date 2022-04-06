@@ -2,35 +2,57 @@
   <div class="container" style="height: {{remainHeight}}">
     <!-- 顶部反馈问题类型 -->
     <div class="fee-cate-box">
-      <div class="comment cate">意见反馈</div>
-      <div class="system cate">系统问题</div>
-      <div class="account cate">账号问题</div>
-      <div class="other cate">其他</div>
+      <div class="selected cate" v-if="advise">意见反馈</div>
+      <div class="cate" v-else @click="changeType('advise')">意见反馈</div>
+      <div class="selected cate" v-if="system">系统问题</div>
+      <div class="cate" v-else @click="changeType('system')">系统问题</div>
+      <div class="selected cate" v-if="account">账号问题</div>
+      <div class="cate" v-else @click="changeType('account')">账号问题</div>
+      <div class="selected cate" v-if="other">其他</div>
+      <div class="cate" v-else @click="changeType('other')">其他</div>
     </div>
 
     <!-- 提交内容区域 -->
     <div class="title-content-img-box">
       <div class="title-box">
-        <input class="input-area" placeholder="添加标题" type="text"/>
-        <p>12</p>
+        <input
+          class="input-area"
+          placeholder="添加标题"
+          type="text"
+          v-model="title"
+          maxlength="12"
+        />
+        <p>
+          <span>{{ titleCount }}</span
+          >/12
+        </p>
       </div>
       <div class="content-box">
-        <textarea class="content-area" placeholder="填写相关描述信息" ></textarea>
-        <p class="num-text"><span class="input-">0</span>/100</p>
+        <textarea
+          v-model="content"
+          class="content-area"
+          placeholder="填写相关描述信息"
+          maxlength="150"
+        ></textarea>
+        <p class="num-text">
+          <span class="input-count">{{ contentCount }}</span
+          >/150
+        </p>
       </div>
       <div class="img-box">
-        <p class="des"><span>提交问题的截图或图片(选填)</span><span>0/3</span></p>
+        <p class="des">
+          <span>提交问题的截图或图片(选填)</span><span>0/3</span>
+        </p>
         <div class="add-img-btn">
-          <img src="/static/image/icon/add.png" class="icon"/>
+          <img src="/static/image/icon/add.png" class="icon" />
         </div>
       </div>
     </div>
 
     <!-- 提交按钮 -->
-    <div class="btn">提交</div>
+    <div class="btn" @click="submit">提交</div>
   </div>
 </template>
-
 
 <script>
 // 导入 wepy 框架
@@ -39,23 +61,104 @@ wepy.page({
   data: {
     windowHeight: '',
     remainHeight: '',
+    // 反馈类型：
+    advise: true,
+    system: false,
+    account: false,
+    other: false,
+    type: 'advise',
+
+    // 提交内容
+    title: '',
+    content: '',
+    imgUrlList: [],
   },
   methods: {
+    // 更改反馈类型
+    changeType(type) {
+      switch (type) {
+        case 'advise': {
+          this.advise = true
+          this.system = false
+          this.account = false
+          this.other = false
+          this.type = 'c'
+          break
+        }
+        case 'system': {
+          this.advise = false
+          this.system = true
+          this.account = false
+          this.other = false
+          this.type = 'system'
+          break
+        }
+        case 'account': {
+          this.advise = false
+          this.system = false
+          this.account = true
+          this.other = false
+          this.type = 'account'
+          break
+        }
+        case 'other': {
+          this.advise = false
+          this.system = false
+          this.account = false
+          this.other = true
+          this.type = 'other'
+          break
+        }
+      }
+    },
 
+    // 提交反馈
+    submit() {
+      if (this.title.length === 0) {
+        wx.showToast({
+          title: '请填写标题', //提示的内容,
+          icon: 'none', //图标,
+          duration: 1500, //延迟时间,
+        })
+      } else if (this.content.length === 0) {
+        wx.showToast({
+          title: '请填写问题描述',
+          icon: 'none',
+          duration: 1500,
+        })
+      } else if (this.content.length < 10) {
+        wx.showToast({
+          title: '问题描述不少于10字符',
+          icon: 'none',
+        })
+      } else {
+        // TODO: 提交反馈至后台服务器
+        console.log(this.type)
+        console.log(this.title)
+        console.log(this.content)
+      }
+    },
+  },
+  computed: {
+    titleCount() {
+      return this.title.length
+    },
+    contentCount() {
+      return this.content.length
+    },
   },
 
   // 生命周期函数 created
-  created () {
-    this.remainHeight = this.$app.$options.globalData.remainHeight+'px'
+  created() {
+    this.remainHeight = this.$app.$options.globalData.remainHeight + 'px'
     console.log(this.windowHeight)
-  }
-
+  },
 })
 </script>
 
 <style lang="less" scoped>
-.container{
-  background: #F8F8F8;
+.container {
+  background: #f8f8f8;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -75,16 +178,13 @@ wepy.page({
       text-align: center;
       // background: rgba(76, 174, 50, 0.1);
       border: 2rpx solid #555;
-      border-radius: 28rpx;
-
-    }
-    .comment {
-      background: rgba(76, 174, 50, 0.1);
-      border: 2rpx solid #4CAE32;
       box-sizing: border-box;
       border-radius: 28rpx;
     }
-    
+    .selected {
+      background: rgba(76, 174, 50, 0.1);
+      border: 2rpx solid #4cae32;
+    }
   }
 
   // 提交内容区域
@@ -99,6 +199,7 @@ wepy.page({
     display: flex;
     flex-direction: column;
     align-items: center;
+    // 标题
     .title-box {
       height: 64rpx;
       width: 640rpx;
@@ -111,12 +212,12 @@ wepy.page({
       border-bottom: 2rpx solid rgba(85, 85, 85, 0.2);
       .input-area {
         width: 560rpx;
-      // background-color: antiquewhite;
+        // background-color: antiquewhite;
         font-size: 32rpx;
         font-weight: bold;
       }
     }
-
+    //  内容
     .content-box {
       height: 410rpx;
       width: 640rpx;
@@ -128,6 +229,7 @@ wepy.page({
         height: 350rpx;
         width: 100%;
         // background-color: antiquewhite;
+        line-height: 42rpx;
       }
       .num-text {
         width: 100%;
@@ -135,7 +237,7 @@ wepy.page({
         margin-top: 8rpx;
       }
     }
-
+    // 图片
     .img-box {
       width: 640rpx;
       box-sizing: border-box;
@@ -148,7 +250,7 @@ wepy.page({
       .add-img-btn {
         height: 110rpx;
         width: 110rpx;
-        background: #F2F2F2;
+        background: #f2f2f2;
         border-radius: 8rpx;
         margin-top: 40rpx;
         display: flex;
@@ -171,7 +273,7 @@ wepy.page({
     font-weight: bold;
     line-height: 64rpx;
     text-align: center;
-    background: #4CAE32;
+    background: #4cae32;
     border-radius: 32rpx;
     margin-top: 76rpx;
   }

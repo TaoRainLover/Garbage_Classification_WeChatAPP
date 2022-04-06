@@ -96,6 +96,7 @@ wepy.page({
   // 生命周期函数 created
   created() {
     this.remainHeight = this.$app.$options.globalData.remainHeight * 2 + 'rpx'
+    // TODO: 在页面加载之前获取今日的搜索历史
   },
 })
 </script>

@@ -1,5 +1,5 @@
 <style lang="less">
-  div{
+div {
   // height: 100%;
   // display: flex;
   // flex-direction: column;
@@ -10,12 +10,11 @@
 </style>
 
 <script>
-import wepy from '@wepy/core';
-import eventHub from './common/eventHub';
-import vuex from '@wepy/x';
+import wepy from '@wepy/core'
+import eventHub from './common/eventHub'
+import vuex from '@wepy/x'
 
-wepy.use(vuex);
-
+wepy.use(vuex)
 
 wepy.app({
   // 暂未明白 hooks 的原理和作用
@@ -33,7 +32,7 @@ wepy.app({
     windowHeight: 0,
     // 屏幕可用高度不含tabbar
     remainHeight: 0,
-    
+
     // 用户信息
     userInfo: {
       // 用户登录状态(true: 登录， false: 未登录)
@@ -42,8 +41,8 @@ wepy.app({
       nickName: '',
       avatarUrl: '',
     },
-    // 
-    openid: ''
+    //
+    openid: '',
   },
 
   async onLaunch() {
@@ -54,12 +53,13 @@ wepy.app({
     const res = await wx.getSystemInfoSync({})
     // console.log(res)
     this.$options.globalData.windowHeight = res.windowHeight
-    this.$options.globalData.remainHeight = res.screenHeight - res.statusBarHeight - 44
+    this.$options.globalData.remainHeight =
+      res.screenHeight - res.statusBarHeight - 44
     // console.log(this.$options.globalData.remainHeight)
     // console.log(this.$options.globalData.windowHeight)
 
     wx.login({
-      success (res) {
+      success(res) {
         console.log(res)
         if (res.code) {
           //发起网络请求
@@ -79,12 +79,11 @@ wepy.app({
         } else {
           console.log('登录失败！' + res.errMsg)
         }
-      }
+      },
     })
   },
 
   methods: {
-
     // sleep (s) {
     //   return new Promise((resolve, reject) => {
     //     setTimeout(() => {
@@ -92,13 +91,12 @@ wepy.app({
     //     }, s * 1000)
     //   })
     // },
-
     // async testAsync () {
     //   let d = await this.sleep(3);
     //   console.log(d);
     // }
-  }
-});
+  },
+})
 </script>
 <config>
 {
@@ -111,6 +109,8 @@ wepy.app({
       'pages/find',
       'pages/page1',
       'pages/testpage',
+
+      
     ],
     // 子包
     subPackages: [

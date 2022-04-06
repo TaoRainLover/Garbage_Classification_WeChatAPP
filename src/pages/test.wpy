@@ -1,15 +1,45 @@
-t
 <template>
   <div class="container">
     <!-- 试题页面 -->
     <div class="test-container" v-if="showQues">
-      <p class="progress"><span class="num">01</span>/10</p>
-      <p class="question">锡纸</p>
+      <p class="progress">
+        <span class="num">{{ id }}</span
+        >/10
+      </p>
+      <p class="question">{{ cur_que.name }}</p>
       <div class="select-box">
-        <div class="select A">可回收物</div>
-        <div class="select B">其他垃圾</div>
-        <div class="select C">厨余垃圾</div>
-        <div class="select D">有害垃圾</div>
+        <div
+          class="select A"
+          style="{{stylea}}"
+          @touchstart="selectStart('可回收物')"
+          @touchend="selectEnd('可回收物')"
+        >
+          可回收物
+        </div>
+        <div
+          class="select B"
+          style="{{styleb}}"
+          @touchstart="selectStart('其他垃圾')"
+          @touchend="selectEnd('其他垃圾')"
+        >
+          其他垃圾
+        </div>
+        <div
+          class="select C"
+          style="{{stylec}}"
+          @touchstart="selectStart('厨余垃圾')"
+          @touchend="selectEnd('厨余垃圾')"
+        >
+          厨余垃圾
+        </div>
+        <div
+          class="select D"
+          style="{{styled}}"
+          @touchstart="selectStart('有害垃圾')"
+          @touchend="selectEnd('有害垃圾')"
+        >
+          有害垃圾
+        </div>
       </div>
     </div>
     <!-- 结果分数统计页面 -->
@@ -17,8 +47,8 @@ t
       <scoreStatistic
         class="statistic-box"
         title="垃圾分类知识答题测试"
-        statisticList="{{statisticList}}"
-        score="{{score}}"
+        statisticList.sync="{{statisticList}}"
+        score.sync="{{score}}"
       ></scoreStatistic>
       <img
         src="/static/image/icon/refresh.png"
@@ -35,27 +65,135 @@ t
 import wepy from '@wepy/core'
 wepy.page({
   data: {
-    showQues: false,
-    statisticList: [
-      { name: '创可贴', my: '有害垃圾', cor: '其他垃圾' },
-      { name: '创可贴', my: '有害垃圾', cor: '其他垃圾' },
-      { name: '创可贴', my: '有害垃圾', cor: '其他垃圾' },
-      { name: '创可贴', my: '有害垃圾', cor: '其他垃圾' },
-      { name: '创可贴', my: '有害垃圾', cor: '其他垃圾' },
-      { name: '创可贴', my: '有害垃圾', cor: '其他垃圾' },
-      { name: '创可贴', my: '有害垃圾', cor: '其他垃圾' },
-      { name: '创可贴', my: '有害垃圾', cor: '其他垃圾' },
-      { name: '创可贴', my: '有害垃圾', cor: '其他垃圾' },
-      { name: '创可贴', my: '有害垃圾', cor: '其他垃圾' },
-      { name: '创可贴', my: '有害垃圾', cor: '其他垃圾' },
+    // 选项选中的样式
+    stylea: '',
+    styleb: '',
+    stylec: '',
+    styled: '',
+    // 正确：
+    corretStyle:
+      'box-shadow: none;background: rgba(150, 215, 132, 0.42);border: 2px solid rgba(76, 174, 50, 0.25);',
+    // 错误：
+    failStyle:
+      'box-shadow: none;background: rgba(253, 111, 111, 0.1);border: 2px solid rgba(247, 206, 206, 0.49);',
+    // 展示测试界面
+    showQues: true,
+    // 问题列表
+    quesList: [
+      { name: '创可贴1', cor: '其他垃圾' },
+      { name: '创可贴2', cor: '其他垃圾' },
+      { name: '创可贴3', cor: '有害垃圾' },
+      { name: '创可贴4', cor: '其他垃圾' },
+      { name: '创可贴5', cor: '其他垃圾' },
+      { name: '创可贴6', cor: '可回收物' },
+      { name: '创可贴7', cor: '其他垃圾' },
+      { name: '创可贴8', cor: '其他垃圾' },
+      { name: '创可贴9', cor: '厨余垃圾' },
+      { name: '创可贴10', cor: '其他垃圾' },
     ],
-    score: 90,
+    // 本次答题统计列表
+    statisticList: [],
+    // 当前问题
+    cur_que: {},
+    // 统计：
+    // 今日答题次数
+    count: 0,
+    // 得分
+    score: 0,
+    // 当前索引
+    id: 1,
   },
   methods: {
-    palyAgain() {
-      console.log('play again!')
-      this.showQues = true
+    // 更换样式
+    changeStyle(that, my, style) {
+      switch (my) {
+        case '可回收物': {
+          that.stylea = style
+          break
+        }
+        case '其他垃圾': {
+          that.styleb = style
+          break
+        }
+        case '厨余垃圾': {
+          that.stylec = style
+          break
+        }
+        case '有害垃圾': {
+          that.styled = style
+          break
+        }
+      }
     },
+
+    // 点击选择
+    selectStart(my) {
+      console.log('点击开始', my)
+      // 判断正误
+      if (this.cur_que.cor == my) {
+        console.log('答对了')
+        this.score += 10
+        this.changeStyle(this, my, this.corretStyle)
+      } else {
+        console.log('答错了')
+        this.changeStyle(this, my, this.failStyle)
+      }
+      const newItem = {
+        id: this.id,
+        name: this.cur_que.name,
+        cor: this.cur_que.cor,
+        my: my,
+      }
+      // console.log(newItem)
+      this.statisticList.push(newItem)
+
+      // 判断是否完成所有题目
+      if (this.id == 10) {
+        this.showQues = false
+        this.count++
+        // console.log(this.statisticList)
+        // TODO：将结果发送后台数据库
+      } else {
+        this.cur_que = this.quesList[this.id]
+        this.id++
+      }
+    },
+
+    selectEnd(my) {
+      console.log(my, '点击结束！')
+      this.stylea = ''
+      this.styleb = ''
+      this.stylec = ''
+      this.styled = ''
+    },
+
+    // 再来一次
+    palyAgain() {
+      // 判断今日答题次数是否超出5次
+      if (this.count > 5) {
+        wx.showToast({
+          title: '今日答题已完成，请改日再来！',
+          icon: 'none',
+        })
+      } else {
+        console.log('play again!')
+        // TODO：更新问题列表
+        // 重新初始化
+        this.showQues = true
+        this.cur_que = this.quesList[0]
+        this.id = 1
+        this.score = 0
+        this.statisticList = []
+        this.stylea = ''
+        this.styleb = ''
+        this.stylec = ''
+        this.styled = ''
+      }
+    },
+  },
+  created() {
+    // TODO: 获取问题列表
+    this.cur_que = this.quesList[0]
   },
 })
 </script>
@@ -88,6 +226,18 @@ wepy.page({
         justify-content: center;
         align-items: center;
         margin-bottom: 44rpx;
+      }
+      // 选对的样式
+      .corretStyle {
+        box-shadow: none;
+        background: rgba(150, 215, 132, 0.42);
+        border: 2px solid rgba(76, 174, 50, 0.25);
+      }
+      // 选错的样式
+      .failStyle {
+        box-shadow: none;
+        background: rgba(253, 111, 111, 0.1);
+        border: 2px solid rgba(247, 206, 206, 0.49);
       }
     }
   }
