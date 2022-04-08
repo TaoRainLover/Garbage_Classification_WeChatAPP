@@ -1,26 +1,39 @@
 <template>
   <div class="container" style="height: {{ remainHeight }}">
-    <p class="title">选择佩戴(已拥有 <span style="color: #4CAE32">{{medalList.length}}</span> )：</p>
+    <p class="title">
+      选择佩戴(已拥有
+      <span style="color: #4cae32">{{ medalList.length }}</span> )：
+    </p>
+    <!-- 底部勋章列表墙 -->
     <div class="content-container">
+      <p class="medal-text">== 勋章墙 ==</p>
       <div class="medal-container">
-        <div class="medal-box" v-for="(item, id) in medalList" :key="id">
+        <div
+          class="medal-box"
+          v-for="(item, id) in medalList"
+          :key="id"
+          @click="selectMedal(item.id, item.title)"
+        >
           <div v-if="item.weared" class="icon-title-box icon-title-box1">
-            <img  src="/static/image/icon/medal2.png" class="icon"/>
-            <p class="title">萌新报道</p>
+            <img src="/static/image/icon/medal2.png" class="icon" />
+            <p class="title">{{ item.title }}</p>
           </div>
           <div v-else class="icon-title-box">
-            <img  src="/static/image/icon/medal2.png" class="icon"/>
-            <p class="title">萌新报道</p>
+            <img src="/static/image/icon/medal2.png" class="icon" />
+            <p class="title">{{ item.title }}</p>
           </div>
-          <img v-if="item.weared" src="/static/image/icon/metal3.png" class="icon"/>
-          <img v-else src="/static/image/icon/metal4.png" class="icon"/>
+          <img
+            v-if="item.weared"
+            src="/static/image/icon/metal3.png"
+            class="icon"
+          />
+          <img v-else src="/static/image/icon/metal4.png" class="icon" />
         </div>
       </div>
-      <div class="btn">兑换更多</div>
+      <div class="btn" @click="navigateMedal">兑换更多</div>
     </div>
   </div>
 </template>
-
 
 <script>
 // 导入 wepy 框架
@@ -29,24 +42,41 @@ wepy.page({
   data: {
     // windowHeight: '',
     remainHeight: '',
-    medalList: [{id:1,  title: '萌新报道', weared: false},
-              {id: 2, title: '萌新报道', weared: false},
-              {id: 3, title: '萌新报道', weared: true},
-              {id: 4, title: '萌新报道', weared: false},
-              {id: 5, title: '萌新报道', weared: false},
-              {id: 6, title: '萌新报道', weared: false},]
+    medalList: [
+      { id: 1, title: '萌新报道', weared: false },
+      { id: 2, title: '神奇萌新', weared: false },
+      { id: 3, title: '环保卫士', weared: true },
+      { id: 4, title: '渐入佳境', weared: false },
+      { id: 5, title: '地球卫士', weared: false },
+      { id: 6, title: '萌新报道1', weared: false },
+    ],
   },
   methods: {
+    // 更换勋章
+    selectMedal(id, title) {
+      console.log('勋章！', title)
+      this.medalList.forEach((item) => {
+        if (item.title === title) {
+          item.weared = true
+        } else {
+          item.weared = false
+        }
+      })
+      // TODO：将结果提交后台数据库
+    },
 
+    // 兑换更多勋章 -- 跳转到勋章兑换页面
+    navigateMedal() {
+      this.$app.$options.globalData.giftOption = 'medal'
+      wx.switchTab({ url: '/pages/gift' })
+    },
   },
 
   // 生命周期函数 created
-  created () {
-    // this.windowHeight = this.$app.$options.globalData.windowHeight*2 + 'rpx'
+  created(options) {
     this.remainHeight = this.$app.$options.globalData.remainHeight + 'px'
-    // console.log(this.windowHeight)
-  }
-
+    // TODO: 拉取用户的勋章列表信息
+  },
 })
 </script>
 
@@ -66,8 +96,9 @@ wepy.page({
   .title {
     font-size: 32rpx;
     font-weight: bold;
-    margin-top: 10%;
-    margin-left: 5%;
+    box-sizing: border-box;
+    padding-top: 10%;
+    padding-left: 5%;
   }
   .content-container {
     height: 88%;
@@ -79,9 +110,14 @@ wepy.page({
     align-items: center;
     position: absolute;
     bottom: 0px;
+    .medal-text {
+      margin-top: 40rpx;
+      font-size: 32rpx;
+      font-weight: bold;
+    }
     .medal-container {
       width: 100%;
-      padding: 68rpx 40rpx;
+      padding: 48rpx 40rpx;
       box-sizing: border-box;
       display: flex;
       flex-wrap: wrap;
@@ -108,9 +144,10 @@ wepy.page({
         }
 
         .icon-title-box1 {
-          border: 4rpx solid #4CAE32;
+          box-sizing: border-box;
+          border: 4rpx solid #4cae32;
           .title {
-            color: #4CAE32;
+            color: #4cae32;
           }
         }
         .icon {
@@ -127,14 +164,13 @@ wepy.page({
       color: white;
       line-height: 60rpx;
       text-align: center;
-      background: #4CAE32;
+      background: #4cae32;
       box-shadow: 0px -2px 10px rgba(169, 185, 166, 0.25);
       border-radius: 34px;
       position: absolute;
       bottom: 120rpx;
     }
   }
-
 }
 </style>
 

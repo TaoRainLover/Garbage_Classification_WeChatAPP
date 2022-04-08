@@ -43,6 +43,10 @@ wepy.app({
     },
     //
     openid: '',
+
+    // 礼品页面显示参数
+    // medal 或者 goods
+    giftOption: 'goods',
   },
 
   async onLaunch() {

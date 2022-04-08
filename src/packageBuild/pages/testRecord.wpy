@@ -129,6 +129,9 @@ wepy.page({
   // 生命周期函数 created
   created() {
     this.remainHeight = this.$app.$options.globalData.remainHeight + 'px'
+    // TODO：请求最新的答题数据
+
+    this.showList = this.latestRecordList
   },
 })
 </script>

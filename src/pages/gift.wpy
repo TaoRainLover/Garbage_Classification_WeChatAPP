@@ -4,11 +4,11 @@
     <p class="title">兑换种类:</p>
     <div class="icon-box">
       <div class="gift-box box" @click="showGift">
-        <img src="{{giftIconPath}}" class="icon"/>
+        <img src="{{giftIconPath}}" class="icon" />
         <p class="des">礼品</p>
       </div>
       <div class="medal-box box" @click="showMedal">
-        <img src="{{medalIconPath}}" class="icon"/>
+        <img src="{{medalIconPath}}" class="icon" />
         <p class="des">勋章</p>
       </div>
     </div>
@@ -19,7 +19,14 @@
       <div class="gift-item-box box" v-if="showGiftView">
         <p class="title-name">== 礼品 ==</p>
         <div class="item-list-box">
-          <giftItem v-for="(item, id) in giftItemList" :key="id" :name="item.name" :corn="item.corn" :coverPath="item.coverPath" v-on:exchange="exchange"></giftItem>
+          <giftItem
+            v-for="(item, id) in giftItemList"
+            :key="id"
+            :name="item.name"
+            :corn="item.corn"
+            :coverPath="item.coverPath"
+            v-on:exchange="exchange"
+          ></giftItem>
         </div>
         <!--  结束描述 -->
         <p class="ending">已加载全部数据</p>
@@ -34,8 +41,8 @@
           <div class="list-box">
             <div class="li" wx:for="{{ownedList}}" wx:key="*this">
               <div class="des-box">
-                <img src="/static/image/icon/medal2.png" class="icon"/>
-                <p class="medal-name">{{item}}</p>
+                <img src="/static/image/icon/medal2.png" class="icon" />
+                <p class="medal-name">{{ item }}</p>
               </div>
               <p>100币</p>
               <p>已拥有</p>
@@ -46,25 +53,24 @@
         <div class="unowned-box">
           <p class="type">未拥有:</p>
           <div class="list-box">
-            <div class="li" v-for="(item, id) in unowendList" :key="id" >
+            <div class="li" v-for="(item, id) in unowendList" :key="id">
               <div class="des-box">
-                <img src="/static/image/icon/medal2.png" class="icon"/>
-                <p class="medal-name">{{item}}</p>
+                <img src="/static/image/icon/medal2.png" class="icon" />
+                <p class="medal-name">{{ item }}</p>
               </div>
               <p>100币</p>
-              <div class="btn" @click="exchangeMedal(id, item)" :id="id">兑换</div>
+              <div class="btn" @click="exchangeMedal(id, item)" :id="id">
+                兑换
+              </div>
             </div>
           </div>
-          
         </div>
         <!--  结束描述 -->
         <p class="ending">已加载全部数据</p>
       </div>
-      
     </div>
   </div>
 </template>
-
 
 <script>
 // 导入 wepy 框架
@@ -75,31 +81,60 @@ wepy.page({
     giftIconPath: '/static/image/icon/gift-2.png',
     medalIconPath: '/static/image/icon/medal0.png',
     windowHeight: '',
-    ownedList: ['神奇萌新', '初入门道',],
+    ownedList: ['神奇萌新', '初入门道'],
     // ['萌新报道', '环保卫士', '']，
-    unowendList: [ '环保标兵', '绿色达人', '渐入佳境', '环保卫士', '环保特工', '成就达成', '地球卫士'],
-    medalList: ['神奇萌新', '初入门道', '环保标兵', '绿色达人', '渐入佳境', '环保卫士', '环保特工', '成就达成', '地球卫士'],
-    giftItemList: [{
-      name: '手帕纸',
-      coverPath: '//img13.360buyimg.com/n1/jfs/t1/176232/37/6059/194863/60826533E3a7e373b/b7f3ee9cfc15d5a7.jpg',
-      corn: 80,
-    },{
-      name: '手帕纸',
-      coverPath: '//img13.360buyimg.com/n1/jfs/t1/176232/37/6059/194863/60826533E3a7e373b/b7f3ee9cfc15d5a7.jpg',
-      corn: 80,
-    },{
-      name: '手帕纸',
-      coverPath: '//img13.360buyimg.com/n1/jfs/t1/176232/37/6059/194863/60826533E3a7e373b/b7f3ee9cfc15d5a7.jpg',
-      corn: 80,
-    },{
-      name: '手帕纸',
-      coverPath: '//img13.360buyimg.com/n1/jfs/t1/176232/37/6059/194863/60826533E3a7e373b/b7f3ee9cfc15d5a7.jpg',
-      corn: 80,
-    },{
-      name: '手帕纸',
-      coverPath: '//img13.360buyimg.com/n1/jfs/t1/176232/37/6059/194863/60826533E3a7e373b/b7f3ee9cfc15d5a7.jpg',
-      corn: 80,
-    },]
+    unowendList: [
+      '环保标兵',
+      '绿色达人',
+      '渐入佳境',
+      '环保卫士',
+      '环保特工',
+      '成就达成',
+      '地球卫士',
+    ],
+    medalList: [
+      '神奇萌新',
+      '初入门道',
+      '环保标兵',
+      '绿色达人',
+      '渐入佳境',
+      '环保卫士',
+      '环保特工',
+      '成就达成',
+      '地球卫士',
+    ],
+    giftItemList: [
+      {
+        name: '手帕纸',
+        coverPath:
+          '//img13.360buyimg.com/n1/jfs/t1/176232/37/6059/194863/60826533E3a7e373b/b7f3ee9cfc15d5a7.jpg',
+        corn: 80,
+      },
+      {
+        name: '手帕纸',
+        coverPath:
+          '//img13.360buyimg.com/n1/jfs/t1/176232/37/6059/194863/60826533E3a7e373b/b7f3ee9cfc15d5a7.jpg',
+        corn: 80,
+      },
+      {
+        name: '手帕纸',
+        coverPath:
+          '//img13.360buyimg.com/n1/jfs/t1/176232/37/6059/194863/60826533E3a7e373b/b7f3ee9cfc15d5a7.jpg',
+        corn: 80,
+      },
+      {
+        name: '手帕纸',
+        coverPath:
+          '//img13.360buyimg.com/n1/jfs/t1/176232/37/6059/194863/60826533E3a7e373b/b7f3ee9cfc15d5a7.jpg',
+        corn: 80,
+      },
+      {
+        name: '手帕纸',
+        coverPath:
+          '//img13.360buyimg.com/n1/jfs/t1/176232/37/6059/194863/60826533E3a7e373b/b7f3ee9cfc15d5a7.jpg',
+        corn: 80,
+      },
+    ],
   },
   methods: {
     // 兑换礼品
@@ -107,9 +142,8 @@ wepy.page({
       wx.showToast({
         title: '正联系补货中！',
         icon: 'error',
-        duration: 1500
+        duration: 1500,
       })
-
     },
 
     // 兑换勋章
@@ -117,15 +151,14 @@ wepy.page({
       wx.showModal({
         title: '提示',
         content: '是否兑换',
-        success (res) {
+        success(res) {
           if (res.confirm) {
             console.log('用户点击确定')
             console.log(id, title)
             // TODO: 进行兑换操作
           }
-        }
-    })
-
+        },
+      })
     },
 
     // 点击礼物按钮切换事件
@@ -140,13 +173,22 @@ wepy.page({
       this.showGiftView = false
       this.giftIconPath = '/static/image/icon/gift-0.png'
       this.medalIconPath = '/static/image/icon/medal1.png'
-    }
+    },
   },
   // 生命周期函数 created
-  created () {
-    this.windowHeight = this.$app.$options.globalData.windowHeight+'px'
-    console.log(this.windowHeight)
-  }
+  created() {
+    this.windowHeight = this.$app.$options.globalData.windowHeight + 'px'
+  },
+  onShow() {
+    if (this.$app.$options.globalData.giftOption === 'medal') {
+      this.showMedal()
+    } else {
+      this.showGift()
+    }
+  },
+  onHide() {
+    this.$app.$options.globalData.giftOption = 'goods'
+  },
 })
 </script>
 
@@ -157,7 +199,7 @@ wepy.page({
     font-weight: bold;
     padding: 30rpx 0 36rpx 30rpx;
     .corn {
-      color: #4CAE32;
+      color: #4cae32;
     }
   }
   .title {
@@ -180,9 +222,8 @@ wepy.page({
         width: 90rpx;
       }
     }
-    
   }
-  
+
   // 底部礼品信息
   .item-box {
     height: 75%;
@@ -206,7 +247,7 @@ wepy.page({
         font-weight: bold;
         margin-top: 32rpx;
       }
-      .item-list-box{
+      .item-list-box {
         display: flex;
         flex-wrap: wrap;
         justify-content: space-between;
@@ -219,17 +260,16 @@ wepy.page({
     }
 
     // 礼品列表布局
-    .gift-item-box{
+    .gift-item-box {
       color: black;
       .item-list-box {
         width: 684rpx;
         margin-top: 30rpx;
       }
     }
-    
+
     // 勋章列表布局
-    .medal-item-box{
-      
+    .medal-item-box {
       .type {
         font-size: 32rpx;
         font-weight: bold;
@@ -242,7 +282,7 @@ wepy.page({
           height: 64rpx;
           font-size: 32rpx;
           color: white;
-          background-color: #4CAE32;
+          background-color: #4cae32;
           box-shadow: 0rpx 0rpx 8rpx rgba(0, 0, 0, 0.25);
           border-radius: 8rpx;
           margin-bottom: 32rpx;
@@ -251,7 +291,7 @@ wepy.page({
           display: flex;
           justify-content: space-between;
           align-items: center;
-          .des-box{
+          .des-box {
             width: 188rpx;
             display: flex;
             align-items: center;
@@ -264,12 +304,11 @@ wepy.page({
               font-weight: bold;
             }
           }
-          
         }
       }
       .unowned-box {
         .li {
-          color: #4CAE32;
+          color: #4cae32;
           background-color: white;
           box-shadow: 0rpx 0rpx 8rpx rgba(0, 0, 0, 0.1);
           .btn {
@@ -277,7 +316,7 @@ wepy.page({
             height: 44rpx;
             color: white;
             font-size: 32rpx;
-            background: #4CAE32;
+            background: #4cae32;
             border-radius: 8rpx;
             display: flex;
             align-items: center;
@@ -286,7 +325,6 @@ wepy.page({
         }
       }
     }
-    
   }
 }
 </style>

@@ -3,24 +3,54 @@
     <!-- 顶部搜索框区域 -->
     <div class="search-input-box">
       <div class="input-box">
-        <img src="/static/image/icon/search.png" class="icon"/>
-        <input type="text" class="input-area" placeholder="搜索垃圾查看对应类别"/>
+        <img src="/static/image/icon/search.png" class="icon" />
+        <input
+          focus
+          v-model="inputContent"
+          maxlength="20"
+          type="text"
+          class="input-area"
+          placeholder="搜索垃圾查看对应类别"
+        />
       </div>
-      <p class="cancel-text">取消</p>
+
+      <p class="confirm-text" v-if="inputting" @click="search">确定</p>
+      <p class="cancel-text" v-else @click="cancel">取消</p>
     </div>
 
     <!-- 搜索结果列表区域 -->
     <div class="res-list-box">
       <div class="li" v-for="(item, id) in resList" :key="id">
-        <img src="{{item.iconPath}}" class="class-icon"/>
-        <p class="name">{{item.name}}</p>
-        <p> 「<span class="cls">{{item.class}}</span>」</p>
+        <img
+          v-if="item.class == '其他垃圾'"
+          src="/static/image/icon/other1.png"
+          class="class-icon"
+        />
+        <img
+          v-else-if="item.class == '可回收物' || item.class == '可回收垃圾'"
+          src="/static/image/icon/recyclable1.png"
+          class="class-icon"
+        />
+        <img
+          v-else-if="item.class == '厨余垃圾'"
+          src="/static/image/icon/kitchen1.png"
+          class="class-icon"
+        />
+        <img
+          v-else-if="item.class == '有害垃圾'"
+          src="/static/image/icon/harmful1.png"
+          class="class-icon"
+        />
+        <p class="name">{{ item.name }}</p>
+        <p>
+          「<span class="cls">{{ item.class }}</span
+          >」
+        </p>
       </div>
     </div>
-    <div class="ending">没有更多了...</div>
+    <div class="ending" v-if="!inputting">没有更多了...</div>
   </div>
 </template>
-
 
 <script>
 // 导入 wepy 框架
@@ -28,28 +58,69 @@ import wepy from '@wepy/core'
 wepy.page({
   data: {
     windowHeight: '',
-    resList: [{name: '湿卫生纸',class: '其他垃圾', iconPath: '/static/image/icon/recyclable1.png',},
-              {name: '卫生纸',class: '其他垃圾', iconPath: '/static/image/icon/other1.png',},
-              {name: '卫生纸芯',class: '可回收垃圾', iconPath: '/static/image/icon/harmful1.png',},
-              {name: '用过的卫生纸',class: '其他垃圾',  iconPath: '/static/image/icon/kitchen1.png',},]
-
+    resList: [
+      {
+        name: '湿卫生纸',
+        class: '其他垃圾',
+        iconPath: '/static/image/icon/recyclable1.png',
+      },
+      {
+        name: '卫生纸',
+        class: '有害垃圾',
+        iconPath: '/static/image/icon/other1.png',
+      },
+      {
+        name: '卫生纸芯',
+        class: '可回收垃圾',
+        iconPath: '/static/image/icon/harmful1.png',
+      },
+      {
+        name: '用过的卫生纸',
+        class: '厨余垃圾',
+        iconPath: '/static/image/icon/kitchen1.png',
+      },
+    ],
+    // 输入内容
+    inputContent: '',
+    // 是否处在输入状态中
+    inputting: true,
   },
   methods: {
-
+    // 搜索
+    search() {
+      console.log('搜索', this.inputContent)
+      if (this.inputContent.length === 0) {
+        wx.showToast({
+          title: '请先输入', //提示的内容,
+          icon: 'error', //图标,
+          duration: 1500, //延迟时间,
+        })
+      } else {
+        // TODO：提交后台服务器进行查询
+        this.inputting = false
+      }
+    },
+    // 取消搜索
+    cancel() {
+      this.inputContent = ''
+      console.log('取消')
+      this.inputting = true
+    },
   },
 
   // 生命周期函数 created
-  created () {
-    this.windowHeight = this.$app.$options.globalData.windowHeight+'px'
-
+  created() {
+    this.windowHeight = this.$app.$options.globalData.remainHeight + 'px'
   },
-
+  onLoad(options) {
+    console.log(options)
+  },
 })
 </script>
 
 <style lang="less" scoped>
 .container {
-  background-color: #F8F8F8;
+  background-color: #f8f8f8;
   // 顶部搜索框区域
   .search-input-box {
     height: 120rpx;
@@ -62,14 +133,14 @@ wepy.page({
     .input-box {
       height: 72rpx;
       width: 600rpx;
-      background: #F0F0F0;
+      background: #f0f0f0;
       border-radius: 36rpx;
       display: flex;
       align-items: center;
       .icon {
         height: 44rpx;
         width: 44rpx;
-        margin:0 24rpx;
+        margin: 0 24rpx;
       }
       .input-area {
         width: 500rpx;
@@ -94,8 +165,8 @@ wepy.page({
         margin: 0 22rpx 0 32rpx;
       }
     }
-    .li:nth-child(even){
-      background: #F1F1F1;
+    .li:nth-child(even) {
+      background: #f1f1f1;
       color: black;
     }
   }
@@ -106,7 +177,6 @@ wepy.page({
     color: #555;
     margin: 36rpx 0;
     text-align: center;
-
   }
 }
 </style>

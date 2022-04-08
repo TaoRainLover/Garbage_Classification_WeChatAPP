@@ -2,10 +2,10 @@
   <div class="container" style="height: {{ windowHeight }}">
     <!-- banner区域 -->
     <div class="banner">
-      <swiper 	indicator-dots 	indicator-active-color="#335cad" 	autoplay 	circular>
+      <swiper indicator-dots indicator-active-color="#4bae32" autoplay circular>
         <block wx:for="{{bannerImgList}}" wx:key="*this">
-          <swiper-item>
-            <image class="swiper-item" src="{{item}}" mode="scaleToFill" />
+          <swiper-item @click="navigateToNews">
+            <image class="swiper-item" src="{{item}}" mode="aspectFill" />
           </swiper-item>
         </block>
       </swiper>
@@ -16,8 +16,14 @@
       <p class="title">垃圾分类知识科普</p>
       <div class="content">
         <div class="item" wx:for="{{trashImgPathList}}" wx:key="*this">
-          <img class="trashImg"  @click="navToDetal" id="{{item.id}}"  src="{{ item.path }}" alt=""/>
-          <p class="name">{{item.type}}</p>
+          <img
+            class="trashImg"
+            @click="navToDetal"
+            id="{{item.id}}"
+            src="{{ item.path }}"
+            alt=""
+          />
+          <p class="name">{{ item.type }}</p>
         </div>
       </div>
     </div>
@@ -27,15 +33,19 @@
       <p class="title">搜索方式</p>
       <div class="item-box">
         <div class="text item" @click="navigateToSearch">
-          <img class="icon" src="/static/image/icon/keyboard.png"/>
+          <img class="icon" src="/static/image/icon/keyboard.png" />
           <p class="des">文字输入</p>
         </div>
         <div class="photo item" @click="navigateToCamera">
-          <img class="icon" src="/static/image/icon/camera.png"/>
+          <img class="icon" src="/static/image/icon/camera.png" />
           <p class="des">拍照识别</p>
         </div>
-        <div class="voice item" @touchstart="voiceStarting" @touchend="voiceEnd">
-          <img class="icon" src="/static/image/icon/voice.png"/>
+        <div
+          class="voice item"
+          @touchstart="voiceStarting"
+          @touchend="voiceEnd"
+        >
+          <img class="icon" src="/static/image/icon/voice.png" />
           <p class="des">语音识别</p>
         </div>
       </div>
@@ -44,222 +54,228 @@
 </template>
 
 <script>
-  import wepy from '@wepy/core'
-  import eventHub from '../common/eventHub';
-  import { mapState } from '@wepy/x';
-  import store from '../store';
-  import testMixin from '../mixins/test'
+import wepy from '@wepy/core'
+import eventHub from '../common/eventHub'
+import { mapState } from '@wepy/x'
+import store from '../store'
+import testMixin from '../mixins/test'
 
-  wepy.page({
-    store,
-    config: {
-      navigationBarTitleText: 'test'
-    },
+wepy.page({
+  store,
+  config: {
+    navigationBarTitleText: 'test',
+  },
 
-    hooks: {
-      // Page 级别 hook, 只对当前 Page 的 setData 生效。
-      // 'before-setData': function (dirty) {
-      //   if (Math.random() < 0.2) {
-      //     console.log('setData canceled');
-      //     return false; // Cancel setData
-      //   }
-      //   dirty.time = +new Date();
-      //   return dirty;
-      // }
-    },
+  hooks: {
+    // Page 级别 hook, 只对当前 Page 的 setData 生效。
+    // 'before-setData': function (dirty) {
+    //   if (Math.random() < 0.2) {
+    //     console.log('setData canceled');
+    //     return false; // Cancel setData
+    //   }
+    //   dirty.time = +new Date();
+    //   return dirty;
+    // }
+  },
 
-    mixins: [testMixin],
+  mixins: [testMixin],
 
-    data: {
-      windowHeight: 0,
-      bannerImgList: ['https://i-1.lanrentuku.com/2020/12/22/471bd0dd-9a7e-4f10-a51e-11a2e41a2a9b.jpg?imageView2/2/w/500/',
-                'https://i-1.lanrentuku.com/2020/12/22/ecf9f96b-b899-46ae-ac34-a7fc16f5af82.jpg?imageView2/2/w/500/',
-                'https://i-1.lanrentuku.com/2020/12/22/dfdff2b9-2f8c-498e-ba4e-b095579add7f.jpg?imageView2/2/w/500/',
-                'https://i-1.lanrentuku.com/2020/12/22/55317ffa-a4e1-45be-bd1c-ccad3b2bec86.jpg?imageView2/2/w/500/',],
-      trashImgPathList: [
-        {id: 1, type: '可回收物', path: '/static/image/trash/1.png'},
-        {id: 2, type: '其他垃圾', path: '/static/image/trash/2.png'},
-        {id: 3, type: '厨余垃圾', path: '/static/image/trash/3.png'},
-        {id: 4, type: '有害垃圾', path: '/static/image/trash/4.png'},
-        
-      ],
+  data: {
+    windowHeight: 0,
+    bannerImgList: [
+      'http://39.103.179.63:8002/gb/banner2/1.jpg',
+      'http://39.103.179.63:8002/gb/banner2/2.jpg',
+      'http://39.103.179.63:8002/gb/banner2/3.jpg',
+      'http://39.103.179.63:8002/gb/banner2/4.jpg',
+    ],
+    trashImgPathList: [
+      { id: 1, type: '可回收物', path: '/static/image/trash/1.png' },
+      { id: 2, type: '其他垃圾', path: '/static/image/trash/2.png' },
+      { id: 3, type: '厨余垃圾', path: '/static/image/trash/3.png' },
+      { id: 4, type: '有害垃圾', path: '/static/image/trash/4.png' },
+    ],
 
-      // 记录语音录制结果的路径
-      voiceRecordingPath: '',
-    
-    },
+    // 记录语音录制结果的路径
+    voiceRecordingPath: '',
+  },
 
-    computed: {
-      
-    },
+  computed: {},
 
-    methods: {
-      // 跳转到垃圾分类科普页面
-      navToDetal(item) {
-        const id = item.target.id
-        wx.navigateTo({
-        url: '/packageBuild/pages/popularization?id='+id
+  methods: {
+    // 跳转到垃圾分类科普页面
+    navToDetal(item) {
+      const id = item.target.id
+      wx.navigateTo({
+        url: '/packageBuild/pages/popularization?id=' + id,
       })
-      },
-      // 跳转到相机页面
-      navigateToCamera() {
-        wx.navigateTo({
-          url: '/packageBuild/pages/camera',
-        })
-      },
-      // 跳转到文字搜索页面
-      navigateToSearch() {
-        wx.navigateTo({
-          url: '/packageBuild/pages/search',
-        })
-      },
-
-      // 长按语音录制
-      voiceStarting() {
-        console.log('录制开始')
-        wx.showToast({
-          title: '录制中...',
-          icon: 'loading',
-          image: '/static/image/icon/voice-on.png',
-          duration: 10000,
-          success: ()=>{
-            wx.startRecord({
-              success: (res) => {
-                console.log(res)
-                // 记录语音录制结果的路径
-                this.voiceRecordingPath = res.tempFilePath
-              },
-            })
-          }
-        })
-      },
-      voiceEnd() {
-        wx.hideToast({
-          success: ()=>{
-            wx.stopRecord({
-              success: (res) => {console.log('录制结束')},
-            })
-          }
-        })
-      },
+    },
+    // 跳转到相机页面
+    navigateToCamera() {
+      wx.navigateTo({
+        url: '/packageBuild/pages/camera',
+      })
+    },
+    // 跳转到文字搜索页面
+    navigateToSearch() {
+      wx.navigateTo({
+        url: '/packageBuild/pages/search',
+      })
     },
 
-    // 生命周期函数 created
-    created () {
-      this.windowHeight = (this.$app.$options.globalData.windowHeight)+'px'
-      console.log(this.windowHeight)
-    }
-  });
+    // 跳转到新闻页面
+    navigateToNews() {
+      console.log('banner')
+
+      wx.switchTab({ url: './find' })
+    },
+
+    // 长按语音录制
+    voiceStarting() {
+      console.log('录制开始')
+      wx.showToast({
+        title: '录制中...',
+        icon: 'loading',
+        image: '/static/image/icon/voice-on.png',
+        duration: 10000,
+        success: () => {
+          wx.startRecord({
+            success: (res) => {
+              console.log(res)
+              // 记录语音录制结果的路径
+              this.voiceRecordingPath = res.tempFilePath
+            },
+          })
+        },
+      })
+    },
+    voiceEnd() {
+      wx.hideToast({
+        success: () => {
+          wx.stopRecord({
+            success: (res) => {
+              console.log('录制结束')
+            },
+          })
+        },
+      })
+    },
+  },
+
+  // 生命周期函数 created
+  created() {
+    this.windowHeight = this.$app.$options.globalData.windowHeight + 'px'
+    console.log(this.windowHeight)
+  },
+})
 </script>
 
 <style lang="less" scoped>
+.container {
+  // position: relative;
+}
 
-  .container{
-    // position: relative;
+// banner区域
+.banner {
+  height: 435rpx;
+  swiper {
+    height: 100%;
   }
-
-  // banner区域
-  .banner{
-    height: 376rpx;
-    swiper{
-      height: 100%;
-    }
-    .swiper-item{
+  .swiper-item {
     height: 100%;
     width: 100%;
-    background-color: #f7f9f7
+    background-color: #f7f9f7;
   }
+}
+
+// 垃圾分类知识科普区域
+.popularization {
+  margin-top: 30rpx;
+  padding: 0 30rpx;
+  .title {
+    font-size: 40rpx;
+    font-weight: bold;
+    padding-left: 4rpx;
+    color: rgba(2, 20, 55, 0.8);
   }
-  
-  // 垃圾分类知识科普区域
-  .popularization{
-    margin-top: 30rpx;
-    padding: 0 30rpx;
-    .title{
-      font-size: 40rpx;
-      font-weight: bold;
-      padding-left: 4rpx;
-      color: rgba(2, 20, 55, 0.8);
-    }
-    .content{
+  .content {
+    display: flex;
+    justify-content: space-between;
+    .item {
       display: flex;
-      justify-content: space-between;
-      .item{
-        display: flex;
-        flex-direction: column; 
-        align-items:center;
-        .trashImg{
-          height: 220rpx;
-          width: 164rpx;
-          box-sizing: border-box;
-          padding: 20rpx 10rpx 20rpx 0;
-        }
-        .name {
-          font-size: 24rpx;
-          margin-left: 14rpx;
-        }
+      flex-direction: column;
+      align-items: center;
+      .trashImg {
+        height: 220rpx;
+        width: 164rpx;
+        box-sizing: border-box;
+        padding: 20rpx 10rpx 20rpx 0;
+      }
+      .name {
+        font-size: 24rpx;
+        margin-left: 14rpx;
       }
     }
   }
+}
 
-  // 搜索区域
-  .search-box {
-    height: 400rpx;
-    width: 100%;
-    background-color: skyblue;
-    position: absolute;
-    bottom: 0;
-    background: #FFFFFF;
-    box-shadow: 0 -4rpx 20rpx rgba(169, 185, 166, 0.25);
-    border-radius: 120rpx 120rpx 0 0;
+// 搜索区域
+.search-box {
+  height: 400rpx;
+  width: 100%;
+  background-color: skyblue;
+  position: absolute;
+  bottom: 0;
+  background: #ffffff;
+  box-shadow: 0 -4rpx 20rpx rgba(169, 185, 166, 0.25);
+  border-radius: 120rpx 120rpx 0 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .title {
+    font-size: 40rpx;
+    font-weight: bold;
+    color: #34435f;
+    margin-top: 56rpx;
+  }
+  .item-box {
     display: flex;
-    flex-direction: column;
     align-items: center;
-    .title{
-      font-size: 40rpx;
-      font-weight: bold;
-      color: #34435F;
-      margin-top: 56rpx;
-    }
-    .item-box {
+    margin-top: 52rpx;
+    .item {
       display: flex;
+      flex-direction: column;
+      justify-content: center;
       align-items: center;
-      margin-top: 52rpx;
-      .item{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        .icon{
+      .icon {
         width: 80rpx;
         height: 80rpx;
-        }
-        .des{
-          font-size: 24rpx;
-          color: white;
-        }
       }
-      .text{
-        height: 154rpx;
-        width: 154rpx;
-        background-color: #4bae32;
-        border-radius: 50%;
-      }
-      .photo {
-        height: 194rpx;
-        width: 194rpx;
-        background-color: #4bae32;
-        margin: 0 62rpx;
-        border-radius: 50%;
-      }
-      .voice {
-        height: 154rpx;
-        width: 154rpx;
-        background-color: #4bae32;
-        border-radius: 50%;
+      .des {
+        font-size: 24rpx;
+        color: white;
       }
     }
+    .text {
+      height: 154rpx;
+      width: 154rpx;
+      background-color: #4bae32;
+      border-radius: 50%;
+    }
+    .photo {
+      height: 194rpx;
+      width: 194rpx;
+      background-color: #4bae32;
+      margin: 0 62rpx;
+      border-radius: 50%;
+    }
+    .voice {
+      height: 154rpx;
+      width: 154rpx;
+      background-color: #4bae32;
+      border-radius: 50%;
+    }
   }
+}
 </style>
 <wxs module="m1" lang="babel">
 const getTime = (time) => {
