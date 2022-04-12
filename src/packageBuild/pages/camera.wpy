@@ -1,18 +1,36 @@
 <template>
   <div class="container" style="height: {{ remainHeight }}">
-    <div class="camera-box">
-      <camera
-        binderror="error"
-        resolution="low"
-        class="camera"
-        v-if="showCamera"
-      ></camera>
-      <img v-else src="{{photoRes.tempImagePath}}" class="cameraRes" />
+    <!-- 相机拍照部分 -->
+    <div class="camera-container" style="height: 100%">
+      <div class="camera-box">
+        <camera
+          binderror="error"
+          resolution="low"
+          class="camera"
+          v-if="showCamera"
+        ></camera>
+        <img v-else src="{{photoRes.tempImagePath}}" class="cameraRes" />
+      </div>
+      <div class="footer-box">
+        <div class="btn" @click="takePhoto">
+          <img src="/static/image/icon/camera1.png" class="icon" />
+          <p class="des">识别</p>
+        </div>
+      </div>
     </div>
-    <div class="footer-box">
-      <div class="btn" @click="takePhoto">
-        <img src="/static/image/icon/camera1.png" class="icon" />
-        <p class="des">识别</p>
+    <!-- 识别结果展示部分 -->
+    <div class="res-container" v-if="!showCamera" @click="cancel">
+      <div class="list-box" @tap.stop>
+        <div
+          class="li"
+          v-for="(item, id) in recognizeResList"
+          :key="id"
+          @click="navigateToSearch(id, item.name)"
+        >
+          <div class="name-info">{{ item.name }} ({{ item.pos }}%)</div>
+          <div class="btn" v-if="!item.status"></div>
+          <div class="btn btn2" v-else></div>
+        </div>
       </div>
     </div>
   </div>
@@ -27,6 +45,14 @@ wepy.page({
     remainHeight: '',
     showCamera: true,
     photoRes: '',
+    // 图像识别结果数组
+    recognizeResList: [
+      { id: 1, name: '笔记本电脑1', pos: '83.4', status: false },
+      { id: 1, name: '笔记本电脑2', pos: '83.4', status: false },
+      { id: 1, name: '笔记本电脑3', pos: '83.4', status: false },
+      { id: 1, name: '笔记本电脑4', pos: '83.4', status: false },
+      { id: 1, name: '笔记本电脑5', pos: '83.4', status: false },
+    ],
   },
   methods: {
     // 拍照并将图片转换为 base64 格式
@@ -53,6 +79,21 @@ wepy.page({
         },
       })
     },
+
+    // cancel -- 点击识别结果列表其他区域，重新拍照
+    cancel() {
+      this.showCamera = true
+      // this.recognizeResList = []
+    },
+
+    // 根据识别结果列表，点击某条数据，跳转到该数据的搜索页面
+    navigateToSearch(id, name) {
+      // 修改选中状态
+      this.recognizeResList[id].status = true
+      console.log(name)
+      // 跳转
+      wx.navigateTo({ url: '/packageBuild/pages/search?search_text=' + name })
+    },
   },
 
   // 生命周期函数 created
@@ -71,37 +112,77 @@ wepy.page({
     justify-content: center;
     align-items: center;
   }
-  .camera-box {
-    background: rgba(0, 0, 0, 0.3);
-    height: 90%;
-    .camera {
-      // width: ;
-      height: 100%;
+  // 相机拍照部分
+  .camera-container {
+    .camera-box {
+      background: rgba(0, 0, 0, 0.3);
+      height: 90%;
+      .camera {
+        // width: ;
+        height: 100%;
+      }
+      .cameraRes {
+        height: 100%;
+        width: 100%;
+      }
     }
-    .cameraRes {
-      height: 100%;
+    .footer-box {
+      background: white;
+      height: 12%;
       width: 100%;
+      .my-flex();
+      position: absolute;
+      bottom: 0;
+      .btn {
+        width: 114rpx;
+        height: 114rpx;
+        font-size: 24rpx;
+        background: #4cae32;
+        color: white;
+        border-radius: 50%;
+        .my-flex();
+        flex-direction: column;
+        .icon {
+          width: 56rpx;
+          height: 56rpx;
+        }
+      }
     }
   }
-  .footer-box {
-    background: white;
-    height: 12%;
+  // 识别结果展示部分
+  .res-container {
+    height: 100%;
     width: 100%;
-    .my-flex();
     position: absolute;
-    bottom: 0;
-    .btn {
-      width: 114rpx;
-      height: 114rpx;
-      font-size: 24rpx;
-      background: #4cae32;
-      color: white;
-      border-radius: 50%;
-      .my-flex();
-      flex-direction: column;
-      .icon {
-        width: 56rpx;
-        height: 56rpx;
+    top: 0%;
+    background: rgba(0, 0, 0, 0.4);
+    .my-flex();
+    .list-box {
+      width: 600rpx;
+      border-radius: 12rpx;
+      box-shadow: 0px -2px 10px rgba(169, 185, 166, 0.25);
+      // padding: 20rpx 10rpx;
+      // 高度随列表元素条数自适应
+      // height: 60%;
+      background: white;
+      overflow: hidden;
+      .li {
+        height: 80rpx;
+        padding: 0 40rpx;
+        border-bottom: 2rpx solid #dddddd;
+        box-sizing: border-box;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .btn {
+          width: 40rpx;
+          height: 40rpx;
+          border: 2rpx solid rgba(199, 199, 199, 0.8);
+          border-radius: 50%;
+        }
+        .btn2 {
+          background: #4cae32;
+        }
       }
     }
   }

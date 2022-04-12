@@ -62,22 +62,18 @@ wepy.page({
       {
         name: '湿卫生纸',
         class: '其他垃圾',
-        iconPath: '/static/image/icon/recyclable1.png',
       },
       {
         name: '卫生纸',
         class: '有害垃圾',
-        iconPath: '/static/image/icon/other1.png',
       },
       {
         name: '卫生纸芯',
         class: '可回收垃圾',
-        iconPath: '/static/image/icon/harmful1.png',
       },
       {
         name: '用过的卫生纸',
         class: '厨余垃圾',
-        iconPath: '/static/image/icon/kitchen1.png',
       },
     ],
     // 输入内容
@@ -115,6 +111,9 @@ wepy.page({
   onLoad(options) {
     console.log(options)
     console.log(options.search_text)
+    if (options.search_text !== '') {
+      // TODO :进行查询操作
+    }
   },
 })
 </script>
