@@ -96,7 +96,9 @@ wepy.page({
     ],
 
     // 记录语音录制结果的路径
-    voiceRecordingPath: '',
+    recorderManager: Object,
+    audio_path: '',
+    audio_data: '',
   },
 
   computed: {},
@@ -138,24 +140,24 @@ wepy.page({
         image: '/static/image/icon/voice-on.png',
         duration: 10000,
         success: () => {
-          wx.startRecord({
-            success: (res) => {
-              console.log(res)
-              // 记录语音录制结果的路径
-              this.voiceRecordingPath = res.tempFilePath
-            },
-          })
+          // 开始录音
+          const options = {
+            duration: 60000,
+            sampleRate: 16000,
+            numberOfChannels: 1,
+            encodeBitRate: 48000,
+            format: 'PCM',
+            // frameSize: 50
+          }
+          this.recorderManager.start(options)
         },
       })
     },
     voiceEnd() {
       wx.hideToast({
         success: () => {
-          wx.stopRecord({
-            success: (res) => {
-              console.log('录制结束')
-            },
-          })
+          // 结束录音
+          this.recorderManager.stop()
         },
       })
     },
@@ -165,6 +167,81 @@ wepy.page({
   created() {
     this.windowHeight = this.$app.$options.globalData.windowHeight + 'px'
     console.log(this.windowHeight)
+
+    // 获取全局唯一的录音管理器 RecorderManager
+    this.recorderManager = wx.getRecorderManager()
+    // 监听 录音管理器 开始事件
+    this.recorderManager.onStart(() => {
+      console.log('recorder start')
+    })
+    // 监听 录音管理器 暂停事件
+    this.recorderManager.onPause(() => {
+      console.log('recorder pause')
+    })
+    // 监听 录音管理器 结束事件
+    this.recorderManager.onStop((res) => {
+      console.log('recorder stop', res)
+      // const { tempFilePath } = res
+      this.audio_path = res.tempFilePath
+      //TODO: 将录音文件通过 百度识别API 转换为文字
+      const params = {
+        grant_type: 'client_credentials',
+        client_id: 'eee2OGMye9NCSjFcncLrFIYv',
+        client_secret: 'b23GzAnoDucrDQsMCMAcWe5MCXoqS62q',
+      }
+      // 1. 获取 授权 access_token
+      wx.request({
+        url: 'https://aip.baidubce.com/oauth/2.0/token',
+        data: params,
+        success: (res) => {
+          const { data } = res
+          const access_token = data.access_token
+          console.log('access_token', access_token)
+          // 2. 将录音文件数据读取出来
+          const fs = wx.getFileSystemManager()
+          fs.readFile({
+            filePath: this.audio_path,
+            success: (res) => {
+              this.audio_data = res.data
+              // 3. 进行语音识别
+              wx.request({
+                url: `https://vop.baidu.com/server_api?dev_pid=1537&cuid=rainloverminiapp&token=${access_token}`,
+                method: 'POST',
+                data: this.audio_data,
+                header: { 'Content-Type': 'audio/pcm;rate=16000' },
+                success: (res) => {
+                  console.log('语音识别成功，结果如下')
+                  // console.log(res.data)
+                  if (res.data.err_no !== 0) {
+                    // 识别出错
+                    wx.showToast({
+                      title: '识别出错，请稍有再试!',
+                      icon: 'none',
+                    })
+                  } else {
+                    // 识别成功
+                    let text_recognize = res.data.result[0]
+                    // 去除句号
+                    // console.log(text_recognize)
+                    text_recognize = text_recognize.slice(0, -1)
+                    console.log(text_recognize)
+                    // TODO：携带语音识别结果跳转到搜索界面
+                    wx.navigateTo({
+                      url:
+                        '/packageBuild/pages/search?search_text=' +
+                        text_recognize,
+                    })
+                  }
+                },
+                fail: (err) => {
+                  console.log(err)
+                },
+              })
+            },
+          })
+        },
+      })
+    })
   },
 })
 </script>

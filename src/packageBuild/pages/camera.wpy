@@ -1,19 +1,22 @@
 <template>
   <div class="container" style="height: {{ remainHeight }}">
     <div class="camera-box">
-      <camera class="camera" v-if="showCamera"></camera>
-      <img src="{{photoRes.tempImagePath}}" class="cameraRes"/>
-
+      <camera
+        binderror="error"
+        resolution="low"
+        class="camera"
+        v-if="showCamera"
+      ></camera>
+      <img v-else src="{{photoRes.tempImagePath}}" class="cameraRes" />
     </div>
     <div class="footer-box">
       <div class="btn" @click="takePhoto">
-        <img src="/static/image/icon/camera1.png" class="icon"/>
+        <img src="/static/image/icon/camera1.png" class="icon" />
         <p class="des">识别</p>
       </div>
     </div>
   </div>
 </template>
-
 
 <script>
 // 导入 wepy 框架
@@ -26,7 +29,6 @@ wepy.page({
     photoRes: '',
   },
   methods: {
-
     // 拍照并将图片转换为 base64 格式
     takePhoto() {
       const ctx = wx.createCameraContext()
@@ -39,70 +41,70 @@ wepy.page({
 
           // 将本地图片转换为base64格式
           wx.getFileSystemManager().readFile({
-          filePath: this.photoRes.tempImagePath, //选择图片返回的相对路径
-          encoding: 'base64', //编码格式
-          success: res => { //成功的回调
-            // console.log('data:image/png;base64,' + res.data)
-            img_base64 = 'data:image/png;base64,' + res.data
-            //TODO: 将结果传递给后台服务器接收识别之后的结果
-          }
-        })
-        }
+            filePath: this.photoRes.tempImagePath, //选择图片返回的相对路径
+            encoding: 'base64', //编码格式
+            success: (res) => {
+              //成功的回调
+              console.log('data:image/png;base64,' + res.data)
+              const img_base64 = 'data:image/png;base64,' + res.data
+              //TODO: 将结果传递给后台服务器接收识别之后的结果
+            },
+          })
+        },
       })
     },
   },
 
   // 生命周期函数 created
-  created () {
+  created() {
     // this.windowHeight = this.$app.$options.globalData.windowHeight + 'px'
     this.remainHeight = this.$app.$options.globalData.remainHeight + 'px'
-  }
-
+  },
 })
 </script>
 
 <style lang="less" scoped>
 .container {
-// 上下左右居中对齐
-.my-flex {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.camera-box {
-  background: rgba(0, 0, 0, 0.3);
-  height: 90%;
-  .camera {
-    // width: ;
-    height: 100%;
+  // 上下左右居中对齐
+  .my-flex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
-  .cameraRes {
-    height: 100%;
-    width: 100%;
-  }
-}
-.footer-box {
-  background: white;
-  height: 12%;
-  width: 100%;
-  .my-flex();
-  position: absolute;
-  bottom: 0;
-  .btn {
-    width: 114rpx;
-    height: 114rpx;
-    font-size: 24rpx;
-    background: #4CAE32;
-    color: white;
-    border-radius: 50%;
-    .my-flex();
-    flex-direction: column;
-    .icon {
-      width: 56rpx;
-      height: 56rpx;
+  .camera-box {
+    background: rgba(0, 0, 0, 0.3);
+    height: 90%;
+    .camera {
+      // width: ;
+      height: 100%;
+    }
+    .cameraRes {
+      height: 100%;
+      width: 100%;
     }
   }
-}
+  .footer-box {
+    background: white;
+    height: 12%;
+    width: 100%;
+    .my-flex();
+    position: absolute;
+    bottom: 0;
+    .btn {
+      width: 114rpx;
+      height: 114rpx;
+      font-size: 24rpx;
+      background: #4cae32;
+      color: white;
+      border-radius: 50%;
+      .my-flex();
+      flex-direction: column;
+      .icon {
+        width: 56rpx;
+        height: 56rpx;
+      }
+    }
+  }
 }
 </style>
 
