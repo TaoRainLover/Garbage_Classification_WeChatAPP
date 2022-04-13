@@ -20,11 +20,11 @@
         <p class="title-name">== 礼品 ==</p>
         <div class="item-list-box">
           <giftItem
-            v-for="(item, id) in giftItemList"
-            :key="id"
+            v-for="item in giftItemList"
+            :key="item.id"
             :name="item.name"
-            :corn="item.corn"
-            :coverPath="item.coverPath"
+            :corn="item.credit"
+            :coverPath="item.cover_path"
             v-on:exchange="exchange"
           ></giftItem>
         </div>
@@ -104,36 +104,36 @@ wepy.page({
       '地球卫士',
     ],
     giftItemList: [
-      {
-        name: '手帕纸',
-        coverPath:
-          '//img13.360buyimg.com/n1/jfs/t1/176232/37/6059/194863/60826533E3a7e373b/b7f3ee9cfc15d5a7.jpg',
-        corn: 80,
-      },
-      {
-        name: '手帕纸',
-        coverPath:
-          '//img13.360buyimg.com/n1/jfs/t1/176232/37/6059/194863/60826533E3a7e373b/b7f3ee9cfc15d5a7.jpg',
-        corn: 80,
-      },
-      {
-        name: '手帕纸',
-        coverPath:
-          '//img13.360buyimg.com/n1/jfs/t1/176232/37/6059/194863/60826533E3a7e373b/b7f3ee9cfc15d5a7.jpg',
-        corn: 80,
-      },
-      {
-        name: '手帕纸',
-        coverPath:
-          '//img13.360buyimg.com/n1/jfs/t1/176232/37/6059/194863/60826533E3a7e373b/b7f3ee9cfc15d5a7.jpg',
-        corn: 80,
-      },
-      {
-        name: '手帕纸',
-        coverPath:
-          '//img13.360buyimg.com/n1/jfs/t1/176232/37/6059/194863/60826533E3a7e373b/b7f3ee9cfc15d5a7.jpg',
-        corn: 80,
-      },
+      // {
+      //   name: '手帕纸',
+      //   coverPath:
+      //     '//img13.360buyimg.com/n1/jfs/t1/176232/37/6059/194863/60826533E3a7e373b/b7f3ee9cfc15d5a7.jpg',
+      //   corn: 80,
+      // },
+      // {
+      //   name: '手帕纸',
+      //   coverPath:
+      //     '//img13.360buyimg.com/n1/jfs/t1/176232/37/6059/194863/60826533E3a7e373b/b7f3ee9cfc15d5a7.jpg',
+      //   corn: 80,
+      // },
+      // {
+      //   name: '手帕纸',
+      //   coverPath:
+      //     '//img13.360buyimg.com/n1/jfs/t1/176232/37/6059/194863/60826533E3a7e373b/b7f3ee9cfc15d5a7.jpg',
+      //   corn: 80,
+      // },
+      // {
+      //   name: '手帕纸',
+      //   coverPath:
+      //     '//img13.360buyimg.com/n1/jfs/t1/176232/37/6059/194863/60826533E3a7e373b/b7f3ee9cfc15d5a7.jpg',
+      //   corn: 80,
+      // },
+      // {
+      //   name: '手帕纸',
+      //   coverPath:
+      //     '//img13.360buyimg.com/n1/jfs/t1/176232/37/6059/194863/60826533E3a7e373b/b7f3ee9cfc15d5a7.jpg',
+      //   corn: 80,
+      // },
     ],
   },
   methods: {
@@ -166,6 +166,7 @@ wepy.page({
       this.showGiftView = true
       this.giftIconPath = '/static/image/icon/gift-2.png'
       this.medalIconPath = '/static/image/icon/medal0.png'
+      this.$app.$options.globalData.giftOption = 'goods'
     },
 
     // 点击勋章按钮切换事件
@@ -173,11 +174,24 @@ wepy.page({
       this.showGiftView = false
       this.giftIconPath = '/static/image/icon/gift-0.png'
       this.medalIconPath = '/static/image/icon/medal1.png'
+      this.$app.$options.globalData.giftOption = 'medal'
     },
   },
   // 生命周期函数 created
   created() {
     this.windowHeight = this.$app.$options.globalData.windowHeight + 'px'
+    // 进入页面默认显示 礼品 信息
+    wx.request({
+      url: 'https://rainlover.fun:3006/api/gift/lists',
+      method: 'POST',
+      success: (res) => {
+        console.log(res.data.data)
+        this.giftItemList = res.data.data
+      },
+      fail: (err) => {
+        console.log(err)
+      },
+    })
   },
   onShow() {
     if (this.$app.$options.globalData.giftOption === 'medal') {
@@ -186,9 +200,9 @@ wepy.page({
       this.showGift()
     }
   },
-  onHide() {
-    this.$app.$options.globalData.giftOption = 'goods'
-  },
+  // onHide() {
+  //   this.$app.$options.globalData.giftOption = 'goods'
+  // },
 })
 </script>
 

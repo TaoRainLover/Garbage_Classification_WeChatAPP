@@ -63,7 +63,9 @@
         <div class="serach-history history" @click="navigateToSearchHistory">
           <div class="info-box">
             <p class="title">搜索历史</p>
-            <p class="info"><span class="num">3</span> 条</p>
+            <p class="info">
+              <span class="num">{{ count_search_history }}</span> 条
+            </p>
           </div>
           <img class="icon" src="/static/image/icon/history-query.png" />
         </div>
@@ -71,7 +73,10 @@
           <div class="info-box">
             <p class="title">答题历史</p>
             <p class="info">
-              <span class="num" style="color: #4bae32">3</span> 条
+              <span class="num" style="color: #4bae32">{{
+                coutn_test_history
+              }}</span>
+              条
             </p>
           </div>
           <img class="icon" src="/static/image/icon/history-test.png" />
@@ -83,7 +88,10 @@
           <div class="title-box">
             <img class="icon1" src="/static/image/icon/corn.png" />
             <p class="title">
-              我的环保币(<span class="num">50</span><span>)</span>
+              我的环保币(<span class="num" style="font-weight: bold">{{
+                userInfo.credit
+              }}</span
+              ><span>)</span>
             </p>
           </div>
           <img src="/static/image/icon/forward.png" class="icon2" />
@@ -128,6 +136,7 @@ import wepy from '@wepy/core'
 wepy.page({
   data: {
     windowHeight: 0,
+    oepnid: '',
     userInfo: {},
     dateList: [
       { id: 1, date: '周一', status: 0 },
@@ -142,6 +151,11 @@ wepy.page({
     hasUserInfo: false,
     // 用户是否已经签到
     registered: false,
+
+    // 搜索历史条数
+    count_search_history: 0,
+    // 答题历史条数
+    coutn_test_history: 0,
   },
   methods: {
     // TODO：签到
@@ -231,7 +245,26 @@ wepy.page({
     // TODO:获取用户信息
     getUserInfo() {
       wx.request({
-        url: 'url',
+        url: 'https://rainlover.fun:3006/api/user/info',
+        method: 'POST',
+        data: {
+          openid: this.openid,
+        },
+        success: (res) => {
+          if (res.data.status == 0) {
+            console.log(res.data)
+            this.userInfo = res.data.userInfo
+            if (
+              this.userInfo.avatarUrl == null ||
+              this.userInfo.nickName == null
+            ) {
+              this.hasUserInfo = false
+            }
+          }
+        },
+        fail: (err) => {
+          console.log(err)
+        },
       })
     },
 
@@ -278,18 +311,73 @@ wepy.page({
         },
       })
     },
+    // 获取搜索历史和答题历史条数
+    getCounts() {
+      // 搜索历史条数
+      wx.request({
+        url: 'https://rainlover.fun:3006/api/sh/count',
+        method: 'POST',
+        data: {
+          openid: this.openid,
+        },
+        success: (res) => {
+          // console.log(res.data)
+          if (res.data.status == 0) {
+            this.count_search_history = res.data.count
+          }
+        },
+        fail: (err) => {
+          console.log(err)
+        },
+      })
+      // 获取答题历史条数
+      wx.request({
+        url: 'https://rainlover.fun:3006/api/tr/count',
+        method: 'POST',
+        data: {
+          openid: this.openid,
+        },
+        success: (res) => {
+          // console.log(res.data)
+          if (res.data.status == 0) {
+            this.coutn_test_history = res.data.count
+          }
+        },
+        fail: (err) => {
+          console.log(err)
+        },
+      })
+    },
   },
 
   // 生命周期函数 created
   created() {
+    console.log('created')
+
     this.windowHeight = this.$app.$options.globalData.windowHeight + 'px'
-    this.oepnid = this.$app.$options.globalData.oepnid
-    this.hasUserInfo = this.$app.$options.globalData.loginStatus
+    this.openid = this.$app.$options.globalData.openid
+    this.userInfo = this.$app.$options.globalData.userInfo
+    if (this.userInfo.avatarUrl == null || this.userInfo.nickName == null) {
+      this.hasUserInfo = false
+    }
   },
 
   // 小程序原生生命周期函数： onLoad，用来获取页面参数传值
   onLoad(options) {
     // console.log('进入用户个人页面')
+  },
+
+  onShow() {
+    console.log('-----user page----')
+
+    // console.log('show', this.openid)
+    // TODO：更新用户数据
+    this.getUserInfo()
+    this.getCounts()
+  },
+
+  onHide() {
+    console.log('hide')
   },
 })
 </script>
@@ -323,15 +411,24 @@ wepy.page({
             font-size: 48rpx;
             font-weight: bold;
             margin-bottom: 12rpx;
+            background: linear-gradient(
+              258.18deg,
+              rgba(245, 209, 115, 0.8) 9.27%,
+              #4cae32 100%
+            );
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
           }
           .metal {
             font-size: 40rpx;
             .icon {
               height: 32rpx;
-              width: 32rpx;
+              width: 24rpx;
               position: relative;
               top: 1rpx;
-              margin-left: 24rpx;
+              margin-left: 20rpx;
             }
           }
         }
@@ -340,6 +437,11 @@ wepy.page({
         width: 170rpx;
         height: 62rpx;
         background: #4cae32;
+        background: linear-gradient(
+          258.18deg,
+          #4cae32 40.41%,
+          rgba(247, 219, 147, 0.8) 100%
+        );
         border-radius: 34rpx;
         font-size: 36rpx;
         color: white;
@@ -357,9 +459,10 @@ wepy.page({
     .reg-box {
       box-sizing: border-box;
       height: 108rpx;
-      border-top: #4bae32 4rpx solid;
+      border-top: 5rpx solid;
+      border-image: linear-gradient(to right, #4cae32, #f6db93) 1;
       margin-top: 52rpx;
-      padding-top: 18rpx;
+      padding-top: 16rpx;
       display: flex;
       justify-content: space-between;
     }
@@ -477,7 +580,7 @@ wepy.page({
         font-size: 40rpx;
         border-bottom: 2rpx solid rgba(196, 196, 196, 0.5);
         box-sizing: border-box;
-        padding: 6rpx 6rpx 0px 6rpx;
+        padding: 6rpx 6rpx 20rpx 6rpx;
         margin-top: 40rpx;
         .title-box {
           display: flex;

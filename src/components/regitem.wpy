@@ -49,7 +49,7 @@ wepy.component({
       if (this.status) {
         return 'height: 45px; width: 41px; color: #4CAE32; font-size: 16px'
       } else {
-        return 'height: 35px; width: 32px; color: #555; font-size: 12px;'
+        return 'height: 35px; width: 32px; color: #A7A9A7; font-size: 12px;'
       }
     },
     style2() {

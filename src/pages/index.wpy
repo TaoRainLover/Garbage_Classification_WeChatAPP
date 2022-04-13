@@ -83,10 +83,10 @@ wepy.page({
   data: {
     windowHeight: 0,
     bannerImgList: [
-      'http://39.103.179.63:8002/gb/banner2/1.jpg',
-      'http://39.103.179.63:8002/gb/banner2/2.jpg',
-      'http://39.103.179.63:8002/gb/banner2/3.jpg',
-      'http://39.103.179.63:8002/gb/banner2/4.jpg',
+      'https://rainlover.fun:8002/gb/banner2/1.jpg',
+      'https://rainlover.fun:8002/gb/banner2/2.jpg',
+      'https://rainlover.fun:8002/gb/banner2/3.jpg',
+      'https://rainlover.fun:8002/gb/banner2/4.jpg',
     ],
     trashImgPathList: [
       { id: 1, type: '可回收物', path: '/static/image/trash/1.png' },
@@ -173,10 +173,6 @@ wepy.page({
     // 监听 录音管理器 开始事件
     this.recorderManager.onStart(() => {
       console.log('recorder start')
-    })
-    // 监听 录音管理器 暂停事件
-    this.recorderManager.onPause(() => {
-      console.log('recorder pause')
     })
     // 监听 录音管理器 结束事件
     this.recorderManager.onStop((res) => {

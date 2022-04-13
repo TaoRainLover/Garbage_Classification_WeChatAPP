@@ -59,27 +59,38 @@ wepy.app({
     this.$options.globalData.windowHeight = res.windowHeight
     this.$options.globalData.remainHeight =
       res.screenHeight - res.statusBarHeight - 44
-    // console.log(this.$options.globalData.remainHeight)
-    // console.log(this.$options.globalData.windowHeight)
-
+    const app = this
+    // 登录 -- 获取用户的 openid 以及个人信息
     wx.login({
       success(res) {
         console.log(res)
         if (res.code) {
           //发起网络请求
-          // wx.request({
-          //   url: 'http://39.103.179.63:8001/api/user/login',
-          //   method: 'GET',
-          //   data: {
-          //     code: res.code
-          //   },
-          //   success: (res)=>{
-          //     console.log(res)
-          //   },
-          //   fail: (err)=> {
-          //     console.log(err)
-          //   }
-          // })
+          wx.request({
+            url: 'https://rainlover.fun:3006/api/user/login',
+            method: 'POST',
+            data: {
+              code: res.code,
+            },
+            success: (res) => {
+              // login 调用成功
+              // console.log(res)
+              const data = res.data
+              console.log(data)
+              if (data.status !== 0) {
+                wx.showToast({
+                  title: '获取用户数据失败！',
+                  icon: 'error',
+                })
+              } else {
+                app.$options.globalData.userInfo = data.userInfo
+                app.$options.globalData.openid = data.userInfo.openid
+              }
+            },
+            fail: (err) => {
+              console.log(err)
+            },
+          })
         } else {
           console.log('登录失败！' + res.errMsg)
         }
