@@ -79,18 +79,7 @@ wepy.page({
     // 展示测试界面
     showQues: true,
     // 问题列表
-    quesList: [
-      { name: '创可贴1', cor: '其他垃圾' },
-      { name: '创可贴2', cor: '其他垃圾' },
-      { name: '创可贴3', cor: '有害垃圾' },
-      { name: '创可贴4', cor: '其他垃圾' },
-      { name: '创可贴5', cor: '其他垃圾' },
-      { name: '创可贴6', cor: '可回收物' },
-      { name: '创可贴7', cor: '其他垃圾' },
-      { name: '创可贴8', cor: '其他垃圾' },
-      { name: '创可贴9', cor: '厨余垃圾' },
-      { name: '创可贴10', cor: '其他垃圾' },
-    ],
+    quesList: [],
     // 本次答题统计列表
     statisticList: [],
     // 当前问题
@@ -104,6 +93,37 @@ wepy.page({
     id: 1,
   },
   methods: {
+    // 初始化
+    init() {
+      this.showQues = true
+      this.cur_que = this.quesList[0]
+      this.id = 1
+      this.score = 0
+      this.statisticList = []
+      this.stylea = ''
+      this.styleb = ''
+      this.stylec = ''
+      this.styled = ''
+    },
+
+    // 获取试题列表
+    getTestList() {
+      wx.request({
+        url: 'https://rainlover.fun:3006/api/gc/tl',
+        method: 'POST',
+        success: (res) => {
+          if (res.data.status === 0) {
+            console.log(res.data)
+            this.quesList = res.data.lists
+            this.cur_que = this.quesList[0]
+          }
+        },
+        fail: (err) => {
+          console.log(err)
+        },
+      })
+    },
+
     // 更换样式
     changeStyle(that, my, style) {
       switch (my) {
@@ -129,7 +149,21 @@ wepy.page({
     // 点击选择
     selectStart(my) {
       // 判断正误
-      if (this.cur_que.cor == my) {
+      // 初始化正确答案
+      // 1 - 可回收物
+      // 2 - 有害垃圾
+      // 3 - 厨余垃圾
+      // 4 - 其他垃圾
+      let cor = '可回收物'
+      if (this.cur_que.type == 2) {
+        cor = '有害垃圾'
+      } else if (this.cur_que.type == 3) {
+        cor = '厨余垃圾'
+      } else if (this.cur_que.type == 4) {
+        cor = '其他垃圾'
+      }
+
+      if (cor == my) {
         console.log('答对了')
         this.score += 10
         this.changeStyle(this, my, this.corretStyle)
@@ -140,7 +174,7 @@ wepy.page({
       const newItem = {
         id: this.id,
         name: this.cur_que.name,
-        cor: this.cur_que.cor,
+        cor: cor,
         my: my,
       }
       // console.log(newItem)
@@ -152,6 +186,7 @@ wepy.page({
         this.count++
         // console.log(this.statisticList)
         // TODO：将结果发送后台数据库
+        this.recordTestRes()
       } else {
         this.cur_que = this.quesList[this.id]
         this.id++
@@ -175,23 +210,56 @@ wepy.page({
         })
       } else {
         console.log('play again!')
-        // TODO：更新问题列表
+
         // 重新初始化
-        this.showQues = true
-        this.cur_que = this.quesList[0]
-        this.id = 1
-        this.score = 0
-        this.statisticList = []
-        this.stylea = ''
-        this.styleb = ''
-        this.stylec = ''
-        this.styled = ''
+        this.init()
+        // TODO：更新问题列表
+        this.getTestList()
       }
+    },
+
+    // 将答题结果发回给后台数据库
+    recordTestRes() {
+      let q1_q10 = []
+      let ans1_ans10 = []
+      let my1_my10 = []
+      this.statisticList.forEach((item) => {
+        q1_q10.push(item.name)
+        ans1_ans10.push(item.cor)
+        my1_my10.push(item.my)
+      })
+      q1_q10 = q1_q10.join('_')
+      ans1_ans10 = ans1_ans10.join('_')
+      my1_my10 = my1_my10.join('_')
+      // console.log(q1_q10, ans1_ans10, my1_my10)
+      wx.request({
+        url: 'https://rainlover.fun:3006/api/tr/add',
+        method: 'POST',
+        data: {
+          openid: this.$app.$options.globalData.openid,
+          score: this.score,
+          q1_q10,
+          ans1_ans10,
+          my1_my10,
+        },
+        success: (res) => {
+          console.log(res.data)
+          if (res.data.status == 0) {
+            wx.showToast({
+              title: '积分+' + this.score / 10 + '!',
+              icon: 'none',
+            })
+          }
+        },
+        fail: (err) => {
+          console.log(err)
+        },
+      })
     },
   },
   created() {
-    // TODO: 获取问题列表
-    this.cur_que = this.quesList[0]
+    // 获取问题列表
+    this.getTestList()
   },
 })
 </script>

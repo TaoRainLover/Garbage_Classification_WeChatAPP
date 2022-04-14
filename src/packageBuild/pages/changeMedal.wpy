@@ -12,15 +12,15 @@
           class="medal-box"
           v-for="(item, id) in medalList"
           :key="id"
-          @click="selectMedal(item.id, item.title)"
+          @click="selectMedal(item.id, item.name)"
         >
           <div v-if="item.weared" class="icon-title-box icon-title-box1">
             <img src="/static/image/icon/medal2.png" class="icon" />
-            <p class="title">{{ item.title }}</p>
+            <p class="title">{{ item.name }}</p>
           </div>
           <div v-else class="icon-title-box">
             <img src="/static/image/icon/medal2.png" class="icon" />
-            <p class="title">{{ item.title }}</p>
+            <p class="title">{{ item.name }}</p>
           </div>
           <img
             v-if="item.weared"
@@ -42,27 +42,46 @@ wepy.page({
   data: {
     // windowHeight: '',
     remainHeight: '',
-    medalList: [
-      { id: 1, title: '萌新报道', weared: false },
-      { id: 2, title: '神奇萌新', weared: false },
-      { id: 3, title: '环保卫士', weared: true },
-      { id: 4, title: '渐入佳境', weared: false },
-      { id: 5, title: '地球卫士', weared: false },
-      { id: 6, title: '萌新报道1', weared: false },
-    ],
+    // 用户拥有的勋章列表
+    medalList: [],
+    // 当前佩戴的勋章
+    cur_medal: '',
   },
   methods: {
     // 更换勋章
-    selectMedal(id, title) {
-      console.log('勋章！', title)
-      this.medalList.forEach((item) => {
-        if (item.title === title) {
-          item.weared = true
-        } else {
-          item.weared = false
-        }
-      })
+    selectMedal(id, name) {
+      console.log('勋章！', name)
+
       // TODO：将结果提交后台数据库
+      wx.request({
+        url: 'https://rainlover.fun:3006/api/medal/update',
+        method: 'POST',
+        data: {
+          openid: this.$app.$options.globalData.openid,
+          name,
+        },
+        success: (res) => {
+          console.log(res.data)
+          //更换成功
+          if (res.data.status == 0) {
+            this.medalList.forEach((item) => {
+              if (item.name === name) {
+                item.weared = true
+              } else {
+                item.weared = false
+              }
+            })
+          } else {
+            wx.showToast({
+              title: '网络错误,稍后再试!',
+              icon: 'error',
+            })
+          }
+        },
+        fail: (err) => {
+          console.log(err)
+        },
+      })
     },
 
     // 兑换更多勋章 -- 跳转到勋章兑换页面
@@ -70,12 +89,51 @@ wepy.page({
       this.$app.$options.globalData.giftOption = 'medal'
       wx.switchTab({ url: '/pages/gift' })
     },
+
+    // 获取用户当前佩戴的勋章
+    getUserInfo() {
+      wx.request({
+        url: 'https://rainlover.fun:3006/api/user/info',
+        method: 'POST',
+        data: {
+          openid: this.$app.$options.globalData.openid,
+        },
+        success: (res) => {
+          // console.log(res.data)
+          if (res.data.status == 0) {
+            this.userInfo = res.data.userInfo
+            // 初始化勋章信息
+            this.init()
+          }
+        },
+        fail: (err) => {
+          console.log(err)
+        },
+      })
+    },
+
+    // init -- 初始化用户所有的勋章数据
+    init() {
+      // console.log('----init----')
+      let medalList = this.userInfo.owned_medal_list.split('_')
+      this.cur_medal = this.userInfo.cur_medal
+      for (let i = 0; i < medalList.length; i++) {
+        const item = { id: i, name: medalList[i], weared: false }
+        if (medalList[i] == this.cur_medal) {
+          item.weared = true
+        }
+        this.medalList.push(item)
+      }
+    },
   },
 
   // 生命周期函数 created
   created(options) {
     this.remainHeight = this.$app.$options.globalData.remainHeight + 'px'
-    // TODO: 拉取用户的勋章列表信息
+  },
+  onShow() {
+    // 拉取用户的勋章列表信息
+    this.getUserInfo()
   },
 })
 </script>
@@ -117,12 +175,13 @@ wepy.page({
     }
     .medal-container {
       width: 100%;
-      padding: 48rpx 40rpx;
+      padding: 48rpx 0rpx;
       box-sizing: border-box;
       display: flex;
       flex-wrap: wrap;
-      justify-content: space-between;
+      justify-content: space-around;
       .medal-box {
+        margin: 0rpx 20rpx;
         margin-bottom: 28rpx;
         .my_flex1();
         .icon-title-box {

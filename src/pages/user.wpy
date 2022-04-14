@@ -15,7 +15,8 @@
           <div class="user-info">
             <p class="name">{{ userInfo.nickName }}</p>
             <p class="metal" @click="navigateToMedelList">
-              萌新报道<span
+              {{ userInfo.cur_medal
+              }}<span
                 ><image class="icon" src="/static/image/icon/right.png"
               /></span>
             </p>
@@ -162,26 +163,46 @@ wepy.page({
     register() {
       if (this.registered) {
         wx.showToast({
-          title: '今日已完成签到', //提示的内容,
+          title: '今日已完成签到!', //提示的内容,
           icon: 'none', //图标,
           duration: 2000, //延迟时间,
           mask: true, //显示透明蒙层，防止触摸穿透,
-          success: (res) => {},
         })
       } else {
         // 更改 dateList 对应日期 status 的属性值
-        const id = new Date().getDay()
-        this.dateList[id - 1].status = 1
-        // TODO：提交用户签到信息
-        wx.showToast({
-          title: '积分：+15', //提示的内容,
-          icon: 'none', //图标,
-          duration: 2000, //延迟时间,
+        wx.request({
+          url: 'https://rainlover.fun:3006/api/user/signin',
+          method: 'POST',
+          data: {
+            openid: this.openid,
+          },
+          success: (res) => {
+            console.log(res.data)
+            if (res.data.status == 0) {
+              // 签到成功
+              const id = new Date().getDay()
+              this.dateList[id - 1].status = 1
+              // TODO：提交用户签到信息
+              wx.showToast({
+                title: '积分：+15', //提示的内容,
+                icon: 'none', //图标,
+                duration: 2000, //延迟时间,
+              })
+              // 实现签到按钮变灰，不可点击
+              this.registered = true
+              this.getUserInfo()
+            } else {
+              // 签到失败
+              wx.showToast({
+                title: '签到失败,稍后再试!',
+                icon: 'error',
+              })
+            }
+          },
+          fail: (err) => {
+            console.log(err)
+          },
         })
-
-        // 实现签到按钮变灰，不可点击
-
-        this.registered = true
       }
     },
 
@@ -242,7 +263,7 @@ wepy.page({
       }
     },
 
-    // TODO:获取用户信息
+    // 获取用户信息
     getUserInfo() {
       wx.request({
         url: 'https://rainlover.fun:3006/api/user/info',
@@ -254,36 +275,15 @@ wepy.page({
           if (res.data.status == 0) {
             console.log(res.data)
             this.userInfo = res.data.userInfo
-            if (
-              this.userInfo.avatarUrl == null ||
-              this.userInfo.nickName == null
-            ) {
+            if (this.userInfo.avatarUrl == '' || this.userInfo.nickName == '') {
               this.hasUserInfo = false
+            } else {
+              this.hasUserInfo = true
             }
           }
         },
         fail: (err) => {
           console.log(err)
-        },
-      })
-    },
-
-    // login --
-    login() {
-      wx.login({
-        success(res) {
-          console.log(res)
-          if (res.code) {
-            // 发起网络请求
-            wx.request({
-              url: 'http://39.103.179.63:8001/api/user/login',
-              data: {
-                code: res.code,
-              },
-            })
-          } else {
-            console.log('登录失败！' + res.errMsg)
-          }
         },
       })
     },
@@ -295,16 +295,34 @@ wepy.page({
         desc: '完善用户信息',
         success: (res) => {
           console.log(res.userInfo)
-          // TODO: 将结果写入数据库中
-          this.userInfo = res.userInfo
-          this.hasUserInfo = true
-          // TODO: 将用户的身份信息传给全局变量
-          this.$app.$options.globalData.userInfo.loginStatus = true
-          // this.$app.$options.globalData.userInfo.nickName =
-          //   this.userInfo.nickName
-          // this.$app.$options.globalData.userInfo.avatarUrl =
-          //   this.userInfo.avatarUrl
-          // console.log(this.$app.$options.globalData.userInfo)
+          // TODO: 将结果更新数据库中
+          wx.request({
+            url: 'https://rainlover.fun:3006/api/user/update',
+            method: 'POST',
+            data: {
+              openid: this.openid,
+              nickName: res.userInfo.nickName,
+              avatarUrl: res.userInfo.avatarUrl,
+            },
+            success: (res1) => {
+              console.log(res1.data)
+              if (res1.data.status == 0) {
+                this.userInfo.nickName = res.userInfo.nickName
+                this.userInfo.avatarUrl = res.userInfo.avatarUrl
+                this.hasUserInfo = true
+                // 将用户的身份信息传给全局变量
+                this.$app.$options.globalData.userInfo.loginStatus = true
+                this.$app.$options.globalData.userInfo.nickName =
+                  this.userInfo.nickName
+                this.$app.$options.globalData.userInfo.avatarUrl =
+                  this.userInfo.avatarUrl
+                // console.log(this.$app.$options.globalData.userInfo)
+              }
+            },
+            fail: (err) => {
+              console.log(err)
+            },
+          })
         },
         fail: (err) => {
           console.log(err)
@@ -357,8 +375,10 @@ wepy.page({
     this.windowHeight = this.$app.$options.globalData.windowHeight + 'px'
     this.openid = this.$app.$options.globalData.openid
     this.userInfo = this.$app.$options.globalData.userInfo
-    if (this.userInfo.avatarUrl == null || this.userInfo.nickName == null) {
+    if (this.userInfo.avatarUrl == '' || this.userInfo.nickName == '') {
       this.hasUserInfo = false
+    } else {
+      this.hasUserInfo = true
     }
   },
 

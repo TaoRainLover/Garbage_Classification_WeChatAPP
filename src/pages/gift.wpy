@@ -1,6 +1,8 @@
 <template>
   <div class="container" style="height: {{ windowHeight }}">
-    <p class="corn-info">您的环保币：<span class="corn">50</span></p>
+    <p class="corn-info">
+      您的环保币：<span class="corn">{{ credit }}</span>
+    </p>
     <p class="title">兑换种类:</p>
     <div class="icon-box">
       <div class="gift-box box" @click="showGift">
@@ -42,9 +44,9 @@
             <div class="li" wx:for="{{ownedList}}" wx:key="*this">
               <div class="des-box">
                 <img src="/static/image/icon/medal2.png" class="icon" />
-                <p class="medal-name">{{ item }}</p>
+                <p class="medal-name">{{ item.name }}</p>
               </div>
-              <p>100币</p>
+              <p>{{ item.credit }}币</p>
               <p>已拥有</p>
             </div>
           </div>
@@ -56,10 +58,14 @@
             <div class="li" v-for="(item, id) in unowendList" :key="id">
               <div class="des-box">
                 <img src="/static/image/icon/medal2.png" class="icon" />
-                <p class="medal-name">{{ item }}</p>
+                <p class="medal-name">{{ item.name }}</p>
               </div>
-              <p>100币</p>
-              <div class="btn" @click="exchangeMedal(id, item)" :id="id">
+              <p>{{ item.credit }}币</p>
+              <div
+                class="btn"
+                @click="exchangeMedal(item.name, item.credit)"
+                :id="id"
+              >
                 兑换
               </div>
             </div>
@@ -81,60 +87,21 @@ wepy.page({
     giftIconPath: '/static/image/icon/gift-2.png',
     medalIconPath: '/static/image/icon/medal0.png',
     windowHeight: '',
-    ownedList: ['神奇萌新', '初入门道'],
+    ownedList: [],
     // ['萌新报道', '环保卫士', '']，
     unowendList: [
-      '环保标兵',
-      '绿色达人',
-      '渐入佳境',
-      '环保卫士',
-      '环保特工',
-      '成就达成',
-      '地球卫士',
+      // '环保标兵',
+      // '绿色达人',
+      // '渐入佳境',
+      // '环保卫士',
+      // '环保特工',
+      // '成就达成',
+      // '地球卫士',
     ],
-    medalList: [
-      '神奇萌新',
-      '初入门道',
-      '环保标兵',
-      '绿色达人',
-      '渐入佳境',
-      '环保卫士',
-      '环保特工',
-      '成就达成',
-      '地球卫士',
-    ],
-    giftItemList: [
-      // {
-      //   name: '手帕纸',
-      //   coverPath:
-      //     '//img13.360buyimg.com/n1/jfs/t1/176232/37/6059/194863/60826533E3a7e373b/b7f3ee9cfc15d5a7.jpg',
-      //   corn: 80,
-      // },
-      // {
-      //   name: '手帕纸',
-      //   coverPath:
-      //     '//img13.360buyimg.com/n1/jfs/t1/176232/37/6059/194863/60826533E3a7e373b/b7f3ee9cfc15d5a7.jpg',
-      //   corn: 80,
-      // },
-      // {
-      //   name: '手帕纸',
-      //   coverPath:
-      //     '//img13.360buyimg.com/n1/jfs/t1/176232/37/6059/194863/60826533E3a7e373b/b7f3ee9cfc15d5a7.jpg',
-      //   corn: 80,
-      // },
-      // {
-      //   name: '手帕纸',
-      //   coverPath:
-      //     '//img13.360buyimg.com/n1/jfs/t1/176232/37/6059/194863/60826533E3a7e373b/b7f3ee9cfc15d5a7.jpg',
-      //   corn: 80,
-      // },
-      // {
-      //   name: '手帕纸',
-      //   coverPath:
-      //     '//img13.360buyimg.com/n1/jfs/t1/176232/37/6059/194863/60826533E3a7e373b/b7f3ee9cfc15d5a7.jpg',
-      //   corn: 80,
-      // },
-    ],
+    medalList: [],
+    giftItemList: [],
+    // 用户积分数量
+    credit: 0,
   },
   methods: {
     // 兑换礼品
@@ -147,18 +114,53 @@ wepy.page({
     },
 
     // 兑换勋章
-    exchangeMedal(id, title) {
-      wx.showModal({
-        title: '提示',
-        content: '是否兑换',
-        success(res) {
-          if (res.confirm) {
-            console.log('用户点击确定')
-            console.log(id, title)
-            // TODO: 进行兑换操作
-          }
-        },
-      })
+    exchangeMedal(name, credit) {
+      const app = this
+      if (this.credit < credit) {
+        wx.showToast({
+          title: '积分不足！',
+          icon: 'error',
+        })
+      } else {
+        wx.showModal({
+          title: '提示',
+          content: '是否兑换',
+          success(res) {
+            if (res.confirm) {
+              console.log('用户点击确定')
+              console.log(name, credit)
+              // TODO: 进行兑换操作
+              wx.request({
+                url: 'https://rainlover.fun:3006/api/medal/exchange',
+                method: 'POST',
+                data: {
+                  openid: app.$app.$options.globalData.openid,
+                  name,
+                  credit,
+                },
+                success: (res) => {
+                  console.log(res.data)
+                  if (res.data.status == 0) {
+                    wx.showToast({
+                      title: '兑换成功！',
+                    })
+                    app.showMedal()
+                    app.credit = app.credit - credit
+                  } else {
+                    wx.showToast({
+                      title: res.data.message,
+                      icon: 'error',
+                    })
+                  }
+                },
+                fail: (err) => {
+                  console.log(err)
+                },
+              })
+            }
+          },
+        })
+      }
     },
 
     // 点击礼物按钮切换事件
@@ -175,25 +177,115 @@ wepy.page({
       this.giftIconPath = '/static/image/icon/gift-0.png'
       this.medalIconPath = '/static/image/icon/medal1.png'
       this.$app.$options.globalData.giftOption = 'medal'
+      // 获取所有的勋章数据
+      this.getMedalLists()
+      // 获取用户已经拥有的勋章数据
+      this.getOwnedMedalLists()
+    },
+
+    // 获取 礼品 数据
+    getGiftLists() {
+      wx.request({
+        url: 'https://rainlover.fun:3006/api/gift/lists',
+        method: 'POST',
+        success: (res) => {
+          // console.log(res.data.data)
+          this.giftItemList = res.data.data
+        },
+        fail: (err) => {
+          console.log(err)
+        },
+      })
+    },
+
+    // 获取 勋章列表 数据
+    getMedalLists() {
+      wx.request({
+        url: 'https://rainlover.fun:3006/api/medal/lists',
+        method: 'POST',
+        success: (res) => {
+          // console.log(res.data)
+          if (res.data.status == 0) {
+            this.medalList = res.data.list
+          }
+        },
+        fail: (err) => {
+          console.log(err)
+        },
+      })
+    },
+
+    // 获取用户已经拥有的勋章数据
+    getOwnedMedalLists() {
+      wx.request({
+        url: 'https://rainlover.fun:3006/api/medal/query',
+        method: 'POST',
+        data: {
+          openid: this.$app.$options.globalData.openid,
+        },
+        success: (res) => {
+          // console.log(res.data)
+          if (res.data.status == 0) {
+            this.ownedList = res.data.data
+            // 分割用户拥有 以及 未拥有的勋章数据
+            this.splitMedalList()
+          }
+        },
+        fail: (err) => {
+          console.log(err)
+        },
+      })
+    },
+
+    // 分割用户拥有 以及 未拥有的勋章数据
+    splitMedalList() {
+      console.log('分割用户拥有 以及 未拥有的勋章数据')
+      console.log('medal_list:', this.medalList)
+      console.log('owen_list:', this.ownedList)
+      console.log('unweon_list', this.unowendList)
+
+      let tempList = this.ownedList
+      this.ownedList = []
+      this.unowendList = []
+      for (let i = 0; i < this.medalList.length; i++) {
+        if (tempList.indexOf(this.medalList[i].name) > -1) {
+          this.ownedList.push(this.medalList[i])
+        } else {
+          this.unowendList.push(this.medalList[i])
+        }
+      }
+    },
+
+    // 获取用户的环保币数量
+    getUserInfo() {
+      wx.request({
+        url: 'https://rainlover.fun:3006/api/user/info',
+        method: 'POST',
+        data: {
+          openid: this.$app.$options.globalData.openid,
+        },
+        success: (res) => {
+          // console.log(res.data)
+          if (res.data.status == 0) {
+            this.credit = res.data.userInfo.credit
+            // this.
+          }
+        },
+        fail: (err) => {
+          console.log(err)
+        },
+      })
     },
   },
   // 生命周期函数 created
   created() {
     this.windowHeight = this.$app.$options.globalData.windowHeight + 'px'
     // 进入页面默认显示 礼品 信息
-    wx.request({
-      url: 'https://rainlover.fun:3006/api/gift/lists',
-      method: 'POST',
-      success: (res) => {
-        console.log(res.data.data)
-        this.giftItemList = res.data.data
-      },
-      fail: (err) => {
-        console.log(err)
-      },
-    })
+    this.getGiftLists()
   },
   onShow() {
+    // 获取积分数据
+    this.getUserInfo()
     if (this.$app.$options.globalData.giftOption === 'medal') {
       this.showMedal()
     } else {
