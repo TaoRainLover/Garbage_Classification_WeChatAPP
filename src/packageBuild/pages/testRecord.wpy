@@ -43,13 +43,15 @@
             <div class="trueInfo info">
               <img class="icon" src="/static/image/icon/true.png" />
               <span>
-                正确：<span class="score">{{ item.trueCount }}</span></span
+                正确：<span class="score">{{ item.score / 10 }}</span></span
               >
             </div>
             <div class="falseInfo info">
               <img class="icon" src="/static/image/icon/false.png" />
               <span>
-                错误：<span class="score">{{ item.falseCount }}</span></span
+                错误：<span class="score">{{
+                  10 - item.score / 10
+                }}</span></span
               >
             </div>
           </div>
@@ -64,8 +66,8 @@
       <scoreStatistic
         class="statistic-box"
         title="答题详情"
-        statisticList.sync="{{statisticList}}"
-        score="{{score}}"
+        statisticList.sync="{{statisticList.detail}}"
+        score.sync="{{statisticList.score}}"
         @tap.stop
       ></scoreStatistic>
     </div>
@@ -80,15 +82,7 @@ wepy.page({
     remainHeight: '',
     // 展示列表数据
     showList: [],
-    latestRecordList: [
-      { id: 1, date: '2022/2/25', score: 80, trueCount: 8, falseCount: 2 },
-      { id: 2, date: '2022/2/25', score: 80, trueCount: 8, falseCount: 2 },
-      { id: 3, date: '2022/2/25', score: 80, trueCount: 8, falseCount: 2 },
-      { id: 4, date: '2022/2/25', score: 80, trueCount: 8, falseCount: 2 },
-      { id: 5, date: '2022/2/25', score: 80, trueCount: 8, falseCount: 2 },
-      { id: 6, date: '2022/2/25', score: 80, trueCount: 8, falseCount: 2 },
-      { id: 7, date: '2022/2/25', score: 80, trueCount: 8, falseCount: 2 },
-    ],
+    latestRecordList: [],
     highestRecordList: [],
     //自定义导航栏选中样式
     selectedNavStyle:
@@ -96,42 +90,114 @@ wepy.page({
     // 是否显示最新考试记录
     showLatest: true,
 
-    //showStatisticPage
+    // showStatisticPage
     showStatisticPage: false,
+
+    // 统计列表
+    statisticList: [],
   },
   methods: {
     // 点击最新考试
     changeToNew() {
       this.showLatest = true
-      // TODO：拉取数据库最新的数据
-      this.showList = this.latestRecordList
+      // 拉取数据库最新的数据
+      this.getLatestList()
     },
     // 点击分数最高
     changeToHighest() {
       this.showLatest = false
-      // TODO：拉取数据库分数最高的数据
-      this.showList = this.highestRecordList
+      // 拉取数据库分数最高的数据
+      this.getHighestList()
     },
 
     // 展示考试详情
     showDetail(id) {
-      console.log('详情', id)
+      // console.log('详情', id)
       this.showStatisticPage = true
-      // TODO: 获取对应 id 的详情信息
+      //  获取对应 id 的详情信息
+      this.getStatisticInfo(id)
     },
 
     // 取消展示
     cancel() {
       this.showStatisticPage = false
     },
+
+    // 获取 最新测试 考试成绩的记录
+    getLatestList() {
+      wx.request({
+        url: 'https://rainlover.fun:3006/api/tr/history',
+        method: 'POST',
+        data: {
+          openid: this.$app.$options.globalData.openid,
+        },
+        success: (res) => {
+          // console.log(res.data)
+          if (res.data.status == 0) {
+            this.latestRecordList = res.data.data
+            this.showList = this.latestRecordList
+          }
+        },
+        fail: (err) => {
+          console.log(err)
+        },
+      })
+    },
+
+    // 获取 分数最高 考试成绩的记录
+    getHighestList() {
+      wx.request({
+        url: 'https://rainlover.fun:3006/api/tr/hh',
+        method: 'POST',
+        data: {
+          openid: this.$app.$options.globalData.openid,
+        },
+        success: (res) => {
+          // console.log(res.data)
+          if (res.data.status == 0) {
+            this.highestRecordList = res.data.data
+            this.showList = this.highestRecordList
+          }
+        },
+        fail: (err) => {
+          console.log(err)
+        },
+      })
+    },
+
+    // 获取 指定id 对应的答题记录信息
+    getStatisticInfo(id) {
+      for (let i = 0; i < this.showList.length; i++) {
+        // console.log(this.showList[i])
+        if (this.showList[i].id == id) {
+          this.statisticList = this.showList[i]
+          console.log(this.statisticList)
+          break
+        }
+      }
+
+      // 格式化对应数据
+      this.statisticList.ans1_ans10 = this.statisticList.ans1_ans10.split('_')
+      this.statisticList.q1_q10 = this.statisticList.q1_q10.split('_')
+      this.statisticList.my1_my10 = this.statisticList.my1_my10.split('_')
+      let detail = []
+      for (let i = 0; i < 10; i++) {
+        let item = {
+          name: this.statisticList.q1_q10[i],
+          cor: this.statisticList.ans1_ans10[i],
+          my: this.statisticList.my1_my10[i],
+        }
+        detail.push(item)
+      }
+      this.statisticList.detail = detail
+    },
   },
 
   // 生命周期函数 created
   created() {
     this.remainHeight = this.$app.$options.globalData.remainHeight + 'px'
-    // TODO：请求最新的答题数据
-
-    this.showList = this.latestRecordList
+    // 请求最新的答题数据
+    this.getLatestList()
   },
 })
 </script>
@@ -142,6 +208,7 @@ wepy.page({
   display: flex;
   flex-direction: column;
   align-items: center;
+  overflow: auto;
   // 顶部导航区域
   .nav-box {
     height: 72rpx;

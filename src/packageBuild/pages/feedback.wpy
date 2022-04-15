@@ -82,7 +82,7 @@ wepy.page({
           this.system = false
           this.account = false
           this.other = false
-          this.type = 'c'
+          this.type = 'advise'
           break
         }
         case 'system': {
@@ -116,19 +116,19 @@ wepy.page({
     submit() {
       if (this.title.length === 0) {
         wx.showToast({
-          title: '请填写标题', //提示的内容,
+          title: '请填写标题!', //提示的内容,
           icon: 'none', //图标,
           duration: 1500, //延迟时间,
         })
       } else if (this.content.length === 0) {
         wx.showToast({
-          title: '请填写问题描述',
+          title: '请填写问题描述!',
           icon: 'none',
           duration: 1500,
         })
       } else if (this.content.length < 10) {
         wx.showToast({
-          title: '问题描述不少于10字符',
+          title: '问题描述不少于10字符!',
           icon: 'none',
         })
       } else {
@@ -136,6 +136,31 @@ wepy.page({
         console.log(this.type)
         console.log(this.title)
         console.log(this.content)
+        wx.request({
+          url: 'https://rainlover.fun:3006/api/feedback/submit',
+          method: 'POST',
+          data: {
+            openid: this.$app.$options.globalData.openid,
+            type: this.type,
+            title: this.title,
+            des: this.content,
+          },
+          success: (res) => {
+            console.log(res.data)
+            if (res.data.status == 0) {
+              wx.showToast({
+                title: '提交成功!',
+                duration: 2000,
+              })
+              this.title = ''
+              this.content = ''
+              this.changeType('advise')
+            }
+          },
+          fail: (res) => {
+            console.log(err)
+          },
+        })
       }
     },
   },

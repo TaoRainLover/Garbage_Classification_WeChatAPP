@@ -2,23 +2,15 @@
   <div class="container" style="height: {{ remainHeight }}">
     <div class="content-container">
       <div class="title">
-        排行总榜（<span style="color: #4cae32">前50</span>）
+        <img src="/static/image/icon/ranking-icon.png" class="icon" />
+        排行总榜(<span style="color: #4cae32">前50</span>)
       </div>
       <div class="list-box">
         <div class="li" v-for="(item, index) in rankingList" :key="item.id">
-          <!-- <div class="user-info">
-            <div class="num">{{index}}<div>
-            <img class="avatar" src="/static/image/icon/my_avatar.png"/>
-            <div class="uname">{{item.uname}}</div>
-          </div> -->
-          <!-- <div class="score-info">
-            <img class="icon" src="/static/image/icon/statistic-icon.png"/>
-            <div class="score">{{item.score}}</div>
-          </div> -->
           <div class="user-info">
-            <div class="num">{{ index }}</div>
+            <div class="num">{{ index + 1 }}</div>
             <img class="avatar" src="/static/image/icon/my_avatar.png" alt="" />
-            <span>{{ item.uname }}</span>
+            <span>{{ item.nickName }}</span>
           </div>
           <div class="score-info">
             <img
@@ -26,7 +18,7 @@
               src="/static/image/icon/statistic-icon.png"
               alt=""
             />
-            <span class="score">{{ item.score }}分</span>
+            <span class="score">{{ item.total_score }}分</span>
           </div>
         </div>
       </div>
@@ -40,24 +32,33 @@ import wepy from '@wepy/core'
 wepy.page({
   data: {
     remainHeight: '',
-    rankingList: [
-      { id: 1, uname: 'TaoRainLover', avatar: '', score: 1200 },
-      { id: 1, uname: 'TaoRainLover', avatar: '', score: 1200 },
-      { id: 1, uname: 'TaoRainLover', avatar: '', score: 1200 },
-      { id: 1, uname: 'TaoRainLover', avatar: '', score: 1200 },
-      { id: 1, uname: 'TaoRainLover', avatar: '', score: 1200 },
-      { id: 1, uname: 'TaoRainLover', avatar: '', score: 1200 },
-      { id: 1, uname: 'TaoRainLover', avatar: '', score: 1200 },
-      { id: 1, uname: 'TaoRainLover', avatar: '', score: 1200 },
-      { id: 1, uname: 'TaoRainLover', avatar: '', score: 1200 },
-    ],
+    rankingList: [],
   },
-  methods: {},
+  methods: {
+    // 获取排行榜
+    getRankingList() {
+      wx.request({
+        url: 'https://rainlover.fun:3006/api/ranking/lists',
+        method: 'POST',
+        success: (res) => {
+          console.log(res.data)
+          if (res.data.status == 0) {
+            this.rankingList = res.data.data
+          }
+        },
+        fail: (err) => {
+          console.log(err)
+        },
+      })
+    },
+  },
 
   // 生命周期函数 created
   created() {
     this.remainHeight = this.$app.$options.globalData.remainHeight + 'px'
+    this.getRankingList()
   },
+  onShow() {},
 })
 </script>
 
@@ -68,11 +69,18 @@ wepy.page({
     flex-direction: column;
     align-items: center;
   }
+  .my_flex2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
   background: #f8f8f8;
   display: flex;
   justify-content: center;
+  // position: relative;
   .content-container {
     height: 99%;
+    overflow: auto;
     width: 740rpx;
     background: white;
     border-radius: 10px 10px 0px 0px;
@@ -80,13 +88,23 @@ wepy.page({
     bottom: 0;
     .my_flex();
     .title {
-      height: 84rpx;
       width: 100%;
-      line-height: 84rpx;
-      text-align: center;
+      height: 88rpx;
       font-size: 32rpx;
+      line-height: 88rpx;
+      text-align: center;
       font-weight: bold;
       border-bottom: 2rpx solid #000000;
+      .my_flex2();
+      .icon {
+        height: 32rpx;
+        width: 32rpx;
+        margin-right: 10rpx;
+      }
+      // position: absolute;
+      background: white;
+      // margin-bottom: 88rpx;
+      // top: ;
     }
     .list-box {
       .my_flex();

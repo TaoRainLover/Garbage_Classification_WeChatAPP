@@ -11,6 +11,9 @@
           type="text"
           class="input-area"
           placeholder="搜索垃圾查看对应类别"
+          bindfocus="focus"
+          bindblur="blur"
+          bindconfirm="search"
         />
       </div>
 
@@ -22,29 +25,33 @@
     <div class="res-list-box">
       <div class="li" v-for="(item, id) in resList" :key="id">
         <img
-          v-if="item.class == '其他垃圾'"
+          v-if="item.type == 4"
           src="/static/image/icon/other1.png"
           class="class-icon"
         />
         <img
-          v-else-if="item.class == '可回收物' || item.class == '可回收垃圾'"
+          v-else-if="item.type == 1"
           src="/static/image/icon/recyclable1.png"
           class="class-icon"
         />
         <img
-          v-else-if="item.class == '厨余垃圾'"
+          v-else-if="item.type == 3"
           src="/static/image/icon/kitchen1.png"
           class="class-icon"
         />
         <img
-          v-else-if="item.class == '有害垃圾'"
+          v-else-if="item.type == 2"
           src="/static/image/icon/harmful1.png"
           class="class-icon"
         />
         <p class="name">{{ item.name }}</p>
         <p>
-          「<span class="cls">{{ item.class }}</span
-          >」
+          「
+          <span class="cls" v-if="item.type == 1">可回收物</span>
+          <span class="cls" v-else-if="item.type == 2">有害垃圾</span>
+          <span class="cls" v-else-if="item.type == 3">厨余垃圾</span>
+          <span class="cls" v-else>其他垃圾</span>
+          」
         </p>
       </div>
     </div>
@@ -58,28 +65,18 @@ import wepy from '@wepy/core'
 wepy.page({
   data: {
     windowHeight: '',
-    resList: [
-      {
-        name: '湿卫生纸',
-        class: '其他垃圾',
-      },
-      {
-        name: '卫生纸',
-        class: '有害垃圾',
-      },
-      {
-        name: '卫生纸芯',
-        class: '可回收垃圾',
-      },
-      {
-        name: '用过的卫生纸',
-        class: '厨余垃圾',
-      },
-    ],
+    resList: [],
     // 输入内容
     inputContent: '',
     // 是否处在输入状态中
     inputting: true,
+  },
+  computed: {
+    inputtingStatus() {
+      if (this.inputContent == '') {
+        return true
+      } else return false
+    },
   },
   methods: {
     // 搜索
@@ -87,20 +84,65 @@ wepy.page({
       console.log('搜索', this.inputContent)
       if (this.inputContent.length === 0) {
         wx.showToast({
-          title: '请先输入', //提示的内容,
+          title: '请先输入!', //提示的内容,
           icon: 'error', //图标,
           duration: 1500, //延迟时间,
         })
       } else {
-        // TODO：提交后台服务器进行查询
-        this.inputting = false
+        // 提交后台服务器进行查询
+        this.getItemInfo(this.inputContent)
       }
     },
     // 取消搜索
     cancel() {
       this.inputContent = ''
-      console.log('取消')
       this.inputting = true
+      this.resList = []
+    },
+
+    // 查询
+    getItemInfo(name) {
+      wx.request({
+        url: 'https://rainlover.fun:3006/api/gc/query',
+        method: 'POST',
+        data: {
+          name,
+          openid: this.$app.$options.globalData.openid,
+        },
+        success: (res) => {
+          console.log(res.data)
+          if (res.data.status == 0) {
+            // this.resList
+            if (res.data.data.length == 0) {
+              wx.showToast({
+                title: '没有搜索到相关数据,换个搜索词再试!',
+                icon: 'none',
+              })
+            } else {
+              this.resList = res.data.data
+              this.inputting = false
+            }
+          } else {
+            wx.showToast({
+              title: res.data.message,
+              icon: 'none',
+            })
+          }
+        },
+        fail: (err) => {
+          console.log(err)
+        },
+      })
+    },
+
+    //
+    focus() {
+      console.log('show input')
+      this.inputting = true
+    },
+    blur() {
+      console.log('hide input')
+      // this.inputting = false
     },
   },
 
@@ -109,10 +151,14 @@ wepy.page({
     this.windowHeight = this.$app.$options.globalData.remainHeight + 'px'
   },
   onLoad(options) {
+    console.log('onload!!!')
+
     console.log(options)
-    console.log(options.search_text)
-    if (options.search_text !== '') {
-      // TODO :进行查询操作
+    console.log('options.search_text', options.search_text)
+    if (options.search_text != '' && options.search_text) {
+      // :进行查询操作
+      this.inputContent = options.search_text
+      this.search()
     }
   },
 })

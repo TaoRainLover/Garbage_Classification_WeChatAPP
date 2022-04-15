@@ -18,12 +18,12 @@
     <div class="recordList-box">
       <div class="li" v-for="(item, id) in showList" :key="id">
         <div class="left-box">
-          <p class="name">{{ item.name }}</p>
+          <p class="name">{{ item.type }}</p>
           <p class="date">{{ item.date }}</p>
         </div>
         <div class="right-box">
-          积分：<span v-if="item.isAdd">+</span> <span v-else>-</span
-          >{{ item.num }}
+          积分：<span v-if="item.is_add == '1'">+</span> <span v-else>-</span
+          >{{ item.credit }}
         </div>
       </div>
     </div>
@@ -42,13 +42,7 @@ wepy.page({
     remainHeight: '',
     selectedBtnStyle:
       'color: #4CAE32; border: 1px solid #4CAE32; background:rgba(76, 174, 50, 0.1);',
-    allList: [
-      { name: '签到有礼', date: '2022/2/21', isAdd: true, num: 10 },
-      { name: '签到有礼', date: '2022/2/21', isAdd: true, num: 10 },
-      { name: '签到有礼', date: '2022/2/21', isAdd: true, num: 10 },
-      { name: '签到有礼', date: '2022/2/21', isAdd: true, num: 10 },
-      { name: '签到有礼', date: '2022/2/21', isAdd: true, num: 10 },
-    ],
+    allList: [],
     addList: [],
     decreaseList: [],
     showList: [],
@@ -59,6 +53,7 @@ wepy.page({
     decrease: false,
   },
   methods: {
+    // 点击导航按钮，切换样式
     changeType(type) {
       this.type = type
       switch (type) {
@@ -66,7 +61,7 @@ wepy.page({
           this.all = true
           this.add = false
           this.decrease = false
-          this.showList = this.allList
+          this.getCreditInfo()
           break
         }
         case 'add': {
@@ -74,16 +69,80 @@ wepy.page({
           this.add = true
           this.decrease = false
           this.showList = this.addList
+          this.getCredit_Add()
           break
         }
         case 'decrease': {
           this.all = false
           this.add = false
           this.decrease = true
-          this.showList = this.decreaseList
+          this.getCredit_Des()
           break
         }
       }
+    },
+
+    // 获取用户的积分记录信息
+    getCreditInfo() {
+      wx.request({
+        url: 'https://rainlover.fun:3006/api/credit/history',
+        method: 'POST',
+        data: {
+          openid: this.$app.$options.globalData.openid,
+        },
+        success: (res) => {
+          // console.log(res.data)
+          if (res.data.status == 0) {
+            this.allList = res.data.data
+            this.showList = this.allList
+          }
+        },
+        fail: (err) => {
+          console.log(err)
+        },
+      })
+    },
+
+    // 获取用户所有增加的积分记录信息
+    getCredit_Add() {
+      wx.request({
+        url: 'https://rainlover.fun:3006/api/credit/ha',
+        method: 'POST',
+        data: {
+          openid: this.$app.$options.globalData.openid,
+        },
+        success: (res) => {
+          // console.log(res.data)
+          if (res.data.status == 0) {
+            this.addList = res.data.data
+            this.showList = this.addList
+          }
+        },
+        fail: (err) => {
+          console.log(err)
+        },
+      })
+    },
+
+    // 获取用户所有减少的积分记录信息
+    getCredit_Des() {
+      wx.request({
+        url: 'https://rainlover.fun:3006/api/credit/hd',
+        method: 'POST',
+        data: {
+          openid: this.$app.$options.globalData.openid,
+        },
+        success: (res) => {
+          // console.log(res.data)
+          if (res.data.status == 0) {
+            this.decreaseList = res.data.data
+            this.showList = this.decreaseList
+          }
+        },
+        fail: (err) => {
+          console.log(err)
+        },
+      })
     },
   },
 
@@ -91,8 +150,7 @@ wepy.page({
   created() {
     this.windowHeight = this.$app.$options.globalData.windowHeight * 2 + 'rpx'
     this.remainHeight = this.$app.$options.globalData.remainHeight * 2 + 'rpx'
-    // console.log(this.windowHeight)
-    this.showList = this.allList
+    this.getCreditInfo()
   },
 })
 </script>
