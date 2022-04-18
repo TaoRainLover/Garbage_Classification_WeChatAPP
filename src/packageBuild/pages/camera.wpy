@@ -25,9 +25,11 @@
           class="li"
           v-for="(item, id) in recognizeResList"
           :key="id"
-          @click="navigateToSearch(id, item.name)"
+          @touchstart="navigateToSearch(id, item.keyword)"
+          @touchend="touchEnd(id)"
+          @touchcancel="touchEnd(id)"
         >
-          <div class="name-info">{{ item.name }} ({{ item.pos }}%)</div>
+          <div class="name-info">{{ item.keyword }} ({{ item.score }}%)</div>
           <div class="btn" v-if="!item.status"></div>
           <div class="btn btn2" v-else></div>
         </div>
@@ -46,23 +48,18 @@ wepy.page({
     showCamera: true,
     photoRes: '',
     // 图像识别结果数组
-    recognizeResList: [
-      { id: 1, name: '笔记本电脑1', pos: '83.4', status: false },
-      { id: 1, name: '笔记本电脑2', pos: '83.4', status: false },
-      { id: 1, name: '笔记本电脑3', pos: '83.4', status: false },
-      { id: 1, name: '笔记本电脑4', pos: '83.4', status: false },
-      { id: 1, name: '笔记本电脑5', pos: '83.4', status: false },
-    ],
+    recognizeResList: [],
   },
   methods: {
     // 拍照并将图片转换为 base64 格式
     takePhoto() {
+      const that = this
       const ctx = wx.createCameraContext()
       ctx.takePhoto({
         quality: 'high',
         success: (res) => {
           this.photoRes = res
-          console.log(this.photoRes)
+          // console.log(this.photoRes)
           this.showCamera = false
 
           // 将本地图片转换为base64格式
@@ -71,11 +68,34 @@ wepy.page({
             encoding: 'base64', //编码格式
             success: (res) => {
               //成功的回调
-              console.log('data:image/png;base64,' + res.data)
+              // console.log('data:image/png;base64,' + res.data)
               const img_base64 = 'data:image/png;base64,' + res.data
               //TODO: 将结果传递给后台服务器接收识别之后的结果
+              this.recognize_img(img_base64)
             },
           })
+        },
+      })
+    },
+
+    // 将base64格式的图片进行识别
+    recognize_img(img_base64) {
+      console.log('--- 图像识别 ---')
+
+      wx.request({
+        url: 'https://rainlover.fun:3006/api/gc/qi',
+        method: 'POST',
+        data: {
+          img: img_base64,
+        },
+        success: (res) => {
+          console.log(res.data)
+          if (res.data.stutas == 0) {
+            this.recognizeResList = res.data.data
+          }
+        },
+        fail: (err) => {
+          console.log(err)
         },
       })
     },
@@ -93,6 +113,9 @@ wepy.page({
       console.log(name)
       // 跳转
       wx.navigateTo({ url: '/packageBuild/pages/search?search_text=' + name })
+    },
+    touchEnd(id) {
+      this.recognizeResList[id].status = false
     },
   },
 

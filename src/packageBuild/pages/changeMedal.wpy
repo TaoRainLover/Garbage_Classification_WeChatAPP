@@ -52,7 +52,7 @@ wepy.page({
     selectMedal(id, name) {
       console.log('勋章！', name)
 
-      // TODO：将结果提交后台数据库
+      // 将结果提交后台数据库
       wx.request({
         url: 'https://rainlover.fun:3006/api/medal/update',
         method: 'POST',

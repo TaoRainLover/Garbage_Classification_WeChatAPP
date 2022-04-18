@@ -32,7 +32,7 @@
           ><span class="name">{{ item.name }}</span></span
         >
         <span
-          ><span class="resCount">{{ item.resCount }}</span> 结果</span
+          ><span class="resCount">{{ item.num_res }}</span> 结果</span
         >
         <span class="date">{{ item.date }}</span>
       </div>
@@ -49,23 +49,8 @@ wepy.page({
     remainHeight: '',
     // 展示列表数据
     showList: [],
-    todayList: [
-      { id: 1, name: '抽纸', resCount: 3, date: '2022/2/25' },
-      { id: 2, name: '抽纸', resCount: 3, date: '2022/2/25' },
-      { id: 3, name: '抽纸', resCount: 3, date: '2022/2/25' },
-      { id: 4, name: '抽纸', resCount: 3, date: '2022/2/25' },
-      { id: 5, name: '抽纸', resCount: 3, date: '2022/2/25' },
-      { id: 6, name: '抽纸', resCount: 3, date: '2022/2/25' },
-      { id: 7, name: '抽纸', resCount: 3, date: '2022/2/25' },
-    ],
-    beforeList: [
-      { id: 1, name: '抽纸', resCount: 3, date: '2022/2/25' },
-      { id: 2, name: '抽纸', resCount: 3, date: '2022/2/25' },
-      { id: 3, name: '抽纸', resCount: 3, date: '2022/2/25' },
-      { id: 4, name: '抽纸', resCount: 3, date: '2022/2/25' },
-      { id: 5, name: '抽纸', resCount: 3, date: '2022/2/25' },
-      { id: 6, name: '抽纸', resCount: 3, date: '2022/2/25' },
-    ],
+    todayList: [],
+    beforeList: [],
 
     //自定义导航栏选中样式
     selectedNavStyle:
@@ -78,25 +63,68 @@ wepy.page({
     // 导航
     changeToToday() {
       this.showToday = true
-      // TODO：获取今日的搜索数据
-      this.showList = this.todayList
+      // 获取今日的搜索数据
+      this.getTodayList()
     },
     changeToBefore() {
       this.showToday = false
-      // TODO: 获取往日的搜索数据
-      this.showList = this.beforeList
+      // 获取往日的搜索数据
+      this.getBeforeList()
     },
 
     // 点击某一条搜索数据，跳转到该条数据的搜索界面
     navigateToSearch(name) {
-      wx.navigateTo({ url: '/packageBuild/pages/search?name=' + name })
+      wx.navigateTo({ url: '/packageBuild/pages/search?search_text=' + name })
+    },
+
+    // 获取今日的搜索列表数据
+    getTodayList() {
+      wx.request({
+        url: 'https://rainlover.fun:3006/api/sh/today',
+        method: 'POST',
+        data: {
+          openid: this.$app.$options.globalData.openid,
+        },
+        success: (res) => {
+          console.log(res.data)
+          if (res.data.status == 0) {
+            this.todayList = res.data.data
+            this.showList = this.todayList
+          }
+        },
+        fail: (err) => {
+          console.log(err)
+        },
+      })
+    },
+
+    // 获取更早的（除去今日）的搜索数据
+    getBeforeList() {
+      wx.request({
+        url: 'https://rainlover.fun:3006/api/sh/before',
+        method: 'POST',
+        data: {
+          openid: this.$app.$options.globalData.openid,
+        },
+        success: (res) => {
+          console.log(res.data)
+          if (res.data.status == 0) {
+            this.beforeList = res.data.data
+            this.showList = this.beforeList
+          }
+        },
+        fail: (err) => {
+          console.log(err)
+        },
+      })
     },
   },
 
   // 生命周期函数 created
   created() {
     this.remainHeight = this.$app.$options.globalData.remainHeight * 2 + 'rpx'
-    // TODO: 在页面加载之前获取今日的搜索历史
+    // 在页面加载之前获取今日的搜索历史
+    this.getTodayList()
   },
 })
 </script>

@@ -5,7 +5,7 @@
       <div class="input-box">
         <img src="/static/image/icon/search.png" class="icon" />
         <input
-          focus
+          focus="{{inputting}}"
           v-model="inputContent"
           maxlength="20"
           type="text"
@@ -158,6 +158,7 @@ wepy.page({
     if (options.search_text != '' && options.search_text) {
       // :进行查询操作
       this.inputContent = options.search_text
+      this.inputting = false
       this.search()
     }
   },

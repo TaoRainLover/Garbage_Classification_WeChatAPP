@@ -132,7 +132,7 @@ wepy.page({
           icon: 'none',
         })
       } else {
-        // TODO: 提交反馈至后台服务器
+        // T 提交反馈至后台服务器
         console.log(this.type)
         console.log(this.title)
         console.log(this.content)
