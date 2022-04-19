@@ -129,7 +129,7 @@ wepy.page({
             if (res.confirm) {
               console.log('用户点击确定')
               console.log(name, credit)
-              // TODO: 进行兑换操作
+              // 进行兑换操作
               wx.request({
                 url: 'https://rainlover.fun:3006/api/medal/exchange',
                 method: 'POST',

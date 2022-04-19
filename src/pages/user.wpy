@@ -159,7 +159,7 @@ wepy.page({
     coutn_test_history: 0,
   },
   methods: {
-    // TODO：签到
+    // 签到
     register() {
       if (this.registered) {
         wx.showToast({
@@ -204,6 +204,51 @@ wepy.page({
           },
         })
       }
+    },
+
+    // 查询用户今日签到情况
+    register_today() {
+      wx.request({
+        url: 'https://rainlover.fun:3006/api/user/st',
+        method: 'POST',
+        data: {
+          openid: this.openid,
+        },
+        success: (res) => {
+          if (res.data.status == 0) {
+            if (res.data.message == '用户已签到') {
+              this.registered = true
+            } else {
+              this.registered = false
+            }
+          }
+        },
+        fail: (err) => {
+          console.log(err)
+        },
+      })
+    },
+
+    // 查询用户本周签到信息
+    register_week_record() {
+      wx.request({
+        url: 'https://rainlover.fun:3006/api/user/swr',
+        method: 'POST',
+        data: {
+          openid: this.openid,
+        },
+        success: (res) => {
+          console.log(res.data)
+          if (res.data.status == 0 && res.data.msg == '查询到本周的签到信息') {
+            res.data.data.forEach((item) => {
+              this.dateList[Number(item.day_of_week) - 1].status = 1
+            })
+          }
+        },
+        fail: (err) => {
+          console.log(err)
+        },
+      })
     },
 
     // 跳转到搜索历史页面
@@ -278,7 +323,12 @@ wepy.page({
             if (this.userInfo.avatarUrl == '' || this.userInfo.nickName == '') {
               this.hasUserInfo = false
             } else {
+              // 用户已注册信息
               this.hasUserInfo = true
+              // 判断用户今日签到情况
+              this.register_today()
+              // 判断用户本周的签到情况
+              this.register_week_record()
             }
           }
         },

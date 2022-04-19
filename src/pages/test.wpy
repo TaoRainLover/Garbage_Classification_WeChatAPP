@@ -124,6 +124,25 @@ wepy.page({
       })
     },
 
+    // 获取今日的答题次数
+    get_count_today() {
+      wx.request({
+        url: 'https://rainlover.fun:3006/api/tr/cd',
+        method: 'POST',
+        data: {
+          openid: this.$app.$options.globalData.openid,
+        },
+        success: (res) => {
+          if (res.data.status == 0) {
+            this.count = res.data.count
+          }
+        },
+        fail: (err) => {
+          console.log(err)
+        },
+      })
+    },
+
     // 更换样式
     changeStyle(that, my, style) {
       switch (my) {
@@ -203,17 +222,16 @@ wepy.page({
     // 再来一次
     palyAgain() {
       // 判断今日答题次数是否超出5次
-      if (this.count > 5) {
+      if (this.count >= 5) {
         wx.showToast({
           title: '今日答题已完成，请改日再来！',
           icon: 'none',
         })
       } else {
         console.log('play again!')
-
         // 重新初始化
         this.init()
-        // TODO：更新问题列表
+        // 更新问题列表
         this.getTestList()
       }
     },
@@ -260,6 +278,9 @@ wepy.page({
   created() {
     // 获取问题列表
     this.getTestList()
+  },
+  onShow() {
+    this.get_count_today()
   },
 })
 </script>
