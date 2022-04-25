@@ -52,7 +52,6 @@ wepy.app({
   async onLaunch() {
     // 访问全局属性 - globalData
     // globalData = this.$options.globalData
-
     // 获取手机设备信息
     const res = await wx.getSystemInfoSync({})
     // console.log(res)
@@ -89,10 +88,18 @@ wepy.app({
             },
             fail: (err) => {
               console.log(err)
+              wx.showToast({
+                title: err,
+                icon: 'none',
+              })
             },
           })
         } else {
           console.log('登录失败！' + res.errMsg)
+          wx.showToast({
+            title: '登录失败' + res.errMsg,
+            icon: 'none',
+          })
         }
       },
     })

@@ -208,6 +208,8 @@ wepy.page({
 
     // 查询用户今日签到情况
     register_today() {
+      console.log('---今日签到情况---')
+
       wx.request({
         url: 'https://rainlover.fun:3006/api/user/st',
         method: 'POST',
@@ -221,6 +223,8 @@ wepy.page({
             } else {
               this.registered = false
             }
+          } else {
+            console.log(res)
           }
         },
         fail: (err) => {
@@ -231,6 +235,8 @@ wepy.page({
 
     // 查询用户本周签到信息
     register_week_record() {
+      console.log('---本周签到情况---')
+
       wx.request({
         url: 'https://rainlover.fun:3006/api/user/swr',
         method: 'POST',
@@ -241,7 +247,7 @@ wepy.page({
           console.log(res.data)
           if (res.data.status == 0 && res.data.msg == '查询到本周的签到信息') {
             res.data.data.forEach((item) => {
-              this.dateList[Number(item.day_of_week) - 1].status = 1
+              this.dateList[Number(item.day_of_week)].status = 1
             })
           }
         },
@@ -314,13 +320,18 @@ wepy.page({
         url: 'https://rainlover.fun:3006/api/user/info',
         method: 'POST',
         data: {
-          openid: this.openid,
+          openid: this.$app.$options.globalData.openid,
         },
         success: (res) => {
           if (res.data.status == 0) {
             console.log(res.data)
             this.userInfo = res.data.userInfo
-            if (this.userInfo.avatarUrl == '' || this.userInfo.nickName == '') {
+            if (
+              this.userInfo.avatarUrl == null ||
+              this.userInfo.nickName == null ||
+              this.userInfo.avatarUrl == '' ||
+              this.userInfo.nickName == ''
+            ) {
               this.hasUserInfo = false
             } else {
               // 用户已注册信息
@@ -334,6 +345,10 @@ wepy.page({
         },
         fail: (err) => {
           console.log(err)
+          wx.showToast({
+            title: err,
+            icon: 'none',
+          })
         },
       })
     },
@@ -345,7 +360,7 @@ wepy.page({
         desc: '完善用户信息',
         success: (res) => {
           console.log(res.userInfo)
-          // TODO: 将结果更新数据库中
+          //  将结果更新数据库中
           wx.request({
             url: 'https://rainlover.fun:3006/api/user/update',
             method: 'POST',
@@ -366,16 +381,27 @@ wepy.page({
                   this.userInfo.nickName
                 this.$app.$options.globalData.userInfo.avatarUrl =
                   this.userInfo.avatarUrl
-                // console.log(this.$app.$options.globalData.userInfo)
+                // 判断用户今日签到情况
+                this.register_today()
+                // 判断用户本周的签到情况
+                this.register_week_record()
               }
             },
             fail: (err) => {
               console.log(err)
+              wx.showToast({
+                title: '请登录再试！',
+                icon: 'error',
+              })
             },
           })
         },
         fail: (err) => {
           console.log(err)
+          wx.showToast({
+            title: '请登录再试！',
+            icon: 'error',
+          })
         },
       })
     },
@@ -425,11 +451,6 @@ wepy.page({
     this.windowHeight = this.$app.$options.globalData.windowHeight + 'px'
     this.openid = this.$app.$options.globalData.openid
     this.userInfo = this.$app.$options.globalData.userInfo
-    if (this.userInfo.avatarUrl == '' || this.userInfo.nickName == '') {
-      this.hasUserInfo = false
-    } else {
-      this.hasUserInfo = true
-    }
   },
 
   // 小程序原生生命周期函数： onLoad，用来获取页面参数传值
@@ -441,7 +462,7 @@ wepy.page({
     console.log('-----user page----')
 
     // console.log('show', this.openid)
-    // TODO：更新用户数据
+    // 更新用户数据
     this.getUserInfo()
     this.getCounts()
   },

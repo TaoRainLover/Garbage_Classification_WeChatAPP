@@ -81,7 +81,7 @@ wepy.page({
     // 将base64格式的图片进行识别
     recognize_img(img_base64) {
       console.log('--- 图像识别 ---')
-
+      this.recognizeResList = []
       wx.request({
         url: 'https://rainlover.fun:3006/api/gc/qi',
         method: 'POST',
@@ -89,7 +89,8 @@ wepy.page({
           img: img_base64,
         },
         success: (res) => {
-          console.log(res.data)
+          // console.log(res.data)
+
           if (res.data.stutas == 0) {
             this.recognizeResList = res.data.data
           }

@@ -9,8 +9,15 @@
         <div class="li" v-for="(item, index) in rankingList" :key="item.id">
           <div class="user-info">
             <div class="num">{{ index + 1 }}</div>
-            <img class="avatar" src="/static/image/icon/my_avatar.png" alt="" />
-            <span>{{ item.nickName }}</span>
+            <img
+              class="avatar"
+              v-if="item.avatarUrl == null"
+              src="/static/image/icon/people.png"
+              alt=""
+            />
+            <img class="avatar" v-else src="{{item.avatarUrl}}" alt="" />
+            <span v-if="item.nickName == null"> 未知用户 </span>
+            <span v-else>{{ item.nickName }}</span>
           </div>
           <div class="score-info">
             <img
