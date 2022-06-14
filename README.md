@@ -13,13 +13,13 @@
 ## 部分页面展示
 ### 首页
 
-<img src="https://github.com/TaoRainLover/graduation-project/tree/main/picture_show/home_page.jpg" height="200px">
+<img src="https://github.com/TaoRainLover/graduation-project/tree/main/picture_show/home_page.jpg" height="200">
 
 ### 个人页面
 <img src="https://github.com/TaoRainLover/graduation-project/tree/main/picture_show/personal.jpeg" height="200px">
 
 ### 相机页面
-<img src="https://github.com/TaoRainLover/graduation-project/tree/main/picture_show/camera_page.jpeg" height="200px">
+<img src="https://github.com/TaoRainLover/graduation-project/tree/main/picture_show/camera_page.jpeg" height="100px">
 
 ### 语音录制页面
 <img src="https://github.com/TaoRainLover/graduation-project/tree/main/picture_show/voice_recording.jpeg" height="200px">
