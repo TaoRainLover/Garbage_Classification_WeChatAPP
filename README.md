@@ -10,3 +10,21 @@
 - `百度智慧云服务`
 - `less`
   
+## 部分页面展示
+### 首页
+![image](/picture_show/home_page.jpg)
+### 个人页面
+![image](/picture_show/personal.jpeg)
+### 相机页面
+![image](/picture_show/camera_page.jpeg)
+### 语音录制页面
+![image](/picture_show/voice_recording.jpeg)
+### 新闻资讯页面
+![image](/picture_show/news_page.jpeg)
+### 礼品页面
+![image](/picture_show/gift_page.jpeg)
+### 答题结果页面
+![image](/picture_show/test_score.jpeg)
+
+
+
