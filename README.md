@@ -12,19 +12,27 @@
   
 ## 部分页面展示
 ### 首页
-![image](/picture_show/home_page.jpg)
+
+<img src="https://github.com/TaoRainLover/graduation-project/tree/main/picture_show/home_page.jpg" height="200px">
+
 ### 个人页面
-![image](/picture_show/personal.jpeg)
+<img src="https://github.com/TaoRainLover/graduation-project/tree/main/picture_show/personal.jpeg" height="200px">
+
 ### 相机页面
-![image](/picture_show/camera_page.jpeg)
+<img src="https://github.com/TaoRainLover/graduation-project/tree/main/picture_show/camera_page.jpeg" height="200px">
+
 ### 语音录制页面
-![image](/picture_show/voice_recording.jpeg)
+<img src="https://github.com/TaoRainLover/graduation-project/tree/main/picture_show/voice_recording.jpeg" height="200px">
+
 ### 新闻资讯页面
-![image](/picture_show/news_page.jpeg)
+<img src="https://github.com/TaoRainLover/graduation-project/tree/main/picture_show/news_page.jpeg" height="200px">
+
 ### 礼品页面
-![image](/picture_show/gift_page.jpeg)
+<img src="https://github.com/TaoRainLover/graduation-project/tree/main/picture_show/gift_page.jpeg" height="200px">
+
 ### 答题结果页面
-![image](/picture_show/test_score.jpeg)
+<img src="https://github.com/TaoRainLover/graduation-project/tree/main/picture_show/test_score.jpeg" height="200px">
+
 
 
 
