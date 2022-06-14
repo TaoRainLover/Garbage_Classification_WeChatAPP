@@ -13,25 +13,25 @@
 ## 部分页面展示
 ### 首页
 
-<img src="https://github.com/TaoRainLover/graduation-project/blob/main/picture_show/home_page.jpg" height="200">
+<img src="https://github.com/TaoRainLover/graduation-project/blob/main/picture_show/home_page.jpg" height="250">
 
 ### 个人页面
-<img src="https://github.com/TaoRainLover/graduation-project/tree/main/picture_show/personal.jpeg" height="200px">
+<img src="https://github.com/TaoRainLover/graduation-project/blob/main/picture_show/personal.jpeg" height="250">
 
 ### 相机页面
-<img src="https://github.com/TaoRainLover/graduation-project/blob/main/picture_show/camera_page.jpeg" height="100px">
+<img src="https://github.com/TaoRainLover/graduation-project/blob/main/picture_show/camera_page.jpeg" height="250">
 
 ### 语音录制页面
-<img src="https://github.com/TaoRainLover/graduation-project/tree/main/picture_show/voice_recording.jpeg" height="200px">
+<img src="https://github.com/TaoRainLover/graduation-project/blob/main/picture_show/voice_recording.jpeg" height="250">
 
 ### 新闻资讯页面
-<img src="https://github.com/TaoRainLover/graduation-project/tree/main/picture_show/news_page.jpeg" height="200px">
+<img src="https://github.com/TaoRainLover/graduation-project/blob/main/picture_show/news_page.jpeg" height="250">
 
 ### 礼品页面
-<img src="https://github.com/TaoRainLover/graduation-project/tree/main/picture_show/gift_page.jpeg" height="200px">
+<img src="https://github.com/TaoRainLover/graduation-project/blob/main/picture_show/gift_page.jpeg" height="250">
 
 ### 答题结果页面
-<img src="https://github.com/TaoRainLover/graduation-project/tree/main/picture_show/test_score.jpeg" height="200px">
+<img src="https://github.com/TaoRainLover/graduation-project/blob/main/picture_show/test_score.jpeg" height="250">
 
 
 
