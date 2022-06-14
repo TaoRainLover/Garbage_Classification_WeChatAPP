@@ -14,7 +14,7 @@
       >
       </newsItem>
     </div>
-    <p class="ending">已加载全部数据...</p>
+    <p class="ending" v-if="isEnd">已加载全部数据...</p>
   </div>
 </template>
 
@@ -26,6 +26,7 @@ wepy.page({
   data: {
     newsItemList: [],
     page: 1,
+    isEnd: false,
   },
   methods: {
     // 跳转到文章详情页
@@ -47,19 +48,31 @@ wepy.page({
         },
         success: (res) => {
           console.log(res.data)
-          this.newsItemList = this.newsItemList.concat(res.data.lists)
+          if (res.data.status == 0) {
+            this.newsItemList = this.newsItemList.concat(res.data.lists)
+          } else {
+            this.isEnd = true
+          }
         },
         fail: (err) => {
+          this.isEnd = true
+
           console.log(err)
         },
       })
     },
   },
 
-  onShow() {
+  onLoad() {
     // console.log('show find')
     this.newsItemList = []
     this.getNewsList()
+  },
+  // page下拉触底事件
+  onReachBottom() {
+    console.log('到底了')
+    this.page++
+    this.getNewsList(this.page)
   },
 })
 </script>
